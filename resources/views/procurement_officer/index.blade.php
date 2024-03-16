@@ -12,7 +12,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     <!-- Add content specific to procurement officer dashboard -->
-                    <p>Welcome, Procurement Officer!</p>
+                    <p>Welcome, {{ Auth::user()->first_name }}!</p>
                     <!-- Add more content as needed -->
                 </div>
             </div>

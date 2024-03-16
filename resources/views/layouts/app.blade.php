@@ -18,10 +18,13 @@
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.7/dist/cdn.min.js"></script>
+
         {{-- sweet alerts --}}
         <script src="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.min.js"></script>
         <link rel="stylesheet" type="text/css" href="https://common.olemiss.edu/_js/sweet-alert/sweet-alert.css">
         
+        {{-- link for website logo --}}
+        <link rel="shortcut icon" href="{{ asset('favicon.ico') }}"/>
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">

@@ -20,9 +20,6 @@
                             <div class="flex items-center">
                                 <input type="text" name="search" placeholder="Search users..." class="p-2 border border-gray-300 rounded-md">
                                 <button type="submit" class="ml-2 bg-gray-700 text-white p-2 rounded-md hover:bg-red-700">Search</button>
-                                @if(request()->has('search'))
-                                    <a href="{{ route('admin.users.index') }}" class="ml-2 bg--300 text-red-500 p-2 rounded-md hover:bg-gray-300">↻</a>
-                                @endif
                             </div>
                             <div class="ml-4">
                                 <select name="usertype" class="p-2 border border-gray-300 rounded-md">
@@ -99,10 +96,10 @@
                                         <div class="text-sm leading-5 text-gray-900">{{ $user->usertype }}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-no-wrap">
-                                        <div class="text-sm leading-5 text-gray-900">{{ $user->created_at->timezone('Asia/Manila')->format('Y-m-d H:i:s') }}</div>
+                                        <div class="text-sm leading-5 text-gray-900">{{ $user->created_at->timezone('Asia/Manila')->format('Y-m-d h:i:s A') }}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-no-wrap">
-                                        <div class="text-sm leading-5 text-gray-900">{{ $user->updated_at->timezone('Asia/Manila')->format('Y-m-d H:i:s') }}</div>
+                                        <div class="text-sm leading-5 text-gray-900">{{ $user->updated_at->timezone('Asia/Manila')->format('Y-m-d h:i:s A') }}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
                                         <a href="{{ route('admin.users.show', $user->id) }}" class="text-red-500 hover:text-red-700">View</a>
