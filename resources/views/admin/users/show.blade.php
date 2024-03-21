@@ -27,11 +27,11 @@
                     </div>
                     <div class="mt-4">
                         <div class="font-semibold">Created At:</div>
-                        <div>{{ $user->created_at->timezone('Asia/Manila')->format('Y-m-d H:i:s') }}</div>
+                        <div>{{ $user->created_at->timezone('Asia/Manila')->format('Y-m-d h:i:s A') }}</div>
                     </div>
                     <div class="mt-4">
                         <div class="font-semibold">Updated At:</div>
-                        <div>{{ $user->updated_at->timezone('Asia/Manila')->format('Y-m-d H:i:s') }}</div>
+                        <div>{{ $user->updated_at->timezone('Asia/Manila')->format('Y-m-d h:i:s A') }}</div>
                     </div>
                     <!-- Back button -->
                     <div class="mt-8">

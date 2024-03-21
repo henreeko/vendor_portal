@@ -17,19 +17,20 @@
                         </div>
 
                         <form action="{{ route('admin.users.index') }}" method="GET" class="flex items-center">
+                            
                             <div class="flex items-center">
-                                <input type="text" name="search" placeholder="Search users..." class="p-2 border border-gray-300 rounded-md">
+                                <input type="text" name="search" placeholder="Search users..." class="p-2 border border-gray-300 rounded-md focus:border-red-500 focus:ring focus:ring-red-200 focus:ring-opacity-50">
                                 <button type="submit" class="ml-2 bg-gray-700 text-white p-2 rounded-md hover:bg-red-700">Search</button>
                             </div>
                             <div class="ml-4">
-                                <select name="usertype" class="p-2 border border-gray-300 rounded-md">
+                                <select name="usertype" class="p-2 border border-gray-300 rounded-md focus:border-red-500 focus:ring focus:ring-red-200 focus:ring-opacity-50">
                                     <option value="">Select User Type</option>
                                     <option value="admin" @if(request('usertype') == 'admin') selected @endif>Admin</option>
                                     <option value="procurement_officer" @if(request('usertype') == 'procurement_officer') selected @endif>Procurement Officer</option>
                                     <option value="procurement_head" @if(request('usertype') == 'procurement_head') selected @endif>Procurement Head</option>
                                     <option value="vendor" @if(request('usertype') == 'vendor') selected @endif>Vendor</option>
                                 </select>
-                                <button type="submit" class="ml-2 bg-gray-700 text-white p-2 rounded-md hover:bg-red-700">Filter</button>
+                                <button type="submit" class="ml-2 bg-gray-700 text-white p-2 rounded-md hover:bg-red-700 ">Filter</button>
                                 <a href="{{ route('admin.users.index') }}" class="ml-2 bg--300 text-red-500 p-2 rounded-md hover:bg-gray-200">↻</a>
                             </div>
                         </form>
@@ -102,10 +103,10 @@
                                         <div class="text-sm leading-5 text-gray-900">{{ $user->updated_at->timezone('Asia/Manila')->format('Y-m-d h:i:s A') }}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
-                                        <a href="{{ route('admin.users.show', $user->id) }}" class="text-red-500 hover:text-red-700">View</a>
+                                        <a href="{{ route('admin.users.edit', $user->id) }}" class="text-red-500 hover:text-red-700">Edit</a>
                                     </td>
                                     <td class="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
-                                        <a href="{{ route('admin.users.edit', $user->id) }}" class="text-red-500 hover:text-red-700">Edit</a>
+                                        <a href="{{ route('admin.users.show', $user->id) }}" class="text-red-500 hover:text-red-700">View</a>
                                     </td>
                                     <td class="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
                                     <!-- Delete Button -->

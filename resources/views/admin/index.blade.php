@@ -13,6 +13,7 @@
                     <div class="mt-8 text-2xl">
                         Welcome, {{ Auth::user()->first_name }}!
                     </div>
+                    <hr class="my-8 border-gray-200">
 
                     <!-- User Statistics -->
                     <div class="mt-8">
@@ -31,10 +32,48 @@
                             </div>
                         </div>
                     </div>
+                    <hr class="my-8 border-gray-200">
 
                     <!-- Charts.js Example -->
                     <div class="mt-8">
                         <canvas id="myChart" width="400" height="200"></canvas>
+                    </div>
+                    <hr class="my-8 border-gray-200">
+
+                    <!-- History Logs Table TEST -->
+                    <div class="mt-8">
+                        <div class="bg-white shadow-md rounded my-6">
+                            <table class="min-w-max w-full table-auto">
+                                <thead>
+                                    <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                                        <th class="py-3 px-6 text-left">Action</th>
+                                        <th class="py-3 px-6 text-left">User</th>
+                                        <th class="py-3 px-6 text-center">Date</th>
+                                        <th class="py-3 px-6 text-center">Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-gray-600 text-sm font-light">
+                                    @php
+                                        $historyLogs = [
+                                            ['action' => 'Logged in', 'user' => 'John Doe', 'date' => '2024-03-10', 'time' => '09:30 AM'],
+                                            ['action' => 'Updated profile', 'user' => 'Jane Smith', 'date' => '2024-03-11', 'time' => '02:45 PM'],
+                                            ['action' => 'Deleted post', 'user' => 'Admin', 'date' => '2024-03-12', 'time' => '11:20 AM'],
+                                            ['action' => 'Added new user', 'user' => 'Super Admin', 'date' => '2024-03-13', 'time' => '04:10 PM'],
+                                            // Add more fictional data as needed
+                                        ];
+                                    @endphp
+
+                                    @foreach ($historyLogs as $log)
+                                        <tr class="border-b border-gray-200 hover:bg-gray-100">
+                                            <td class="py-3 px-6 text-left whitespace-nowrap">{{ $log['action'] }}</td>
+                                            <td class="py-3 px-6 text-left">{{ $log['user'] }}</td>
+                                            <td class="py-3 px-6 text-center">{{ $log['date'] }}</td>
+                                            <td class="py-3 px-6 text-center">{{ $log['time'] }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

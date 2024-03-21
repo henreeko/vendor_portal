@@ -11,6 +11,8 @@ use App\Http\Controllers\ProcurementHeadController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Auth\RegisteredUserController;
+
 
 Route::get('/', function () {
     return view('welcome');  
@@ -54,23 +56,35 @@ Route::get('/admin/users', [UserManagementController::class, 'index'])->name('ad
 // Route to show the user creation form
 Route::get('/admin/users/create', [UserManagementController::class, 'create'])->name('admin.users.create');
 
-
-
-// Route to store a new user
-Route::post('/admin/users', [UserManagementController::class, 'store'])->name('admin.users.store');
-// Route to show the user edit form
-Route::get('/admin/users/{user}/edit', [UserManagementController::class, 'edit'])->name('admin.users.edit');
+// Route to edit a user
+Route::get('/users/{user}/edit', [UserManagementController::class, 'edit'])->name('admin.users.edit');
 // Route to update a user
-Route::put('/admin/users/{user}', [UserManagementController::class, 'update'])->name('admin.users.update');
-// Route to delete a user
-Route::delete('/admin/users/{user}', [UserManagementController::class, 'destroy'])->name('admin.users.destroy');
-// Route for soft deletes
-Route::get('admin/users/deleted', [UserManagementController::class, 'deletedUsers'])->name('admin.users.deleted');
+Route::put('/users/{user}', [UserManagementController::class, 'update'])->name('admin.users.update');
 
-Route::get('/admin/users/{user}', [UserManagementController::class, 'show'])->name('admin.users.show');
+Route::middleware(['auth', 'verified', 'can:admin'])->prefix('admin')->group(function () {
+Route::post('/users', [UserManagementController::class, 'store'])->name('admin.users.store');
+// Route to delete a user
+Route::delete('/users/{user}', [UserManagementController::class, 'destroy'])->name('admin.users.destroy');
+// Route for soft deletes
+Route::get('/users/deleted', [UserManagementController::class, 'deletedUsers'])->name('admin.users.deleted');
+// Route to show a user
+Route::get('/users/{user}', [UserManagementController::class, 'show'])->name('admin.users.show');
+});
 
 // For admin dash
 Route::get('/admin/users/count', [UserController::class, 'getTotalUsersCount'])->name('admin.users.count');
 Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
 
+// For Registration
+// Route for displaying the first step of registration form
+Route::get('/register/first', [\App\Http\Controllers\Auth\RegisteredUserController::class, 'create'])->name('register.first');
+
+// Route for processing the first step form submission
+Route::post('/register/first', [\App\Http\Controllers\Auth\RegisteredUserController::class, 'storeFirstStep'])->name('register.first.store');
+
+// Route for displaying the second step of registration form
+Route::get('/register/second', [\App\Http\Controllers\Auth\RegisteredUserController::class, 'createSecondStep'])->name('register.second');
+
+// Route for processing the second step form submission
+Route::post('/register/second', [\App\Http\Controllers\Auth\RegisteredUserController::class, 'storeSecondStep'])->name('register.second.store');
 require __DIR__.'/auth.php';

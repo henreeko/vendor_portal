@@ -10,6 +10,8 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+
+
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
@@ -25,7 +27,20 @@ class User extends Authenticatable
         'email',
         'password',
         'usertype',
-        
+        'supplier_type',
+        'company_name',
+        'office_street',
+        'office_barangay',
+        'office_zip',
+        'office_city',
+        'tin_number',
+        'website_url',
+        'phone_number',
+        'billing_representative_first_name',
+        'billing_representative_last_name',
+        'business_type',
+        'products_or_services',
+        'telephone_fax_number',
     ];
 
     /**
@@ -47,12 +62,5 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-
-    /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array<string>
-     */
-    protected $dates = ['deleted_at']; // Add 'deleted_at' to the $dates property
-    
 }
+    

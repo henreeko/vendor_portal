@@ -12,7 +12,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     <!-- Display history logs here -->
-                    <h3 class="text-lg font-semibold mb-4">History Logs</h3>
+                    <h3 class="text-lg font-semibold mb-4"></h3>
                     <!-- Example: Display a table of history logs -->
                     <div class="overflow-x-auto">
                         <table class="table-auto min-w-full divide-y divide-gray-200">

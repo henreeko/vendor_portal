@@ -5,10 +5,42 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
-
+use Illuminate\Validation\Rule;
 
 class UserManagementController extends Controller
 {
+    public function authorizeUser($user, $ability)
+    {
+        return true; 
+    }
+
+    public function edit(User $user)
+{
+    return view('admin.users.edit', compact('user'));
+}
+
+public function update(Request $request, User $user)
+{
+    // Validate the incoming request data
+    $request->validate([
+        'first_name' => ['required', 'string', 'max:255'],
+        'last_name' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+        'usertype' => ['required', 'string'],
+    ]);
+
+    // Update the user with the validated data
+    $user->update([
+        'first_name' => $request->input('first_name'),
+        'last_name' => $request->input('last_name'),
+        'email' => $request->input('email'),
+        'usertype' => $request->input('usertype'),
+    ]);
+
+    // Redirect back to the user list with a success message
+    return redirect()->route('admin.users.index')->with('success', 'User updated successfully.');
+}
+
     public function show(User $user)
     {
         return view('admin.users.show', compact('user'));
@@ -71,45 +103,7 @@ class UserManagementController extends Controller
 
         // Redirect back to the user list with a success message
         return redirect()->route('admin.users.index')->with('success', 'User created successfully.');
-    }
 
-    // Method to show the user edit form
-    public function edit(User $user)
-    {
-        return view('admin.users.edit', compact('user'));
-        
-    }
-
-    // Method to update a user
-    public function update(Request $request, User $user)
-    {
-        // Validate the incoming request
-        $request->validate([
-            'first_name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $user->id],
-            'password' => ['nullable', 'string', 'min:8'],
-            'usertype' => ['required', 'string'],
-        ]);
-
-        // Update the user's information
-        $user->update([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'email' => $request->email,
-            'usertype' => $request->usertype,
-        ]);
-
-        // If a new password is provided, update it
-        if ($request->filled('password')) {
-            $user->update(['password' => bcrypt($request->password)]);
-        }
-
-        // Flash success message to the session
-        session()->flash('success', 'User successfully updated!');
-
-        // Redirect back to the user list with a success message
-        return redirect()->route('admin.users.index');
     }
 
     // Method to delete a user
