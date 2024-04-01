@@ -12,10 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('office_street')->nullable();
-            $table->string('office_barangay')->nullable();
-            $table->string('office_zip')->nullable();
-            $table->string('office_city')->nullable();
+            $table->enum('status', ['pending', 'active'])->default('pending');
         });
     }
 
@@ -25,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['office_street', 'office_barangay', 'office_zip', 'office_city']);
+            $table->dropColumn('activated');
         });
     }
 };

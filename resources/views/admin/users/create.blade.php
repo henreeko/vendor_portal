@@ -68,11 +68,11 @@
                                 @enderror
                             </div>
                             
-                            <div class="mb-4">
-                                <button type="submit" class="bg-gray-700 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Create User</button>
-                                <a href="{{ route('admin.users.index') }}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">Cancel</a>
+                            <div class="mb-2 space-x-2">
+                                <button type="submit" class="bg-gray-700 hover:bg-red-700 text-white font-bold py-2 px-3 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">Create User</button>
+                                <a href="{{ route('admin.users.index') }}" class="text-gray-800 font-bold py-2 px-3 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Cancel</a>
                             </div>
-                            
+
                         </form>
                     </div>
                 </div>

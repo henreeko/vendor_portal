@@ -12,11 +12,11 @@ use App\Http\Controllers\VendorController;
 use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\RegisteredUserController;
-
+use App\Http\Controllers\ThankYouController;
 
 Route::get('/', function () {
-    return view('welcome');  
-})->middleware('preventBackHistory');
+    return view('welcome');
+})->name('welcome')->middleware('preventBackHistory');
 
 // Protected dashboard route with auth middleware
 Route::middleware(['auth', 'verified','preventBackHistory'])->group(function () {
@@ -34,7 +34,7 @@ Route::middleware(['auth', 'verified','preventBackHistory'])->group(function () 
         } else {
             return redirect()->route('dashboard');
         }
-    })->name('dashboard');
+    })->name('dashboard')->middleware(['auth', 'verified', 'verify.vendor.status']);
 
     // Other profile-related routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -56,12 +56,9 @@ Route::get('/admin/users', [UserManagementController::class, 'index'])->name('ad
 // Route to show the user creation form
 Route::get('/admin/users/create', [UserManagementController::class, 'create'])->name('admin.users.create');
 
-// Route to edit a user
-Route::get('/users/{user}/edit', [UserManagementController::class, 'edit'])->name('admin.users.edit');
-// Route to update a user
-Route::put('/users/{user}', [UserManagementController::class, 'update'])->name('admin.users.update');
 
-Route::middleware(['auth', 'verified', 'can:admin'])->prefix('admin')->group(function () {
+
+Route::middleware(['auth'])->group(function () {
 Route::post('/users', [UserManagementController::class, 'store'])->name('admin.users.store');
 // Route to delete a user
 Route::delete('/users/{user}', [UserManagementController::class, 'destroy'])->name('admin.users.destroy');
@@ -69,22 +66,30 @@ Route::delete('/users/{user}', [UserManagementController::class, 'destroy'])->na
 Route::get('/users/deleted', [UserManagementController::class, 'deletedUsers'])->name('admin.users.deleted');
 // Route to show a user
 Route::get('/users/{user}', [UserManagementController::class, 'show'])->name('admin.users.show');
+// Route to edit a user
+Route::get('/users/{user}/edit', [UserManagementController::class, 'edit'])->name('admin.users.edit');
+// Route to update a user
+Route::put('/users/{user}', [UserManagementController::class, 'update'])->name('admin.users.update');
 });
+
+// Registration Routes
+Route::get('/register', [\App\Http\Controllers\Auth\RegisteredUserController::class, 'create'])->name('register');
+Route::post('/register/first-store', [\App\Http\Controllers\Auth\RegisteredUserController::class, 'storeFirstStep'])->name('register.first-store');
+Route::get('/register/second', [\App\Http\Controllers\Auth\RegisteredUserController::class, 'showSecondStepForm'])->name('register.second');
+Route::post('register/second-store', [RegisteredUserController::class, 'storeSecondStep'])->name('register.second-store');
+
 
 // For admin dash
 Route::get('/admin/users/count', [UserController::class, 'getTotalUsersCount'])->name('admin.users.count');
 Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
 
-// For Registration
-// Route for displaying the first step of registration form
-Route::get('/register/first', [\App\Http\Controllers\Auth\RegisteredUserController::class, 'create'])->name('register.first');
+// For Activation
+Route::middleware(['auth'])->group(function () {
+Route::get('admin/vendors', [VendorController::class, 'allVendors'])->name('admin.vendors.index');
+Route::get('/admin/vendors', [VendorController::class, 'index'])->name('vendor.index');
+Route::get('/vendors/pending', [VendorController::class, 'pendingVendors'])->name('vendors.pending');
+Route::post('/vendors/{id}/activate', [VendorController::class, 'activateVendor'])->name('vendors.activate');
+});
+Route::get('/registration/thankyou', [ThankYouController::class, 'show'])->name('registration.thankyou');
 
-// Route for processing the first step form submission
-Route::post('/register/first', [\App\Http\Controllers\Auth\RegisteredUserController::class, 'storeFirstStep'])->name('register.first.store');
-
-// Route for displaying the second step of registration form
-Route::get('/register/second', [\App\Http\Controllers\Auth\RegisteredUserController::class, 'createSecondStep'])->name('register.second');
-
-// Route for processing the second step form submission
-Route::post('/register/second', [\App\Http\Controllers\Auth\RegisteredUserController::class, 'storeSecondStep'])->name('register.second.store');
 require __DIR__.'/auth.php';

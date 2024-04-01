@@ -57,13 +57,16 @@
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 
             @if (session('status') === 'profile-updated')
-                <p
-                    x-data="{ show: true }"
-                    x-show="show"
-                    x-transition
-                    x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-gray-600"
-                >{{ __('Saved.') }}</p>
+            <script>
+                // Display SweetAlert success message
+                Swal.fire({
+                    title: 'Updated!',
+                    text: "Profile Updated Successfully",
+                    icon: 'success',
+                    timer: 2000,
+                    confirmButtonText: 'OK'
+                });
+            </script>
             @endif
         </div>
     </form>

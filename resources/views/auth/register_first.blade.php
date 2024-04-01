@@ -1,8 +1,7 @@
-{{-- auth\register_first.blade.php --}}
+{{-- resources/views/auth/register_first.blade.php --}}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 <x-guest-layout>
-    <form id="firstStepForm" method="POST" action="{{ route('register.first.store') }}" class="space-y-6">
+    <form id="firstStepForm" method="POST" action="{{ route('register.first-store') }}" class="space-y-6">
         @csrf
         
         <h5 class="text-xl font-bold dark:text-white text-center">Account Set Up</h5>
@@ -15,7 +14,7 @@
 
         <!-- First Name -->
         <div>
-            <label for="first_name" class="block text-sm font-medium text-gray-700">First Name</label>
+            <label for="first_name" class="block text-sm font-medium text-grvay-700">First Name</label>
             <x-text-input id="first_name" class="block w-full mt-1" type="text" name="first_name" :value="old('first_name')" required autofocus autocomplete="given-name" />
             <x-input-error :messages="$errors->get('first_name')" />
         </div>
@@ -56,7 +55,6 @@
         </div>
     </form>
 
-
     <script>
         // Function to handle form submission and navigate to the next step
         function submitFirstStepForm() {
@@ -70,12 +68,20 @@
     
                 // Check if the password and confirmation match
                 if (formData.get('password') !== formData.get('password_confirmation')) {
-                    // Show SweetAlert2 error message
+                    // Show SweetAlert2 toast error message
                     Swal.fire({
                         icon: 'error',
                         title: 'Password Mismatch',
                         text: 'The password and confirmation do not match. Please try again.',
-                        timer: 2000,
+                        timer: 5000,
+                        toast: true,
+                        position: 'top',
+                        showConfirmButton: false,
+                        showCloseButton: true,
+                        customClass: {
+                            popup: 'error-toast',
+                        },
+                        background: '#f1f1f1',
                     });
                 } else {
                     // Make an AJAX request to submit the form data
@@ -103,5 +109,4 @@
             }
         }
     </script>
-    
 </x-guest-layout>

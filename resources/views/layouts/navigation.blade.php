@@ -33,6 +33,17 @@
                     {{ __('Add User') }}
                     </x-nav-link>
                     @endif
+
+                    @if(auth()->check() && (auth()->user()->usertype === 'admin' || auth()->user()->usertype === 'procurement_officer'))
+                    <x-nav-link href="{{ route('vendor.index') }}" :active="request()->routeIs('vendor.index')">
+                    {{ __('Vendors') }}
+                    </x-nav-link>
+
+                    <x-nav-link href="{{ route('vendors.pending') }}" :active="request()->routeIs('vendors.pending')">
+                        {{ __('Pending Vendors') }}
+                    </x-nav-link>
+                    @endif
+
                 </div>
             </div>
 

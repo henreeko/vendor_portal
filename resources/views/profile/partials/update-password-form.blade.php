@@ -35,13 +35,15 @@
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 
             @if (session('status') === 'password-updated')
-                <p
-                    x-data="{ show: true }"
-                    x-show="show"
-                    x-transition
-                    x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-gray-600"
-                >{{ __('Saved.') }}</p>
+            <script>
+                Swal.fire({
+                    title: 'Updated!',
+                    text: "Password Updated Successfully",
+                    icon: 'success',
+                    timer: 2000,
+                    confirmButtonText: 'OK'
+                });
+            </script>
             @endif
         </div>
     </form>

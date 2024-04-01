@@ -1,6 +1,7 @@
-{{-- auth\register_second.blade.php --}}
+{{-- resources/views/auth/register_second.blade.php --}}
+
 <x-guest-layout>
-    <form method="POST" action="{{ route('register.second.store') }}" class="space-y-6">
+    <form method="POST" action="{{ route('register.second-store') }}" class="space-y-6">
         @csrf
 
         <h5 class="text-xl font-bold dark:text-white text-center">Company Details</h5>
@@ -123,15 +124,15 @@
             <x-input-error :messages="$errors->get('products_or_services')" />
         </div>
 
-        <!-- Terms and Conditions Checkbox -->
-        <div class="mb-6">
-            <label for="terms_and_conditions" class="flex items-center">
-                <input id="terms_and_conditions" type="checkbox" name="terms_and_conditions" class="form-checkbox rounded-md text-red-500 border-gray-400 focus:ring-2 focus:ring-red-500" required>
-                <span class="ml-2 text-sm text-gray-600">{{ __('I agree to the :terms', ['terms' => 'Terms and Conditions']) }}</span>
-            </label>
-            <x-input-error :messages="$errors->get('terms_and_conditions')" />
-        </div>
-
+                <!-- Terms and Conditions Checkbox -->
+                <div class="mb-6">
+                    <label for="terms_and_conditions" class="flex items-center">
+                        <input id="terms_and_conditions" type="checkbox" name="terms_and_conditions" class="form-checkbox rounded-md text-red-500 border-gray-400 focus:ring-2 focus:ring-red-500" required>
+                        <span class="ml-2 text-sm text-gray-600">{{ __('I agree to the :terms', ['terms' => 'Terms and Conditions']) }}</span>
+                    </label>
+                    <x-input-error :messages="$errors->get('terms_and_conditions')" />
+                </div>
+                
         <!-- Action Buttons -->
         <div class="flex justify-between">
             <x-primary-button type="button" onclick="goToPreviousStep()">

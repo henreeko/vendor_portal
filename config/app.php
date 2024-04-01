@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Vendorify'),
+    'name' => env('APP_NAME', 'Philcoastal — Vendorify'),
 
     /*
     |--------------------------------------------------------------------------

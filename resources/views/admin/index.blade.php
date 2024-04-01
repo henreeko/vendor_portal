@@ -13,25 +13,48 @@
                     <div class="mt-8 text-2xl">
                         Welcome, {{ Auth::user()->first_name }}!
                     </div>
-                    <hr class="my-8 border-gray-200">
+                    <br>
 
                     <!-- User Statistics -->
-                    <div class="mt-8">
-                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                            <div class="bg-blue-100 p-4 rounded-lg shadow-md">
-                                <div class="text-xl font-semibold text-blue-900">Total Users</div>
-                                {{-- <div class="text-4xl font-bold text-blue-600">{{ $totalUsers }}</div> --}}
+                    <div class="">
+                        <div class="container mx-auto">
+                          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                            <div class="bg-white rounded-lg shadow-md p-6">
+                              <div class="flex items-center justify-center bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full p-3 w-16 h-16">
+                                <svg class="h-8 w-8 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                              </div>
+                              <div class="mt-4">
+                                <p class="text-lg font-semibold text-gray-800">Total Users</p>
+                                <p class="text-gray-600 text-sm mt-1">1,200</p>
+                              </div>
                             </div>
-                            <div class="bg-green-100 p-4 rounded-lg shadow-md">
-                                <div class="text-xl font-semibold text-green-900">Active Users</div>
-                                {{-- <div class="text-4xl font-bold text-green-600">{{ $activeUsers }}</div> --}}
+                            <div class="bg-white rounded-lg shadow-md p-6">
+                              <div class="flex items-center justify-center bg-gradient-to-r from-green-500 to-teal-500 rounded-full p-3 w-16 h-16">
+                                <svg class="h-8 w-8 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                              </div>
+                              <div class="mt-4">
+                                <p class="text-lg font-semibold text-gray-800">Revenue</p>
+                                <p class="text-gray-600 text-sm mt-1">$50,000</p>
+                              </div>
                             </div>
-                            <div class="bg-yellow-100 p-4 rounded-lg shadow-md">
-                                <div class="text-xl font-semibold text-yellow-900">Users Registered Today</div>
-                                {{-- <div class="text-4xl font-bold text-yellow-600">{{ $usersRegisteredToday }}</div> --}}
+                            <div class="bg-white rounded-lg shadow-md p-6">
+                              <div class="flex items-center justify-center bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full p-3 w-16 h-16">
+                                <svg class="h-8 w-8 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                              </div>
+                              <div class="mt-4">
+                                <p class="text-lg font-semibold text-gray-800">Issues</p>
+                                <p class="text-gray-600 text-sm mt-1">5</p>
+                              </div>
                             </div>
+                          </div>
                         </div>
-                    </div>
+                      </div>
                     <hr class="my-8 border-gray-200">
 
                     <!-- Charts.js Example -->

@@ -42,10 +42,9 @@
                                     <option value="vendor" {{ old('usertype', $user->usertype) === 'vendor' ? 'selected' : '' }}>Vendor</option>
                                 </select>
                             </div>
-
-                            <div class="mb-4">
-                                <button type="submit">Update</button>
-                                <a href="{{ route('admin.users.index') }}" >Cancel</a>
+                            <div class="mb-2 space-x-2">
+                                <button type="submit" class="bg-gray-700 hover:bg-red-700 text-white font-bold py-2 px-3 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">Update</button>
+                                <a href="{{ route('admin.users.index') }}" class="text-gray-800 font-bold py-2 px-3 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">Cancel</a>
                             </div>
                         </form>
                     </div>
@@ -54,3 +53,4 @@
         </div>
     </div>
 </x-app-layout>
+
