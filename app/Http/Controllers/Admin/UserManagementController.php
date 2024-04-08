@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class UserManagementController extends Controller
 {
@@ -47,36 +50,36 @@ class UserManagementController extends Controller
     }
 
     public function index(Request $request)
-    {
-        // Retrieve search parameters from the request
-        $search = $request->input('search');
-        $userType = $request->input('usertype');
-        $sort = $request->input('sort', 'created_at');
-        $direction = $request->input('direction', 'desc');
-    
-        // Initialize the query builder
-        $query = User::query();
-    
-        // Apply search filters
-        if ($search) {
-            $query->where(function ($query) use ($search) {
-                $query->where('first_name', 'like', '%' . $search . '%')
-                    ->orWhere('last_name', 'like', '%' . $search . '%')
-                    ->orWhere('email', 'like', '%' . $search . '%');
-            });
-        }
-    
-        // Apply user type filter
-        if ($userType) {
-            $query->where('usertype', $userType);
-        }
-    
-        // Retrieve sorted users
-        $users = $query->orderBy($sort, $direction)->paginate(10);
-    
-        // Pass the users and other necessary data to the view
-        return view('admin.users.index', compact('users', 'search', 'userType', 'sort', 'direction'));
+{
+    $search = $request->input('search');
+    $userType = $request->input('usertype');
+    $created_at = $request->input('created_at');
+    $sort = $request->input('sort', 'created_at');
+    $direction = $request->input('direction', 'desc');
+
+    $users = User::query();
+
+    if ($search) {
+        $users = $users->where(function ($query) use ($search) {
+            $query->where('first_name', 'like', "%{$search}%")
+                  ->orWhere('last_name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+        });
     }
+
+    if ($userType) {
+        $users = $users->where('usertype', $userType);
+    }
+
+    if ($created_at) {
+        $users = $users->whereDate('created_at', '=', $created_at);
+    }
+
+    $users = $users->orderBy($sort, $direction)->paginate(10)->withQueryString();
+
+    return view('admin.users.index', compact('users'));
+}
+
     
 
     public function create()
@@ -119,4 +122,23 @@ class UserManagementController extends Controller
         $deletedUsers = User::onlyTrashed()->get();
         return view('admin.users.deleted', compact('deletedUsers'));
     }
+
+    public function trashedUsers()
+    {
+        $trashedUsers = User::onlyTrashed()->paginate(10);
+        return view('admin.users.trashed', compact('trashedUsers'));
+    }
+    
+    public function forceDelete(Request $request, $userId)
+    {
+        $request->validate(['password' => 'required']);
+    
+        if (!Hash::check($request->password, Auth::user()->password)) {
+            return back()->withErrors(['password' => 'The admin password is incorrect.']);
+        }
+    
+        User::onlyTrashed()->findOrFail($userId)->forceDelete();
+        return redirect()->route('admin.users.trashed')->with('success', 'User permanently deleted.');
+    }
+    
 }

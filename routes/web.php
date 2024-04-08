@@ -14,6 +14,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ThankYouController;
 
+
 Route::get('/', function () {
     return view('welcome');
 })->name('welcome')->middleware('preventBackHistory');
@@ -46,7 +47,6 @@ Route::middleware(['auth', 'verified','preventBackHistory'])->group(function () 
 Route::middleware(['auth', 'verified'])->group(function () {
 Route::get('/admin/history_logs', [HistoryLogController::class, 'index'])->name('admin.history_logs.index');
 });
-
 Route::middleware(['auth', 'verified', 'can:admin'])->prefix('admin')->group(function () {
     Route::resource('users', UserManagementController::class);
 });
@@ -55,7 +55,6 @@ Route::middleware(['auth', 'verified', 'can:admin'])->prefix('admin')->group(fun
 Route::get('/admin/users', [UserManagementController::class, 'index'])->name('admin.users.index');
 // Route to show the user creation form
 Route::get('/admin/users/create', [UserManagementController::class, 'create'])->name('admin.users.create');
-
 
 
 Route::middleware(['auth'])->group(function () {
@@ -77,19 +76,61 @@ Route::get('/register', [\App\Http\Controllers\Auth\RegisteredUserController::cl
 Route::post('/register/first-store', [\App\Http\Controllers\Auth\RegisteredUserController::class, 'storeFirstStep'])->name('register.first-store');
 Route::get('/register/second', [\App\Http\Controllers\Auth\RegisteredUserController::class, 'showSecondStepForm'])->name('register.second');
 Route::post('register/second-store', [RegisteredUserController::class, 'storeSecondStep'])->name('register.second-store');
-
+Route::get('/register', [\App\Http\Controllers\Auth\RegisteredUserController::class, 'create'])->name('register');
 
 // For admin dash
 Route::get('/admin/users/count', [UserController::class, 'getTotalUsersCount'])->name('admin.users.count');
 Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
 
 // For Activation
-Route::middleware(['auth'])->group(function () {
-Route::get('admin/vendors', [VendorController::class, 'allVendors'])->name('admin.vendors.index');
-Route::get('/admin/vendors', [VendorController::class, 'index'])->name('vendor.index');
-Route::get('/vendors/pending', [VendorController::class, 'pendingVendors'])->name('vendors.pending');
-Route::post('/vendors/{id}/activate', [VendorController::class, 'activateVendor'])->name('vendors.activate');
-});
+Route::middleware(['auth', 'verified', 'preventBackHistory'])->group(function () {
+    Route::get('/vendors/pending', [VendorController::class, 'pendingVendors'])->name('vendors.pending');
+    Route::post('/vendors/{id}/activate', [VendorController::class, 'activateVendor'])->name('vendors.activate');
+    Route::get('/vendors/details/{vendorId}', [VendorController::class, 'getVendorDetails'])->name('vendors.details');
+})->middleware(['verify.vendor.status']);
+
+// For Registration
 Route::get('/registration/thankyou', [ThankYouController::class, 'show'])->name('registration.thankyou');
+Route::get('/registration-pending', function () {
+    return view('auth.registration_pending');
+})->name('registration.pending');
+
+// For Procurement Head
+    Route::get('/admin/vendors/pending', [VendorController::class, 'pendingVendorsForProcurementHead'])->name('admin.vendors.pending');
+    Route::post('/procurement-head/approve-vendor/{id}', [ProcurementHeadController::class, 'approveVendor']);
+    Route::post('/procurement-head/approve-vendor/{id}', [ProcurementHeadController::class, 'approveVendor'])
+    ->name('procurement_head.approve');
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/procurement-head/vendors/pending', [ProcurementHeadController::class, 'pendingVendorsForProcurementHead'])
+        ->name('procurement_head.vendors.pending');
+});
+
+// For Procurement Officer
+Route::middleware(['auth', 'preventBackHistory'])->group(function () {
+    Route::get('/procurement-officer/pending-vendors', [ProcurementOfficerController::class, 'showPendingVendors'])
+    ->name('procurement_officer.pending_vendors');
+
+
+// Route to approve a vendor by procurement officer
+Route::post('/procurement-officer/vendors/approve/{vendorId}', [ProcurementOfficerController::class, 'approveVendor'])
+    ->name('procurement_officer.approve_vendor');
+
+// Not Approved
+Route::get('/vendor/pending-approval', function () {
+    return view('vendor.pending_approval');
+    })->name('vendor.pendingApproval');
+});
+
+// // For trashed users
+// Route::get('/admin/users/trashed', [UserManagementController::class, 'trashedUsers'])->name('admin.users.trashed');
+// Route::post('/admin/users/{user}/forceDelete', [UserManagementController::class, 'forceDelete'])->name('admin.users.forceDelete');
+// // Route::post('/admin/users/{user}/restore', [UserManagementController::class, 'restore'])->name('admin.users.restore');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/admin/vendors', function () {
+        return view('admin.vendors.index');
+    })->name('admin.vendors.index');
+});
 
 require __DIR__.'/auth.php';

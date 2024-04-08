@@ -12,12 +12,14 @@ class VerifyVendorStatus
     {
         $user = Auth::user();
 
-        if ($user && $user->usertype === 'vendor') {
-            if ($user->status === 'pending') {
-                return redirect()->route('registration.thankyou');
-            }
+        // Assuming `is_fully_approved` is a custom attribute you've defined on the User model
+        // that checks both the procurement officer and head approvals.
+        if ($user && $user->usertype === 'vendor' && $user->is_fully_approved !== true) {
+            // Redirect to the "Thank You / Pending Approval" page instead of the home page
+            return redirect('/registration/thankyou')->with('message', 'Your account is currently pending approval.');
         }
 
         return $next($request);
     }
 }
+

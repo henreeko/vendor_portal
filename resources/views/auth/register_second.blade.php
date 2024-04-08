@@ -124,14 +124,13 @@
             <x-input-error :messages="$errors->get('products_or_services')" />
         </div>
 
-                <!-- Terms and Conditions Checkbox -->
-                <div class="mb-6">
-                    <label for="terms_and_conditions" class="flex items-center">
-                        <input id="terms_and_conditions" type="checkbox" name="terms_and_conditions" class="form-checkbox rounded-md text-red-500 border-gray-400 focus:ring-2 focus:ring-red-500" required>
-                        <span class="ml-2 text-sm text-gray-600">{{ __('I agree to the :terms', ['terms' => 'Terms and Conditions']) }}</span>
-                    </label>
-                    <x-input-error :messages="$errors->get('terms_and_conditions')" />
-                </div>
+         <!-- Terms and Conditions Checkbox -->
+         <div class="flex items-center mb-4">
+            <input id="terms_and_conditions" type="checkbox" name="terms_and_conditions" class="rounded-md text-red-500 border-gray-300 focus:ring-red-500" required>
+            <label for="terms_and_conditions" class="ml-2 block text-sm text-gray-700">
+                I agree to the <a href="#" class="text-red-600 hover:underline">Terms and Conditions</a>
+            </label>
+        </div>
                 
         <!-- Action Buttons -->
         <div class="flex justify-between">

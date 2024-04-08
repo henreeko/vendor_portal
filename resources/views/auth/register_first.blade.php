@@ -4,7 +4,7 @@
     <form id="firstStepForm" method="POST" action="{{ route('register.first-store') }}" class="space-y-6">
         @csrf
         
-        <h5 class="text-xl font-bold dark:text-white text-center">Account Set Up</h5>
+        <h5 class="text-2xl font-bold dark:text-white text-center">Account Set Up</h5>
 
         {{-- step indicator --}}
         <div class="flex justify-center items-center mt-8 space-x-4">

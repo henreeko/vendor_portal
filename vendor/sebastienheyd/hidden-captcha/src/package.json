@@ -1,0 +1,19 @@
+{
+  "private": true,
+  "scripts": {
+    "dev": "npm run development",
+    "development": "mix",
+    "watch": "mix watch",
+    "watch-poll": "mix watch -- --watch-options-poll=1000",
+    "hot": "mix watch --hot",
+    "prod": "npm run production",
+    "production": "mix --production"
+  },
+  "devDependencies": {
+    "clean-webpack-plugin": "^3.0.0",
+    "laravel-mix": "^6.0.42",
+    "laravel-mix-obfuscator": "^1.0.0",
+    "webpack-obfuscator": "^3.5.1"
+  },
+  "dependencies": {}
+}

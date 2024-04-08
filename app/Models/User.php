@@ -2,25 +2,16 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
-
 
 class User extends Authenticatable
 {
     use HasFactory, Notifiable, SoftDeletes;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'first_name',
         'last_name',
@@ -41,25 +32,29 @@ class User extends Authenticatable
         'business_type',
         'products_or_services',
         'telephone_fax_number',
-        'status', 
+        'procurement_officer_approval',
+        'procurement_head_approval',
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Determine if the vendor is fully approved.
+     *
+     * @return bool
+     */
+    protected $appends = ['is_fully_approved'];
+
+    public function getIsFullyApprovedAttribute()
+    {
+        return $this->procurement_officer_approval === 'approved' && $this->procurement_head_approval === 'approved';
+    }
 }
+

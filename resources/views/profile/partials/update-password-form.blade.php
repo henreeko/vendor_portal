@@ -40,11 +40,14 @@
                     title: 'Updated!',
                     text: "Password Updated Successfully",
                     icon: 'success',
+                    toast: true,
+                    position: 'top-end',
                     timer: 2000,
-                    confirmButtonText: 'OK'
+                    showConfirmButton: false
                 });
             </script>
-            @endif
+        @endif
+        
         </div>
     </form>
 </section>

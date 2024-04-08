@@ -58,16 +58,18 @@
 
             @if (session('status') === 'profile-updated')
             <script>
-                // Display SweetAlert success message
+                // Display SweetAlert2 toast success message
                 Swal.fire({
-                    title: 'Updated!',
-                    text: "Profile Updated Successfully",
+                    toast: true,
+                    position: 'top-end',
                     icon: 'success',
-                    timer: 2000,
-                    confirmButtonText: 'OK'
+                    title: 'Updated!',
+                    text: 'Profile Updated Successfully',
+                    showConfirmButton: false,
+                    timer: 2000
                 });
             </script>
-            @endif
+        @endif
         </div>
     </form>
 </section>
