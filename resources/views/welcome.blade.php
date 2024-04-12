@@ -39,7 +39,7 @@
 
     <!-- Footer -->
     <footer class="bg-gray-800 text-white text-center py-4">
-        <p>&copy; {{ date('Y') }} Philippine Coastal Storage & Pipeline Corporation Vendorify. All rights reserved.</p>
+        <p>&copy; {{ date('Y') }} Philippine Coastal Storage & Pipeline Corporation Vendor Management Portal. All rights reserved.</p>
     </footer>
 
     <!-- Modal for Registration Success -->

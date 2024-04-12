@@ -12,7 +12,7 @@
         style="background: linear-gradient(rgba(2,2,2,.7),rgba(0,0,0,.7)),url('{{ asset('logo/land-bg.jpg') }}') center center; background-size: cover;">
             <div class="bg-black opacity-20 inset-0 z-0"></div>
             <div class="w-full mx-auto px-20 flex-col items-center space-y-6">
-                <h1 class="text-white font-bold text-4xl font-sans">Vendor Management Portal</h1>
+                <h1 class="text-white font-bold text-4xl font-sans">PCSPC Vendor Management Portal</h1>
                 <p class="text-white mt-1"> Welcome to Philippine Coastal Storage & Pipeline Corporation's Vendor Management Portal. If you're passionate about delivering quality and excellence, we invite you to join our growing network. Let's collaborate to create mutually beneficial opportunities.</p>
                 <div class="flex justify-center lg:justify-start mt-6">
                     <a href="https://www.philcoastal.com/who-we-are/" target="_blank" rel="noopener noreferrer" class="hover:bg-white hover:text-red-700 hover:-translate-y-1 transition-all duration-500 bg-red-700 text-white mt-4 px-4 py-2 font-bold mb-2">About Us</a>

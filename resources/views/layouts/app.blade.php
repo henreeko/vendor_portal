@@ -53,7 +53,6 @@
         {{-- link for website logo --}}
         <link rel="shortcut icon" href="{{ asset('favicon.ico') }}"/>
 
-
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">

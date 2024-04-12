@@ -10,8 +10,14 @@ class VendorsList extends Component
 {
     use WithPagination;
 
+    public $selectAll = false; // Declaration of the selectAll property
+    public $selectedVendors = [];
+    public $openDropdown = false; // Ensure this is declared
+    public $supplierType = '';
+    public $sortOption = '';
     public $search = '';
-    public $sortDirection = 'desc';
+    public $sortField = 'created_at'; // Default sort field
+    public $sortDirection = 'desc'; // Default sort direction
     protected $paginationTheme = 'tailwind';
     protected $queryString = ['selectedDate','search'];
     public $businessTypeFilter = '';
@@ -20,20 +26,99 @@ class VendorsList extends Component
     public $showModal = false;
     public $selectedVendorId;
 
+
+    public function updatedSelectAll($value)
+    {
+        if ($value) {
+            $this->selectedVendors = $this->vendors->pluck('id')->toArray();
+        } else {
+            $this->selectedVendors = [];
+        }
+    }
+
+    public function deselectAllVendors()
+    {
+        $this->selectedVendors = [];
+        $this->selectAll = false;
+    }
+
+    public function toggleDropdown()
+    {
+        $this->openDropdown = !$this->openDropdown;
+    }
+
+    public function closeDropdown()
+    {
+        $this->openDropdown = false;
+    }
+    
+    public function setSupplierType($type)
+    {
+        $this->supplierType = $type;
+        $this->openDropdown = false;
+        $this->resetPage(); // Reset pagination or other dependent data
+    }
+
+    protected function normalizeSortDirection()
+    {
+        if (!in_array($this->sortDirection, ['asc', 'desc'])) {
+            $this->sortDirection = 'desc'; // Default to 'desc' if invalid
+        }
+    }
+
+    public function applySort($sortOption)
+    {
+        if (!empty($sortOption)) {
+            [$field, $direction] = explode('_', $sortOption);
+            $this->sortField = $field;
+            $this->sortDirection = $direction;
+        } else {
+            // Reset to default sort if no option is selected
+            $this->sortField = 'created_at';
+            $this->sortDirection = 'desc';
+        }
+
+        $this->resetPage(); // Optionally reset pagination
+    }
+
     public function resetFilters()
-{
-    $this->reset(['search', 'selectedDate', 'businessTypeFilter']);
-}
+    {
+        $this->reset(['search', 'selectedDate', 'businessTypeFilter', 'supplierType']);
+
+            // Reset sorting to default
+        $this->sortField = 'created_at';
+        $this->sortDirection = 'desc';
+    }
 
     public function updatingSearch()
     {
         $this->resetPage();
     }
 
-    public function toggleSortDirection()
+    public function toggleSortDirection($field)
     {
-        $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        if ($this->sortField === $field) {
+            // Toggle the sort direction for the current field
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            // If changing the sort field, reset the direction to 'asc' for all except 'created_at', which defaults to 'desc'
+            $this->sortField = $field;
+            $this->sortDirection = 'asc';
+        }
+    
+        $this->resetPage(); // Optionally reset pagination
     }
+
+    public function sortByCompanyNameAtoZ()
+    {
+        $this->sortField = 'company_name';
+        $this->sortDirection = 'asc';
+        $this->resetPage(); // Resets pagination to the first page.
+    
+        // Emit a browser event that Alpine.js will listen for
+        $this->dispatchBrowserEvent('notify-sort', ['message' => 'Sorted A-Z by Company Name']);
+    }
+    
 
     public function showVendorModal($vendorId)
     {
@@ -50,9 +135,21 @@ class VendorsList extends Component
         $this->resetPage();
     }
 
+    public function toggleVendorSelection($vendorId)
+    {
+        if (in_array($vendorId, $this->selectedVendors)) {
+            $this->selectedVendors = array_filter($this->selectedVendors, function ($id) use ($vendorId) {
+                return $id != $vendorId;
+            });
+        } else {
+            $this->selectedVendors[] = $vendorId;
+        }
+    }
+
     public function render()
 {
-    $vendors = User::where('usertype', 'vendor')
+    $vendors = User::query()
+        ->where('usertype', 'vendor')
         ->where('procurement_officer_approval', 'approved')
         ->where('procurement_head_approval', 'approved')
         ->when($this->businessTypeFilter, function($query) {
@@ -61,8 +158,9 @@ class VendorsList extends Component
         ->when($this->selectedDate, function ($query) {
             $query->whereDate('created_at', $this->selectedDate);
         })
-        ->when($this->selectedDate, function ($query) {
-            $query->whereDate('created_at', $this->selectedDate);
+        ->when($this->supplierType, function ($query) {
+            // Filter by supplier type if set
+            $query->where('supplier_type', $this->supplierType);
         })
         ->where(function ($query) {
             $query->where('company_name', 'like', '%' . $this->search . '%')
@@ -82,10 +180,12 @@ class VendorsList extends Component
 
             $query->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%{$this->search}%"]);
         })
-        ->orderBy('created_at', $this->sortDirection)
+        ->orderBy($this->sortField, $this->sortDirection)
+        ->when($this->sortField !== 'created_at', function ($query) {
+            return $query->orderBy('created_at', 'desc');
+        })
         ->paginate(10);
         
     return view('livewire.vendors-list', compact('vendors'));
 }
-
 }
