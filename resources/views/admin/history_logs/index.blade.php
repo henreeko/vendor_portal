@@ -26,13 +26,13 @@
                             </thead>
                             <!-- Loop through history logs and display each log -->
                             <tbody class="bg-white divide-y divide-gray-200">
-                                @foreach ($historyLogs as $log)
+                                {{-- @foreach ($historyLogs as $log) --}}
                                     <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $log->timestamp }}</td>
+                                        {{-- <td class="px-6 py-4 whitespace-nowrap">{{ $log->timestamp }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">{{ $log->action }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $log->user->name }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">{{ $log->user->name }}</td> --}}
                                     </tr>
-                                @endforeach
+                                {{-- @endforeach --}}
                             </tbody>
                         </table>                       
                     </div>

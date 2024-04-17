@@ -25,7 +25,7 @@
                     <!-- Logout Button -->
                     <form method="POST" action="{{ route('logout') }}" class="mt-6">
                         @csrf
-                        <button type="submit" class="bg-gray-800 hover:bg-gray-900 text-white font-semibold py-2 px-4 rounded-lg flex items-center justify-center gap-2 w-full">
+                        <button type="submit" class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
                             <i class="fas fa-check-circle"></i>
                             <span>Got It</span>
                         </button>

@@ -4,57 +4,59 @@
             {{ __('Pending Vendor Approvals') }}
         </h2>
     </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 bg-gray-700 border-b border-gray-600">
+<div class="py-1">
+    <div class="my-5 ml-5 mr-5 relative overflow-x-auto shadow-md sm:rounded-lg">
                     @if ($pendingVendors->isEmpty())
-                        <p class="text-white">No vendors currently awaiting approval.</p>
+                        <p class="text-center bg-red-500 font-bold text-white">No vendors currently awaiting approval.</p>
                     @else
-                        <table class="min-w-full leading-normal">
-                            <thead class="bg-gray-600 text-white">
+                        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                            <thead class="text-sm text-white uppercase bg-gray-700 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
-                                    <th class="px-5 py-3 border-b-2 border-gray-500 text-left text-xs font-semibold uppercase tracking-wider">
-                                        Name
+                                    <th scope="col" class="px-6 py-3">
+                                        Company Name
                                     </th>
-                                    <th class="px-5 py-3 border-b-2 border-gray-500 text-left text-xs font-semibold uppercase tracking-wider">
-                                        Email
+                                    <th scope="col" class="px-6 py-3">
+                                        Supplier Type
                                     </th>
-                                    <th class="px-5 py-3 border-b-2 border-gray-500 text-left text-xs font-semibold uppercase tracking-wider">
-                                        Actions
+                                    <th scope="col" class="px-6 py-3">
+                                        Business Type
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Products and Services
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Approved By
+                                    </th>
+                                    <th scope="col" class="px-6 py-3">
+                                        Approval Date
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody class="bg-gray-800 text-white divide-y divide-gray-600">
+                            <tbody class="bg-white text-gray-900 divide-y divide-gray-400">
                                 @foreach ($pendingVendors as $vendor)
-                                    <tr>
-                                        <td class="px-5 py-5 border-b border-gray-600 text-sm">
-                                            <div class="flex items-center">
-                                                <div class="ml-3">
-                                                    <p class="whitespace-no-wrap">
-                                                        {{ $vendor->first_name }} {{ $vendor->last_name }}
-                                                    </p>
-                                                </div>
-                                            </div>
+                                    <tr class="hover:bg-gray-200" onclick="window.location.href='{{ route('procurement_head.vendors.show', $vendor->id) }}';" style="cursor:pointer;">
+                                        <td class="px-5 py-5 border-b border-gray-200 text-sm">
+                                            {{ $vendor->company_name }}
                                         </td>
-                                        <td class="px-5 py-5 border-b border-gray-600 text-sm">
-                                            <p class="whitespace-no-wrap">{{ $vendor->email }}</p>
+                                        <td class="px-5 py-5 border-b border-gray-200 text-sm">
+                                            {{ $vendor->supplier_type }}
                                         </td>
-                                        <td class="px-5 py-5 border-b border-gray-600 text-sm">
-                                            <a href="#" class="text-blue-400 hover:text-blue-500">View Details</a> <!-- Placeholder action -->
-                                            <form action="{{ route('procurement_head.approve', $vendor->id) }}" method="POST" class="inline">
-                                                @csrf
-                                        <!-- Approve Button -->
-                                        <button type="button" onclick="confirmApproval(this)" data-url="{{ route('procurement_head.approve', $vendor->id) }}" class="ml-4 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
-                                            Approve
-                                        </button>                      
-                                            </form>
-                                            <!-- Static Reject Button -->
-                                        <button class="ml-4 bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">
-                                        Reject
-                                        </button>
+                                        <td class="px-5 py-5 border-b border-gray-200 text-sm">
+                                            {{ $vendor->business_type }}
                                         </td>
+                                        <td class="px-5 py-5 border-b border-gray-200 text-sm">
+                                            {{ $vendor->products_or_services }}
+                                        </td>
+                                        <td class="px-5 py-5 border-b border-gray-200 text-sm">
+                                            {{ $vendor->approver ? $vendor->approver->first_name . ' ' . $vendor->approver->last_name : 'Not Available' }}
+                                        </td>
+                                        <td class="px-5 py-5 border-b border-gray-200 text-sm">
+                                            @if($vendor->procurement_officer_approval_date)
+                                            {{ \Carbon\Carbon::parse($vendor->procurement_officer_approval_date)->format('m-d-Y') }}
+                                        @else
+                                            Not Set
+                                        @endif
+                                      </td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -64,53 +66,45 @@
             </div>
         </div>
     </div>
+
+
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function confirmApproval(buttonElement) {
-    const approvalUrl = buttonElement.getAttribute('data-url');
+            const approvalUrl = buttonElement.getAttribute('data-url');
 
-    Swal.fire({
-        title: 'Are you sure?',
-        text: "You are about to approve this vendor to be an official vendor of PCSPC.",
-        showCancelButton: true,
-        confirmButtonColor: '#262121',
-        cancelButtonColor: '#ef4c40',
-        confirmButtonText: 'Yes, Approve'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            // Create and submit a form to POST to the approval URL
-            let form = document.createElement('form');
-            form.action = approvalUrl;
-            form.method = 'POST';
-
-            // Add CSRF token to the form
-            let csrfInput = document.createElement('input');
-            csrfInput.type = 'hidden';
-            csrfInput.name = '_token';
-            csrfInput.value = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-            form.appendChild(csrfInput);
-
-            document.body.appendChild(form);
-            form.submit();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You are about to approve this vendor to be an official vendor of PCSPC.",
+                showCancelButton: true,
+                confirmButtonColor: '#262121',
+                cancelButtonColor: '#ef4c40',
+                confirmButtonText: 'Yes, Approve'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    let form = buttonElement.closest('form');
+                    form.action = approvalUrl;
+                    form.method = 'POST';
+                    form.submit();
+                }
+            });
         }
-    });
-}
-        </script>
-        
-        @if(session('success'))
-<script>
-Swal.fire({
-    position: 'top-end',
-    icon: 'success',
-    title: "{{ session('success') }}",
-    showConfirmButton: false,
-    timer: 2000,
-    toast: true,
-    showCloseButton: true, 
-    closeButtonHtml: '&times;',
-    timerProgressBar: true,
-});
-</script>
-@endif
+    </script>
+    @if(session('success'))
+    <script>
+        Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: "{{ session('success') }}",
+            showConfirmButton: false,
+            timer: 2000,
+            toast: true,
+            showCloseButton: true,
+            closeButtonHtml: '&times;',
+            timerProgressBar: true,
+        });
+    </script>
+    @endif
 
 </x-app-layout>

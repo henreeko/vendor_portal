@@ -43,32 +43,17 @@ Route::middleware(['auth', 'verified','preventBackHistory'])->group(function () 
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Admin Routes
-Route::middleware(['auth', 'verified'])->group(function () {
-Route::get('/admin/history_logs', [HistoryLogController::class, 'index'])->name('admin.history_logs.index');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/admin/history_logs', function () {
+        if (!in_array(auth()->user()->usertype, ['admin'])) {
+            abort(403);
+        }
+        return view('admin.history_logs.index');
+    })->name('admin.history_logs.index');
 });
+
 Route::middleware(['auth', 'verified', 'can:admin'])->prefix('admin')->group(function () {
     Route::resource('users', UserManagementController::class);
-});
-
-// Route to display the list of users
-Route::get('/admin/users', [UserManagementController::class, 'index'])->name('admin.users.index');
-// Route to show the user creation form
-Route::get('/admin/users/create', [UserManagementController::class, 'create'])->name('admin.users.create');
-
-
-Route::middleware(['auth'])->group(function () {
-Route::post('/users', [UserManagementController::class, 'store'])->name('admin.users.store');
-// Route to delete a user
-Route::delete('/users/{user}', [UserManagementController::class, 'destroy'])->name('admin.users.destroy');
-// Route for soft deletes
-Route::get('/users/deleted', [UserManagementController::class, 'deletedUsers'])->name('admin.users.deleted');
-// Route to show a user
-Route::get('/users/{user}', [UserManagementController::class, 'show'])->name('admin.users.show');
-// Route to edit a user
-Route::get('/users/{user}/edit', [UserManagementController::class, 'edit'])->name('admin.users.edit');
-// Route to update a user
-Route::put('/users/{user}', [UserManagementController::class, 'update'])->name('admin.users.update');
 });
 
 // Registration Routes
@@ -77,10 +62,6 @@ Route::post('/register/first-store', [\App\Http\Controllers\Auth\RegisteredUserC
 Route::get('/register/second', [\App\Http\Controllers\Auth\RegisteredUserController::class, 'showSecondStepForm'])->name('register.second');
 Route::post('register/second-store', [RegisteredUserController::class, 'storeSecondStep'])->name('register.second-store');
 Route::get('/register', [\App\Http\Controllers\Auth\RegisteredUserController::class, 'create'])->name('register');
-
-// For admin dash
-Route::get('/admin/users/count', [UserController::class, 'getTotalUsersCount'])->name('admin.users.count');
-Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
 
 // For Activation
 Route::middleware(['auth', 'verified', 'preventBackHistory'])->group(function () {
@@ -98,22 +79,26 @@ Route::get('/registration-pending', function () {
 // For Procurement Head
     Route::get('/admin/vendors/pending', [VendorController::class, 'pendingVendorsForProcurementHead'])->name('admin.vendors.pending');
     Route::post('/procurement-head/approve-vendor/{id}', [ProcurementHeadController::class, 'approveVendor']);
-    Route::post('/procurement-head/approve-vendor/{id}', [ProcurementHeadController::class, 'approveVendor'])
-    ->name('procurement_head.approve');
+    Route::post('/procurement-head/approve-vendor/{id}', [ProcurementHeadController::class, 'approveVendor'])->name('procurement_head.approve');
 
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/procurement-head/vendors/pending', [ProcurementHeadController::class, 'pendingVendorsForProcurementHead'])
-        ->name('procurement_head.vendors.pending');
+    Route::middleware(['auth', 'verified'])->group(function () {
+    // Route::get('/procurement-head/vendors/pending', [ProcurementHeadController::class, 'pendingVendorsForProcurementHead'])
+    //     ->name('procurement_head.vendors.pending');
+    Route::get('/procurement-head/pending-vendors', [ProcurementHeadController::class, 'showPendingVendors'])->name('procurement_head.vendors.pending');
+    Route::get('/procurement_head/vendors/{vendor}', [ProcurementHeadController::class, 'show'])->name('procurement_head.vendors.show');
 });
 
 // For Procurement Officer
-Route::middleware(['auth', 'preventBackHistory'])->group(function () {
+    Route::middleware(['auth', 'preventBackHistory'])->group(function () {
     Route::get('/procurement-officer/pending-vendors', [ProcurementOfficerController::class, 'showPendingVendors'])
     ->name('procurement_officer.pending_vendors');
+    Route::get('/vendors/{vendor}/details', [VendorController::class, 'showDetails'])
+     ->name('vendors.show_details');
+
 
 
 // Route to approve a vendor by procurement officer
-Route::post('/procurement-officer/vendors/approve/{vendorId}', [ProcurementOfficerController::class, 'approveVendor'])
+    Route::post('/procurement-officer/vendors/approve/{vendorId}', [ProcurementOfficerController::class, 'approveVendor'])
     ->name('procurement_officer.approve_vendor');
 
 // Not Approved
@@ -122,12 +107,32 @@ Route::get('/vendor/pending-approval', function () {
     })->name('vendor.pendingApproval');
 });
 
-// // For trashed users
-// Route::get('/admin/users/trashed', [UserManagementController::class, 'trashedUsers'])->name('admin.users.trashed');
-// Route::post('/admin/users/{user}/forceDelete', [UserManagementController::class, 'forceDelete'])->name('admin.users.forceDelete');
-// // Route::post('/admin/users/{user}/restore', [UserManagementController::class, 'restore'])->name('admin.users.restore');
-
 Route::middleware(['auth'])->group(function () {
+    Route::get('/admin/vendors', function () {
+        if (!in_array(auth()->user()->usertype, ['admin', 'procurement_officer'])) {
+            abort(403); // Forbidden access
+        }
+        return view('admin.vendors.index');
+    })->name('admin.vendors.index');
+});
+
+// SECURED ADMIN ROUTE
+Route::middleware(['auth', 'admin.access'])->group(function () {
+    Route::get('/admin/users', [UserManagementController::class, 'index'])->name('admin.users.index');
+    Route::get('/admin/users/create', [UserManagementController::class, 'create'])->name('admin.users.create');
+    Route::post('/users', [UserManagementController::class, 'store'])->name('admin.users.store');
+    Route::delete('/users/{user}', [UserManagementController::class, 'destroy'])->name('admin.users.destroy');
+    Route::get('/users/deleted', [UserManagementController::class, 'deletedUsers'])->name('admin.users.deleted');
+    Route::get('/users/{user}', [UserManagementController::class, 'show'])->name('admin.users.show');
+    Route::get('/users/{user}/edit', [UserManagementController::class, 'edit'])->name('admin.users.edit');
+    Route::put('/users/{user}', [UserManagementController::class, 'update'])->name('admin.users.update');
+    Route::get('/admin/vendors', function () {
+        return view('admin.users.index');
+    })->name('admin.users.index');
+});
+
+// Routes for both Admin and Procurement Officers
+Route::middleware(['auth', 'admin.procurement.access'])->group(function () {
     Route::get('/admin/vendors', function () {
         return view('admin.vendors.index');
     })->name('admin.vendors.index');

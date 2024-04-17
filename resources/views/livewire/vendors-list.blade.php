@@ -1,4 +1,5 @@
-<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+{{-- views\livewire\vendors-list.blade.php --}}
+<div class="relative overflow-x-auto">
   @include('livewire.partials.toast-notification')
   @include('livewire.partials.action-buttons')
   @include('livewire.partials.filters')

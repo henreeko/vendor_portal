@@ -8,6 +8,8 @@ use App\Models\User;
 
 class ProcurementOfficerController extends Controller
 {
+
+
     public function index()
     {
         // Check if the user is a procurement officer
@@ -24,10 +26,18 @@ class ProcurementOfficerController extends Controller
     public function approveVendor(Request $request, $vendorId)
     {
         $vendor = User::findOrFail($vendorId);
-        $vendor->procurement_officer_approval = 'approved';
-        $vendor->save();
+        
+        // Check if the vendor is not already approved
+        if ($vendor->procurement_officer_approval !== 'approved') {
+            $vendor->procurement_officer_approval = 'approved';
+            $vendor->procurement_officer_approval_date = now(); // Set the current time as the approval date
+            $vendor->approved_by = auth()->id(); // Assuming the approver's ID is set by the logged-in user
+            $vendor->save();
+        
+            return redirect()->route('procurement_officer.pending_vendors')->with('success', 'Vendor approved successfully!');
+        }
     
-        return redirect()->route('procurement_officer.pending_vendors')->with('success', 'Approved successfully!');
+        return back()->with('error', 'This vendor has already been approved.');
     }
     
 

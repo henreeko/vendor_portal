@@ -33,6 +33,7 @@ class User extends Authenticatable
         'products_or_services',
         'telephone_fax_number',
         'procurement_officer_approval',
+        'procurement_officer_approval_date',
         'procurement_head_approval',
     ];
 
@@ -40,6 +41,8 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    protected $with = ['approver'];
 
     protected $casts = [
         'email_verified_at' => 'datetime',
@@ -55,6 +58,11 @@ class User extends Authenticatable
     public function getIsFullyApprovedAttribute()
     {
         return $this->procurement_officer_approval === 'approved' && $this->procurement_head_approval === 'approved';
+    }
+
+    public function approver()
+    {
+        return $this->belongsTo(User::class, 'approved_by');
     }
 }
 

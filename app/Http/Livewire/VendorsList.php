@@ -30,16 +30,27 @@ class VendorsList extends Component
     public function updatedSelectAll($value)
     {
         if ($value) {
-            $this->selectedVendors = $this->vendors->pluck('id')->toArray();
+            $this->selectedVendors = $this->getFilteredVendors()->pluck('id')->toArray();
         } else {
             $this->selectedVendors = [];
         }
     }
 
+    public function updatedSelectedVendors()
+    {
+        $this->selectAll = count($this->selectedVendors) === count($this->getFilteredVendors()->pluck('id')->toArray());
+    }
+
+    public function selectAllVendors()
+    {
+        $this->selectAll = true;
+        $this->updatedSelectAll(true);
+    }
+
     public function deselectAllVendors()
     {
-        $this->selectedVendors = [];
         $this->selectAll = false;
+        $this->updatedSelectAll(false);
     }
 
     public function toggleDropdown()
@@ -88,6 +99,38 @@ class VendorsList extends Component
             // Reset sorting to default
         $this->sortField = 'created_at';
         $this->sortDirection = 'desc';
+    }
+
+    public function toggleSelectAll()
+    {
+        if (count($this->selectedVendors) === count($this->getFilteredVendors()->pluck('id')->toArray())) {
+            $this->selectedVendors = [];
+        } else {
+            $this->selectedVendors = $this->getFilteredVendors()->pluck('id')->toArray();
+        }
+    }
+
+    public function exportSelected()
+    {
+        // Export logic for selected vendors
+        $this->dispatchBrowserEvent('notify', 'Exporting selected vendors.');
+    }
+
+    public function archiveSelected()
+    {
+        // Archive logic for selected vendors
+        User::whereIn('id', $this->selectedVendors)->update(['archived' => true]);
+        $this->selectedVendors = [];
+        $this->dispatchBrowserEvent('notify', 'Selected vendors have been archived.');
+    }
+    
+    public function performBulkAction()
+    {
+        // Example action on selected vendors
+        // Modify based on your needs, e.g., deactivate selected vendors
+        User::whereIn('id', $this->selectedVendors)->update(['status' => 'inactive']);
+        $this->selectedVendors = []; // Reset after action
+        $this->emit('vendorActionDone'); // Optional: emit event for notifications
     }
 
     public function updatingSearch()
@@ -146,9 +189,9 @@ class VendorsList extends Component
         }
     }
 
-    public function render()
+    private function getFilteredVendors()
 {
-    $vendors = User::query()
+    return User::query()
         ->where('usertype', 'vendor')
         ->where('procurement_officer_approval', 'approved')
         ->where('procurement_head_approval', 'approved')
@@ -159,7 +202,6 @@ class VendorsList extends Component
             $query->whereDate('created_at', $this->selectedDate);
         })
         ->when($this->supplierType, function ($query) {
-            // Filter by supplier type if set
             $query->where('supplier_type', $this->supplierType);
         })
         ->where(function ($query) {
@@ -183,9 +225,15 @@ class VendorsList extends Component
         ->orderBy($this->sortField, $this->sortDirection)
         ->when($this->sortField !== 'created_at', function ($query) {
             return $query->orderBy('created_at', 'desc');
-        })
-        ->paginate(10);
-        
-    return view('livewire.vendors-list', compact('vendors'));
+        });
+}
+
+public function render()
+{
+    $vendors = $this->getFilteredVendors()->paginate(10);
+
+    return view('livewire.vendors-list', [
+        'vendors' => $vendors
+    ]);
 }
 }

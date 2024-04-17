@@ -1,10 +1,10 @@
 <div class="ml-5 mr-5 relative overflow-x-auto shadow-md sm:rounded-lg">
-    <table class="w-full text-sm text-left text-gray-800 dark:text-gray-400">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-100 dark:bg-gray-700 ">
+    <table class= "w-full text-sm text-left rtl:text-right text-gray-500">
+        <thead class="text-xs text-white uppercase bg-gray-700">
             <tr>
                 <th scope="col" class="px-6 py-3 w-1/12">
-                    <input type="checkbox" wire:click="selectAllVendors" wire:model="selectAll">
-                </th>
+                    <input type="checkbox" class="w-4 h-4 text-gray-600 bg-gray-100 border-gray-300 rounded focus:ring-gray-500" wire:model="selectAll">
+                </th>                
                 <th scope="col" class="px-6 py-3 w-1/12">ID</th>
                 <th scope="col" class="px-6 py-3 w-1/12">Vendor</th>
                 <th scope="col" class="px-6 py-3 w-1/12">Email</th>
@@ -24,7 +24,7 @@
             @foreach($vendors as $vendor)
             <tr class="dark:text-white bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <td class="px-6 py-4">
-                    <input type="checkbox" wire:model="selectedVendors" value="{{ $vendor->id }}">
+                    <input type="checkbox" class="w-4 h-4 text-gray-600 bg-gray-100 border-gray-300 rounded focus:ring-gray-500" wire:model="selectedVendors" value="{{ $vendor->id }}">
                 </td>
                 <td class="px-6 py-4">{{ $vendor->id }}</td>              
                 <td class="px-6 py-4">
@@ -80,7 +80,7 @@
                                                 <hr>
                                                 <br>
                                                 <div class="overflow-x-auto">
-                                                    <table class="min-w-full text-sm font-light text-surface dark:text-gray-700">
+                                                    <table class="border min-w-full text-sm font-light text-surface dark:text-gray-700">
                                                     <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
                                                         <tr>
                                                         <th class="px-6 py-4 text-left bg-gray-50 dark:bg-gray-100">Company Name</th>
@@ -114,7 +114,18 @@
                                                             <th class="px-6 py-4 text-left bg-gray-50 dark:bg-gray-100">Relationship since</th>
                                                             <td class="px-6 py-4 text-left">{{ $vendor->created_at->timezone('Asia/Manila')->format('m-d-Y-A') }} </td>
                                                         </tr>
-
+                                                        <tr>
+                                                            <th class="px-6 py-4 text-left bg-gray-50 dark:bg-gray-100">Approved By</th>
+                                                            <td class="px-6 py-4 text-left">{{ $vendor->approver ? $vendor->approver->first_name . ' ' . $vendor->approver->last_name : 'Not Available' }} </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="px-6 py-4 text-left bg-gray-50 dark:bg-gray-100">Approval Date</th>
+                                                            <td class="px-6 py-4 text-left">@if($vendor->procurement_officer_approval_date)
+                                                                {{ \Carbon\Carbon::parse($vendor->procurement_officer_approval_date)->format('m-d-Y | h:i A') }}
+                                                            @else
+                                                                Not Set
+                                                            @endif </td>
+                                                        </tr>
                                                         <!-- Additional rows as needed -->
                                                     </tbody>
                                                     </table>
@@ -125,7 +136,7 @@
                                                 <hr>
                                                 <br>
                                                 <div class="overflow-x-auto">
-                                                    <table class="min-w-full text-sm font-light text-surface dark:text-white">
+                                                    <table class="border min-w-full text-sm font-light text-surface dark:text-white">
                                                     <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
                                                         <!-- Example Row -->
                                                         <tr>

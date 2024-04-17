@@ -52,7 +52,7 @@
                     <div class="mt-4">
                         <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
                             <table class="w-full text-sm text-left text-gray-700">
-                                <thead class="text-xs text-gray-700 uppercase bg-gray-200">
+                                <thead class="text-xs text-white uppercase bg-gray-700">
                                     <tr>
                                         <th scope="col" class="py-3 px-6">
                                             Name
@@ -151,7 +151,7 @@
             event.preventDefault();
             Swal.fire({
                 title: 'Are you sure?',
-                text: "You are about to soft delete a user",
+                text: "You are about to soft delete this user",
                 showCancelButton: true,
                 confirmButtonColor: 'gray',
                 cancelButtonColor: 'red',
@@ -166,26 +166,27 @@
     
 
 
-@if(session('success'))
-<script>
-    // Display SweetAlert 2 toast alert for success message
-    Swal.fire({
-        icon: 'success',
-        title: 'Success!',
-        text: "{{ session('success') }}",
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 2000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-    // This function is triggered when the alert is opened/displayed
-    // It adds event listeners to pause and resume the timer on hover and mouse leave
-    toast.addEventListener('mouseenter', Swal.stopTimer);
-    toast.addEventListener('mouseleave', Swal.resumeTimer);
-  }   
-    });
-</script>
-@endif
+    @if(session('success'))
+    <script>
+        // Display SweetAlert 2 toast alert for success message
+        Swal.fire({
+            icon: 'success',
+            html: '<strong>{{ session('success') }}</strong>', // Use 'html' instead of 'text' to apply HTML formatting
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            showCloseButton: true, // Added close button
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                // This function is triggered when the alert is opened/displayed
+                // It adds event listeners to pause and resume the timer on hover and mouse leave
+                toast.addEventListener('mouseenter', Swal.stopTimer);
+                toast.addEventListener('mouseleave', Swal.resumeTimer);
+            }
+        });
+    </script>
+    @endif
+    
 
 </x-app-layout>

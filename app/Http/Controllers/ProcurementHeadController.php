@@ -6,8 +6,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
+
 class ProcurementHeadController extends Controller
 {
+    public function show($vendorId)
+    {
+        $vendor = User::findOrFail($vendorId);
+        return view('procurement_head.show', compact('vendor'));
+    }
+
         public function index()
     {
         // Check if the user is a procurement head
@@ -29,22 +36,40 @@ class ProcurementHeadController extends Controller
         if ($vendor->procurement_officer_approval !== 'approved') {
             return back()->with('error', 'This vendor has not been approved by the procurement officer.');
         }
-    
+
+        // Update the vendor's approval status by the procurement head
         $vendor->procurement_head_approval = 'approved';
+        $vendor->approved_by = Auth::id(); // Assuming the approver is the logged-in user
         $vendor->save();
-    
-        return redirect()->back()->with('success', 'Approved successfully!');
+
+        // Redirect back to the pending vendors page with a success message
+        return redirect()->route('procurement_head.vendors.pending')->with('success', 'Vendor approved successfully!');
+    }
+
+    public function showPendingVendors()
+    {
+        // Fetch only vendors who are:
+        // - of usertype 'vendor'
+        // - approved by a procurement officer
+        // - pending approval from a procurement head
+        $pendingVendors = User::where('usertype', 'vendor')
+                              ->where('procurement_officer_approval', 'approved')
+                              ->where('procurement_head_approval', 'pending')
+                              ->with('approver') 
+                              ->get();
+
+        return view('procurement_head.pending_vendors', compact('pendingVendors'));
     }
     
 
-    public function pendingVendorsForProcurementHead()
-    {
-        // Fetch vendors that are approved by the procurement officer but pending approval from the procurement head
+    public function pendingVendorsForProcurementHead() {
         $pendingVendors = User::where('usertype', 'vendor')
-                              ->where('procurement_officer_approval', 'approved') // Corrected column name
-                              ->where('procurement_head_approval', 'pending') // This line ensures you're getting vendors pending procurement head approval
+                              ->where('procurement_officer_approval', 'approved')
+                              ->where('procurement_head_approval', 'pending')
+                              ->with('approver')  // Make sure it is included
                               ->get();
     
         return view('procurement_head.pending_vendors', compact('pendingVendors'));
     }
+    
 }    

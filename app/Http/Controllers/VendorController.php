@@ -4,9 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class VendorController extends Controller
 {
+    public function show($id)
+    {
+        $vendor = User::findOrFail($id); // Assuming vendors are stored in the User model
+        return view('vendors.show', compact('vendor')); // Assuming you have a blade file for showing vendor details
+    }
+
+    public function showDetails(User $vendor)
+    {
+        // Assuming 'vendor' usertype has all necessary fields
+        return view('procurement_officer.show_details', compact('vendor'));
+    }
+    
     public function index()
     {
         // Fetch users with usertype equal to "vendor"
@@ -24,6 +38,7 @@ class VendorController extends Controller
         // Assuming you want to mark the vendor as approved by both roles
         $vendor->procurement_officer_approval = 'approved';
         $vendor->procurement_head_approval = 'approved';
+        $vendor->approved_by = Auth::id();
         $vendor->save();
     
         return redirect()->route('vendors.pending')->with('success', 'Vendor account activated successfully.');
@@ -37,19 +52,36 @@ class VendorController extends Controller
             return response()->json(['message' => 'Vendor not found'], 404);
         }
     
-        return response()->json($vendor->only(['first_name', 'last_name', 'email', /* other safe attributes */]));
-
+        return response()->json($vendor->only([
+            'first_name', 
+            'last_name', 
+            'email', 
+            'supplier_type', 
+            'company_name',
+            'office_street',
+            'office_barangay',
+            'office_zip',
+            'office_city',
+            'tin_number',
+            'website_url',
+            'phone_number',
+            'billing_representative_first_name',
+            'billing_representative_last_name',
+            'business_type',
+            'telephone_fax_number',
+            'products_or_services'
+        ]));
     }
 
-    public function pendingVendorsForProcurementHead()
-{
-    $pendingVendors = User::where('usertype', 'vendor')
-        ->where('procurement_officer_approval', 'approved') // Approved by the procurement officer
-        ->where('procurement_head_approval', 'pending') // But pending for the procurement head
-        ->get();
+//     public function pendingVendorsForProcurementHead()
+// {
+//     $pendingVendors = User::where('usertype', 'vendor')
+//         ->where('procurement_officer_approval', 'approved') // Approved by the procurement officer
+//         ->where('procurement_head_approval', 'pending') // But pending for the procurement head
+//         ->get();
 
-    return view('procurement_head.pending_vendors', compact('pendingVendors'));
-}
+//     return view('procurement_head.pending_vendors', compact('pendingVendors'));
+// }
 
 public function getApprovedVendors()
 {
@@ -60,4 +92,5 @@ public function getApprovedVendors()
                            
     return response()->json($approvedVendors);
 }
+
 }

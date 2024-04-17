@@ -59,7 +59,7 @@
 
                     <!-- Quick Start Guide Button -->
                     <div class="mt-6">
-                        <a href="#quick-start-guide" class="inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs uppercase tracking-widest hover:bg-red-700 active:bg-red-800 focus:outline-none focus:border-red-900 focus:ring focus:ring-red-300 disabled:opacity-25 transition">
+                        <a href="#" class="inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs uppercase tracking-widest hover:bg-red-700 active:bg-red-800 focus:outline-none focus:border-red-900 focus:ring focus:ring-red-300 disabled:opacity-25 transition">
                             Quick Start Guide
                         </a>
                     </div>
@@ -101,11 +101,19 @@
                             <h2 class="font-semibold text-red-400">Support & FAQs</h2>
                             <p class="text-red-300 mt-1">Access to support resources and frequently asked questions.</p>
                         </a>
+                        
                     </div>
+                                                <!-- Message Card -->
+                                                <div class="bg-gray-700 border-l-4 border-red-500 text-white p-4 mt-5" role="alert">
+                                                    <p class="font-bold">Need help?</p>
+                                                    <p class="text-red-300">If you're having troubles or need assistance with any features, please don't hesitate to reach out.</p>
+                                                    <button onclick="location.href='#'" class="my-2 inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs uppercase tracking-widest hover:bg-red-700 active:bg-red-800 focus:outline-none focus:border-red-900 focus:ring focus:ring-red-300 disabled:opacity-25 transition">
+                                                        Report an Issue
+                                                    </button>
+                                                </div>
                 </div>
             </div>
         </div>
     </div>
 </x-app-layout>
-
 

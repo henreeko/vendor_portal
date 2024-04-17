@@ -1,3 +1,4 @@
+{{-- views\procurement_officer_pending_vendors.blade.php --}}
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -5,22 +6,23 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 border-b border-gray-200">
+    <div class="py-1">
+        <div class="my-5 ml-5 mr-5 relative overflow-x-auto shadow-md sm:rounded-lg">
                     @if ($pendingVendors->isEmpty())
-                        <div class="text-white">No vendors are currently awaiting approval.</div>
+                    <p class="text-center bg-red-500 font-bold text-white">No vendors currently awaiting approval.</p>
                     @else
                         <div class="overflow-x-auto">
-                            <table class="min-w-full divide-y divide-gray-200">
-                                <thead class="bg-gray-700 text-white">
+                            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                                <thead class="text-sm text-white uppercase bg-gray-700 dark:bg-gray-700 dark:text-gray-400">
                                     <tr>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                                             id
                                         </th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
-                                            Name
+                                            Company
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                                            Authorized
                                         </th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                                             Email
@@ -29,15 +31,21 @@
                                             Business Details
                                         </th>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                                            Registered
+                                        </th>
+                                        <th scope="col" class="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">
                                             Actions
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody class="bg-gray-700 divide-y divide-gray-600 text-white">
+                                <tbody class="bg-white text-gray-900 divide-y divide-gray-200">
                                     @foreach ($pendingVendors as $vendor)
                                         <tr>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm">
                                                 {{ $vendor->id }}
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                                {{ $vendor->company_name }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm">
                                                 {{ $vendor->first_name }} {{ $vendor->last_name }}
@@ -47,19 +55,22 @@
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm">
                                                 {{ $vendor->business_type }} <br>
-                                                {{ $vendor->products_or_services }}
+                                                <small>{{ $vendor->products_or_services }}<small>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                                {{ $vendor->created_at->timezone('Asia/Manila')->format('m/d/Y') }}
                                             </td>
 
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                <a href="#" class="text-indigo-400 hover:text-indigo-600">View Details</a>
+                                                <a href="{{ route('vendors.show_details', $vendor->id) }}" class="ml-4 bg-white-600 hover:bg-blue-300 text-gray-600 border py-2 px-4 rounded">View</a>
                                                 <form action="{{ route('procurement_officer.approve_vendor', $vendor->id) }}" method="POST" class="inline">
                                                     @csrf
-                                                    <button type="button" onclick="confirmApprovalOfficer(this)" data-url="{{ route('procurement_officer.approve_vendor', $vendor->id) }}" class="ml-4 bg-indigo-600 hover:bg-indigo-800 text-white py-2 px-4 rounded">
+                                                    <button type="button" onclick="confirmApprovalOfficer(this)" data-url="{{ route('procurement_officer.approve_vendor', $vendor->id) }}" class="ml-4 bg-white-600 hover:bg-green-300 text-gray-600 border py-2 px-4 rounded">
                                                         Approve
                                                     </button>
                                                     
                                                 </form>
-                                                <button class="ml-4 bg-yellow-500 hover:bg-yellow-700 text-white py-2 px-4 rounded">
+                                                <button class="ml-4 bg-white-600 hover:bg-yellow-200 text-gray-600 border py-2 px-4 rounded">
                                                     For Pending
                                                 </button>
                                             </td>
@@ -71,8 +82,7 @@
                     @endif
                 </div>
             </div>
-        </div>
-    </div>
+        </div>        
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -125,5 +135,6 @@
 @endif
 
 </x-app-layout>
+
 
 

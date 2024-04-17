@@ -1,4 +1,4 @@
-<div class="ml-5 mr-5 flex flex-col sm:flex-row gap-4 justify-between items-center pb-4">
+<div class="my-5 ml-5 mr-5 flex flex-col sm:flex-row gap-4 justify-between items-center pb-4">
     <!-- Sort Button -->
     <button wire:click="sortByCompanyNameAtoZ" class="inline-flex items-center justify-center h-10 px-4 py-2 text-sm font-medium transition-colors bg-white border rounded-md hover:bg-neutral-100 active:bg-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-neutral-200/60 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none" title="Sort A-Z by Company Name">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4">
@@ -9,45 +9,45 @@
     <!-- Search Input -->
     <div class="relative flex-1 min-w-0">
         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-            <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+            <svg class="w-5 h-5 text-gray-900 dark:text-gray-400" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
             </svg>
         </div>
-        <input wire:model.debounce.300ms="search" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="Search vendors...">
+        <input wire:model.debounce.300ms="search" type="text" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-200 focus:border-gray-200 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" placeholder="Search vendors...">
     </div>
 
     <!-- Date Picker -->
     <div class="relative flex-1 min-w-0">
-        <input type="date" wire:model="selectedDate" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" />
+        <input type="date" wire:model="selectedDate" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-200 focus:border-gray-200 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" />
     </div>
 
-<!-- Supplier Type Filter -->
-<div class="relative z-50" wire:ignore.self>
-    <!-- Trigger -->
-    <button wire:click.stop="toggleDropdown"
-        title="Sort By Supplier Type"
-        class="inline-flex items-center justify-center gap-2 px-4 py-2 h-10 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-neutral-100 active:bg-neutral-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-        {{ $supplierType ?: 'Type' }}
-        <!-- Conditionally rendered SVG icon -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            @if($openDropdown)
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" /> <!-- Up arrow -->
-            @else
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /> <!-- Down arrow -->
-            @endif
-        </svg>
-    </button>
+    <!-- Supplier Type Filter -->
+    <div class="relative z-50" wire:ignore.self>
+        <!-- Trigger -->
+        <button wire:click.stop="toggleDropdown"
+            title="Sort By Supplier Type"
+            class="inline-flex items-center justify-center gap-2 px-4 py-2 h-10 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-md hover:bg-neutral-100 active:bg-neutral-200 focus:ring-gray-200 focus:border-gray-200">
+            {{ $supplierType ?: 'Type' }}
+            <!-- Conditionally rendered SVG icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                @if($openDropdown)
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" /> <!-- Up arrow -->
+                @else
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /> <!-- Down arrow -->
+                @endif
+            </svg>
+        </button>
 
-    <!-- Dropdown -->
-    @if ($openDropdown)
-        <div class="absolute right-0 z-50 w-48 mt-2 origin-top-right bg-white rounded-md shadow-lg">
-            <div class="py-1">
-                <a href="#" wire:click.prevent="setSupplierType('local')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Local</a>
-                <a href="#" wire:click.prevent="setSupplierType('foreign')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Foreign</a>
+        <!-- Dropdown -->
+        @if ($openDropdown)
+            <div class="absolute right-0 z-50 w-48 mt-2 origin-top-right bg-white rounded-md shadow-lg">
+                <div class="py-1">
+                    <a href="#" wire:click.prevent="setSupplierType('local')" class="block px-4 py-2 text-sm text-gray-900 hover:bg-gray-100">Local</a>
+                    <a href="#" wire:click.prevent="setSupplierType('foreign')" class="block px-4 py-2 text-sm text-gray-900 hover:bg-gray-100">Foreign</a>
+                </div>
             </div>
-        </div>
-    @endif
-</div>
+        @endif
+    </div>
 
 
 
@@ -59,7 +59,7 @@
                 <path d="M3 11.83V12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-.17c-.313.11-.65.17-1 .17H4c-.35 0-.687-.06-1-.17Z" />
               </svg>                      
         </div>
-        <select wire:model="businessTypeFilter" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+        <select wire:model="businessTypeFilter" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-200 focus:border-gray-200 block w-full pl-10 p-2.5">
             <option value="">All Business Types</option>
             <option value="Software">Software services</option>
                     <option value="Training">Training services</option>

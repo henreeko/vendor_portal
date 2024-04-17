@@ -69,5 +69,7 @@ class Kernel extends HttpKernel
         'verify.vendor.status' => \App\Http\Middleware\VerifyVendorStatus::class,
         'vendor.approved' => \App\Http\Middleware\EnsureVendorIsApproved::class,
         'ensure_vendor_is_approved' => \App\Http\Middleware\EnsureVendorIsApproved::class,
+        'admin.access' => \App\Http\Middleware\AdminAccess::class,
+        'admin.procurement.access' => \App\Http\Middleware\AdminAndProcurementAccess::class,
     ];
 }
