@@ -45,6 +45,12 @@
                         {{ __('Pending Approval Vendors') }}
                     </x-nav-link>
                     @endif
+
+                    @if(auth()->check() && in_array(auth()->user()->usertype, ['admin', 'procurement_officer']))
+                    <x-nav-link :href="route('admin.business-types.index')" :active="request()->routeIs('admin.business-types.index')">
+                        {{ __('Business Types') }}
+                    </x-nav-link>
+                    @endif
                 </div>
             </div>
 

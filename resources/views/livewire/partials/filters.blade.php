@@ -48,51 +48,22 @@
             </div>
         @endif
     </div>
-
-
-
-    <!-- Business Type Filter -->
-    <div class="relative flex-1 min-w-0">
-        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 text-gray-500">
-                <path fill-rule="evenodd" d="M11 4V3a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v1H4a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1ZM9 2.5H7a.5.5 0 0 0-.5.5v1h3V3a.5.5 0 0 0-.5-.5ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z" clip-rule="evenodd" />
-                <path d="M3 11.83V12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-.17c-.313.11-.65.17-1 .17H4c-.35 0-.687-.06-1-.17Z" />
-              </svg>                      
-        </div>
-        <select wire:model="businessTypeFilter" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-200 focus:border-gray-200 block w-full pl-10 p-2.5">
-            <option value="">All Business Types</option>
-            <option value="Software">Software services</option>
-                    <option value="Training">Training services</option>
-                    <option value="Event planning">Event planning services</option>
-                    <option value="Consulting">Consulting services</option>
-                    <option value="Marketing">Marketing services</option>
-                    <option value="Waste management">Waste management services</option>
-                    <option value="Construction">Construction services</option>
-                    <option value="Legal services">Legal services</option>
-                    <option value="Health and wellness">Health and wellness services</option>
-                    <option value="Insurance">Insurance services</option>
-                    <option value="Security">Security services</option>
-                    <option value="Travel">Travel services</option>
-                    <option value="Research">Research services</option>
-                    <option value="Design">Design services</option>
-                    <option value="Finance">Finance services</option>
-                    <option value="Delivery">Delivery services</option>
-                    <option value="Real estate">Real estate services</option>
-                    <option value="Child care">Child care services</option>
-                    <option value="Utilities">Utilities</option>
-                    <option value="Printing">Printing services</option>
-                    <option value="Personal">Personal services</option>
-                    <option value="Landscaping">Landscaping</option>
-                    <option value="Pest extermination">Pest extermination services</option>
-                    <option value="Maintenance">Maintenance services</option>
-                    <option value="Tech support">Tech support services</option>
-                    <option value="Bookkeeping">Bookkeeping services</option>
-                    <option value="Video and photography">Video and photography services</option>
-                    <option value="Translation">Translation services</option>
-                    <option value="Parking">Parking services</option>
-                    <option value="Public relations">Public relations services</option>
-        </select>
-    </div>
+    
+            <!-- Business Type Filter -->
+            <div class="relative flex-1 min-w-0">
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 text-gray-900">
+                        <path fill-rule="evenodd" d="M11 4V3a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v1H4a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1ZM9 2.5H7a.5.5 0 0 0-.5.5v1h3V3a.5.5 0 0 0-.5-.5ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z" clip-rule="evenodd" />
+                        <path d="M3 11.83V12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-.17c-.313.11-.65.17-1 .17H4c-.35 0-.687-.06-1-.17Z" />
+                      </svg>                      
+                </div>
+                <select wire:model="businessTypeFilter" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-gray-200 focus:border-gray-200 block w-full pl-10 p-2.5">
+                    <option value="">All Business Types</option>
+                    @foreach($this->businessTypes as $type)
+                        <option value="{{ $type->id }}">{{ $type->name }}</option>
+                    @endforeach
+                </select>
+            </div>
 
 <!-- Reset Filters Button -->
 <button wire:click.stop="resetFilters" wire:click="$emit('filtersReset')"

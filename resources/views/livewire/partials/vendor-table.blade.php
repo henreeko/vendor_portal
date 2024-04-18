@@ -1,6 +1,6 @@
 <div class="ml-5 mr-5 relative overflow-x-auto shadow-md sm:rounded-lg">
     <table class= "w-full text-sm text-left rtl:text-right text-gray-500">
-        <thead class="text-xs text-white uppercase bg-gray-700">
+        <thead class="text-xs text-white uppercase bg-gray-900">
             <tr>
                 <th scope="col" class="px-6 py-3 w-1/12">
                     <input type="checkbox" class="w-4 h-4 text-gray-600 bg-gray-100 border-gray-300 rounded focus:ring-gray-500" wire:model="selectAll">
@@ -33,7 +33,7 @@
                 </td>
                 <td class="px-6 py-4">{{ $vendor->email }}</td>
                 <td class="px-6 py-4">{{ $vendor->office_city }}</td>
-                <td class="px-6 py-4">{{ $vendor->business_type }}</td>
+                <td class="px-6 py-4">{{ $vendor->business_type_id }}</td>
                 <td class="px-6 py-4 text-xs font-bold">{{ $vendor->created_at->timezone('Asia/Manila')->format('m-d-Y') }}</td>
                 <td class="px-6 py-4">
                     <div class="flex items-center">
@@ -92,7 +92,7 @@
                                                         </tr>
                                                         <tr>
                                                             <th class="px-6 py-4 text-left bg-gray-50 dark:bg-gray-100">Business Type</th>
-                                                            <td class="px-6 py-4 text-left">{{ $vendor->business_type }} </td>
+                                                            <td class="px-6 py-4 text-left">{{ $vendor->business_type_id }} </td>
                                                         </tr>
                                                         <tr>
                                                             <th class="px-6 py-4 text-left bg-gray-50 dark:bg-gray-100">Product/Services</th>

@@ -82,40 +82,15 @@
         <!-- Business Type -->
         <div class="mb-6">
             <label for="business_type" class="block text-sm font-medium text-gray-700">Business Type</label>
-            <select id="business_type" name="business_type" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 focus:ring-opacity-50">
-                <option value="Software">Software services</option>
-                <option value="Training">Training services</option>
-                <option value="Event planning">Event planning services</option>
-                <option value="Consulting">Consulting services</option>
-                <option value="Marketing">Marketing services</option>
-                <option value="Waste management">Waste management services</option>
-                <option value="Construction">Construction services</option>
-                <option value="Legal services">Legal services</option>
-                <option value="Health and wellness">Health and wellness services</option>
-                <option value="Insurance">Insurance services</option>
-                <option value="Security">Security services</option>
-                <option value="Travel">Travel services</option>
-                <option value="Research">Research services</option>
-                <option value="Design">Design services</option>
-                <option value="Finance">Finance services</option>
-                <option value="Delivery">Delivery services</option>
-                <option value="Real estate">Real estate services</option>
-                <option value="Child care">Child care services</option>
-                <option value="Utilities">Utilities</option>
-                <option value="Printing">Printing services</option>
-                <option value="Personal">Personal services</option>
-                <option value="Landscaping">Landscaping</option>
-                <option value="Pest extermination">Pest extermination services</option>
-                <option value="Maintenance">Maintenance services</option>
-                <option value="Tech support">Tech support services</option>
-                <option value="Bookkeeping">Bookkeeping services</option>
-                <option value="Video and photography">Video and photography services</option>
-                <option value="Translation">Translation services</option>
-                <option value="Parking">Parking services</option>
-                <option value="Public relations">Public relations services</option>
+            <select id="business_type" name="business_type_id" class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-red-500 focus:ring focus:ring-red-200 focus:ring-opacity-50" required>
+                <option value="" disabled selected>Select</option>
+                @foreach($businessTypes as $type)
+                    <option value="{{ $type->id }}" @if(old('business_type_id') == $type->id) selected @endif>{{ $type->name }}</option>
+                @endforeach
             </select>
-            <x-input-error :messages="$errors->get('business_type')" />
+            <x-input-error :messages="$errors->get('business_type_id')" />
         </div>
+
 
          <!-- Products or Services -->
          <div class="mb-6">

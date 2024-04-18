@@ -23,7 +23,7 @@
         
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-        
+
         <script>
             history.pushState(null, null, location.href);
             window.onpopstate = function () {

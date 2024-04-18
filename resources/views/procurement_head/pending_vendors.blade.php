@@ -10,7 +10,7 @@
                         <p class="text-center bg-red-500 font-bold text-white">No vendors currently awaiting approval.</p>
                     @else
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                            <thead class="text-sm text-white uppercase bg-gray-700 dark:bg-gray-700 dark:text-gray-400">
+                            <thead class="text-sm text-white uppercase bg-gray-900 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
                                     <th scope="col" class="px-6 py-3">
                                         Company Name
@@ -42,7 +42,7 @@
                                             {{ $vendor->supplier_type }}
                                         </td>
                                         <td class="px-5 py-5 border-b border-gray-200 text-sm">
-                                            {{ $vendor->business_type }}
+                                            {{ $vendor->business_type_id }}
                                         </td>
                                         <td class="px-5 py-5 border-b border-gray-200 text-sm">
                                             {{ $vendor->products_or_services }}
@@ -52,7 +52,7 @@
                                         </td>
                                         <td class="px-5 py-5 border-b border-gray-200 text-sm">
                                             @if($vendor->procurement_officer_approval_date)
-                                            {{ \Carbon\Carbon::parse($vendor->procurement_officer_approval_date)->format('m-d-Y') }}
+                                            {{ \Carbon\Carbon::parse($vendor->procurement_officer_approval_date)->format('M d, Y') }}
                                         @else
                                             Not Set
                                         @endif

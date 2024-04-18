@@ -36,12 +36,12 @@
                         
                         {{-- Buttons --}}
                         <div class="flex space-x-2 items-center">
-                            <button type="submit" class="bg-gray-700 hover:bg-gray-800 text-white font-bold py-2 px-4 rounded">
+                            <button type="submit" class="bg-gray-900 hover:bg-gray-800 text-white font-bold py-2 px-4 rounded">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                                   </svg>                                  
                             </button>
-                            <a href="{{ route('admin.users.index') }}" class="bg-gray-700 hover:bg-gray-800 text-white font-bold py-2 px-4 rounded">
+                            <a href="{{ route('admin.users.index') }}" class="bg-gray-900 hover:bg-gray-800 text-white font-bold py-2 px-4 rounded">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 0 0-3.7-3.7 48.678 48.678 0 0 0-7.324 0 4.006 4.006 0 0 0-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 0 0 3.7 3.7 48.656 48.656 0 0 0 7.324 0 4.006 4.006 0 0 0 3.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3-3 3" />
                                   </svg>   
@@ -52,7 +52,7 @@
                     <div class="mt-4">
                         <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
                             <table class="w-full text-sm text-left text-gray-700">
-                                <thead class="text-xs text-white uppercase bg-gray-700">
+                                <thead class="text-xs text-white uppercase bg-gray-900">
                                     <tr>
                                         <th scope="col" class="py-3 px-6">
                                             Name
@@ -98,10 +98,10 @@
                                             {{ $user->usertype }}
                                         </td>
                                         <td class="py-4 px-6">
-                                            {{ $user->created_at->format('Y-m-d') }}
+                                            {{ $user->created_at->format('M d, Y') }}
                                         </td>
                                         <td class="py-4 px-6">
-                                            {{ $user->updated_at->format('Y-m-d') }}
+                                            {{ $user->updated_at->format('M d, Y') }}
                                         </td>
 
                                         {{-- ACTION BUTTONS --}}

@@ -5,11 +5,13 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\Models\User;
 use Livewire\WithPagination;
+use App\Models\BusinessType;
 
 class VendorsList extends Component
 {
     use WithPagination;
 
+    public $businessTypes = [];
     public $selectAll = false; // Declaration of the selectAll property
     public $selectedVendors = [];
     public $openDropdown = false; // Ensure this is declared
@@ -26,6 +28,11 @@ class VendorsList extends Component
     public $showModal = false;
     public $selectedVendorId;
 
+
+    public function mount()
+    {
+        $this->businessTypes = BusinessType::all(); // Load business types from the database
+    }
 
     public function updatedSelectAll($value)
     {
@@ -196,7 +203,7 @@ class VendorsList extends Component
         ->where('procurement_officer_approval', 'approved')
         ->where('procurement_head_approval', 'approved')
         ->when($this->businessTypeFilter, function($query) {
-            $query->where('business_type', $this->businessTypeFilter);
+            $query->where('business_type_id', $this->businessTypeFilter);
         })
         ->when($this->selectedDate, function ($query) {
             $query->whereDate('created_at', $this->selectedDate);

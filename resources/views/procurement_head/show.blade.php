@@ -33,7 +33,7 @@
                                 </tr>
                                 <tr class="border-b">
                                     <td class="w-1/4 px-4 py-2 border-r font-bold bg-gray-100">Business Type:</td>
-                                    <td class="w-3/4 px-4 py-2">{{ $vendor->business_type }}</td>
+                                    <td class="w-3/4 px-4 py-2">{{ $vendor->business_type_id }}</td>
                                 </tr>
                                 <tr class="border-b">
                                     <td class="w-1/4 px-4 py-2 border-r font-bold bg-gray-100">Products/Services:</td>
@@ -46,7 +46,7 @@
                                 <tr>
                                     <td class="w-1/4 px-4 py-2 border-r font-bold bg-gray-100">Approval Date:</td>
                                     <td class="w-3/4 px-4 py-2">@if($vendor->procurement_officer_approval_date)
-                                    {{ \Carbon\Carbon::parse($vendor->procurement_officer_approval_date)->format('m-d-Y | h:i A') }}</td>
+                                    {{ \Carbon\Carbon::parse($vendor->procurement_officer_approval_date)->format('M d, Y | h:i A') }}</td>
                                 @else
                                     Not Set
                                 @endif

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use App\Models\BusinessType;
 
 class RegisteredUserController extends Controller
 {
@@ -40,10 +41,11 @@ class RegisteredUserController extends Controller
         if (!$request->session()->has('register_first_step')) {
             return redirect()->route('register')->with('error', 'Please complete the registration from the beginning.');
         }
-
+    
         $data = $request->session()->get('register_first_step');
-
-        return view('auth.register_second', compact('data'));
+        $businessTypes = BusinessType::all(); // Fetch all business types
+    
+        return view('auth.register_second', compact('data', 'businessTypes'));
     }
 
     // Store the second step data, complete registration, and clear session
@@ -61,7 +63,7 @@ class RegisteredUserController extends Controller
             'phone_number' => ['nullable', 'string', 'max:11'],
             'billing_representative_first_name' => ['nullable', 'string', 'max:255'],
             'billing_representative_last_name' => ['nullable', 'string', 'max:255'],
-            'business_type' => ['nullable', 'string', 'max:255'],
+            'business_type_id' => ['required', 'exists:business_types,id'],
             'products_or_services' => ['nullable', 'string'],
             'telephone_fax_number' => ['nullable', 'numeric'],
         ]);
@@ -91,7 +93,7 @@ class RegisteredUserController extends Controller
             'phone_number' => $userData['phone_number'],
             'billing_representative_first_name' => $userData['billing_representative_first_name'],
             'billing_representative_last_name' => $userData['billing_representative_last_name'],
-            'business_type' => $userData['business_type'],
+            'business_type_id' => $validatedData['business_type_id'],
             'products_or_services' => $userData['products_or_services'],
             'telephone_fax_number' => $userData['telephone_fax_number'],
             'procurement_officer_approval' => 'pending',

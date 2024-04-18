@@ -29,7 +29,7 @@ class User extends Authenticatable
         'phone_number',
         'billing_representative_first_name',
         'billing_representative_last_name',
-        'business_type',
+        'business_type_id',
         'products_or_services',
         'telephone_fax_number',
         'procurement_officer_approval',
@@ -63,6 +63,11 @@ class User extends Authenticatable
     public function approver()
     {
         return $this->belongsTo(User::class, 'approved_by');
+    }
+
+    public function businessType()
+    {
+        return $this->belongsTo(BusinessType::class, 'business_type_id');
     }
 }
 

@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ThankYouController;
+use App\Http\Livewire\BusinessTypesManager;
 
 
 Route::get('/', function () {
@@ -131,11 +132,15 @@ Route::middleware(['auth', 'admin.access'])->group(function () {
     })->name('admin.users.index');
 });
 
+
 // Routes for both Admin and Procurement Officers
 Route::middleware(['auth', 'admin.procurement.access'])->group(function () {
     Route::get('/admin/vendors', function () {
         return view('admin.vendors.index');
     })->name('admin.vendors.index');
+
+    // Add your new route here
+    Route::get('/admin/business-types', BusinessTypesManager::class)->name('admin.business-types.index');
 });
 
 require __DIR__.'/auth.php';

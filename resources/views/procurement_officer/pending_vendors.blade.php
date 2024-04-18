@@ -13,7 +13,7 @@
                     @else
                         <div class="overflow-x-auto">
                             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                                <thead class="text-sm text-white uppercase bg-gray-700 dark:bg-gray-700 dark:text-gray-400">
+                                <thead class="text-sm text-white uppercase bg-gray-900 dark:bg-gray-700 dark:text-gray-400">
                                     <tr>
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                                             id
@@ -54,7 +54,7 @@
                                                 {{ $vendor->email }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                                {{ $vendor->business_type }} <br>
+                                                {{-- {{ $vendor->(business_type_name) }} <br> --}}
                                                 <small>{{ $vendor->products_or_services }}<small>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm">
