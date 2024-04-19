@@ -9,12 +9,13 @@
 <div class="flex flex-col items-center px-4 py-5">
     <div class="container">
     <div class="w-full max-w-6xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
-        <!-- Display total count with a bit more padding and a subtle background for emphasis -->
+        
+        {{-- <!-- Display total count with a bit more padding and a subtle background for emphasis -->
         <div class="p-4 bg-gray-50 rounded-md shadow">
             <p class="text-xl font-semibold text-gray-900">Total: {{ $count }}</p>
-        </div>
+        </div> --}}
 
-        <!-- Search Bar with proper alignment and full width utilization -->
+        <!-- Search Bar -->
         <div class="relative w-full">
             <div class="absolute inset-y-0 left-0 flex items-center pl-3">
                 <svg class="w-5 h-5 text-gray-500" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">

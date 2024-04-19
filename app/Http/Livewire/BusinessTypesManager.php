@@ -54,10 +54,8 @@ class BusinessTypesManager extends Component
         $this->loadBusinessTypes();
         $this->emit('closeModal'); // This should tell the frontend to close the modal
         $this->emit('refreshComponent'); // Optionally refresh components
-        // Close the modal using Alpine.js state control
-        $this->dispatchBrowserEvent('close-modal'); // Make sure your front-end listens to this event
     
-        // Optionally, you can emit a toast message for user feedback
+        // toast
         $this->dispatchBrowserEvent('swal:toast', [
             'icon' => 'success',
             'title' => 'Business type added successfully!',
@@ -78,11 +76,10 @@ class BusinessTypesManager extends Component
 
         $businessTypes = $query->get();
 
-        $count = $businessTypes->count(); // Count the business types
+        // $count = $businessTypes->count(); // gamitin if kailangan
 
         return view('livewire.business-types-manager', [
             'businessTypes' => $businessTypes,
-            'count' => $count  // Pass the count to the view
         ]);
     }
 }
