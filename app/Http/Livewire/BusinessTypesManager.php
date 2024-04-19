@@ -11,6 +11,13 @@ class BusinessTypesManager extends Component
     public $newTypeName = '';
     public $search = '';
 
+    protected $listeners = ['refreshComponent' => '$refresh'];
+
+    public function businessType()
+    {
+        return $this->belongsTo(BusinessType::class, 'business_type_id');
+    }
+
     public function mount()
     {
         $this->loadBusinessTypes();
@@ -30,56 +37,36 @@ class BusinessTypesManager extends Component
             $query->where('name', 'like', '%' . $this->search . '%');
         }
     
-        $this->businessTypes = $query->orderBy('created_at', 'desc')->get();
+        $this->businessTypes = $query->orderBy('created_at', 'asc')->get();
     }
 
     public function createBusinessType()
     {
         $this->validate([
-            'newTypeName' => [
-                'required', // Check if the input is not empty
-                'regex:/^[a-zA-Z\s]+$/', // Ensure that the name only contains letters and spaces
-                'unique:business_types,name' // Ensure the name is unique in the database
-            ],
-        ], [
-            'newTypeName.required' => 'The business type name is required.',
-            'newTypeName.regex' => 'The business type name must only contain letters and spaces.',
-            'newTypeName.unique' => 'This business type already exists.',
+            'newTypeName' => 'required|regex:/^[a-zA-Z\s]+$/|unique:business_types,name',
         ]);
     
-        // Check if the business type already exists
-        if (BusinessType::where('name', $this->newTypeName)->exists()) {
-            // Use toast for showing that the business type already exists
-            $this->dispatchBrowserEvent('close-modal');
-            $this->dispatchBrowserEvent('swal:toast', [
-                'icon' => 'error',
-                'title' => 'This business type already exists!',
-                'timer' => 3000, // Toast will close after 3000ms
-                'position' => 'top-end', // Position of the toast
-                'showConfirmButton' => false, // Hide confirm button
-                'timerProgressBar' => true, // Show timer progress bar
-            ]);
-            return;
-        }
-    
-        BusinessType::create([
-            'name' => $this->newTypeName,
-        ]);
+        BusinessType::create(['name' => $this->newTypeName]);
     
         $this->newTypeName = ''; // Reset the input
-        $this->emit('closeModal'); // Emit an event to close the modal
-        $this->emit('openModal');
-        $this->loadBusinessTypes(); // Reload the list
-        $this->dispatchBrowserEvent('close-modal'); // Dispatch an event to close the modal
+    
+        // Reload business types to reflect the new addition
+        $this->loadBusinessTypes();
+        $this->emit('closeModal'); // This should tell the frontend to close the modal
+        $this->emit('refreshComponent'); // Optionally refresh components
+        // Close the modal using Alpine.js state control
+        $this->dispatchBrowserEvent('close-modal'); // Make sure your front-end listens to this event
+    
+        // Optionally, you can emit a toast message for user feedback
         $this->dispatchBrowserEvent('swal:toast', [
             'icon' => 'success',
-            'title' => 'New business type added successfully!',
-            'timer' => 3000,
+            'title' => 'Business type added successfully!',
+            'timer' => 1500,
             'position' => 'top-end',
             'showConfirmButton' => false,
             'timerProgressBar' => true,
         ]);
-    }
+    }    
 
     public function render()
     {
@@ -91,8 +78,11 @@ class BusinessTypesManager extends Component
 
         $businessTypes = $query->get();
 
+        $count = $businessTypes->count(); // Count the business types
+
         return view('livewire.business-types-manager', [
-            'businessTypes' => $businessTypes
+            'businessTypes' => $businessTypes,
+            'count' => $count  // Pass the count to the view
         ]);
     }
 }

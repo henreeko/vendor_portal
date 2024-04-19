@@ -3,84 +3,46 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Philcoastal — VMP</title>
+    <title>Philcoastal — Vendor Management Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.10.3/dist/cdn.min.js"></script>
     <style>
         body {
-            font-family: 'figtree', sans-serif;
+            font-family: 'Inter', sans-serif; /* Unified font style */
         }
-        .darken-bg {
-            background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+        .hero-background {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('{{ asset('logo/land-bg.jpg') }}');
+            background-attachment: fixed; background-size: cover; background-position: center;
         }
     </style>
 </head>
-<body style="background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('{{ asset('logo/land-bg.jpg') }}'); background-attachment: fixed; background-size: cover; background-position: center;" class="bg-fixed bg-cover bg-center" style="background-image: url('{{ asset('logo/land-bg.jpg') }}');">
-    <div class="min-h-screen flex flex-col justify-between"> <!-- Removed darken-bg class for demonstration -->
-        <!-- Top Navigation Bar with distinct header bar -->
-        <nav class="bg-gray-900 bg-opacity-75 text-white p-4 fixed top-0 left-0 w-full z-10">
-            <div class="max-w-6xl mx-auto flex justify-between items-center">
-                <div class="text-lg font-semibold flex items-center">
-                    <img src="{{ asset('logo/logo-1.png') }}" alt="Logo" class="h-8 mr-2"> 
-                    <h3 style="font-family: 'Inter', sans-serif;">Vendor Management Portal</h3>
-                </div>
-                <div>
-                    <a href="{{ route('login') }}" style="font-family: 'Inter', sans-serif;" class="bg-transparent hover:bg-white hover:text-gray-900 text-white px-4 py-2 transition duration-300 ease-in-out">Sign In</a>
-                    <a href="{{ route('register') }}" style="font-family: 'Inter', sans-serif;" class="ml-4 bg-white hover:bg-gray-100 text-gray-900 px-4 py-2 transition duration-300 ease-in-out">Sign Up</a>
-                </div>
+<body class="hero-background">
+    <nav class="bg-gray-900 bg-opacity-75 text-white p-4 fixed top-0 left-0 w-full z-10">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <div>
+            <img src="{{ asset('logo/logo-1.png') }}" alt="Logo" class="h-12 mr-2">
             </div>
-        </nav>
+            <div>
+                <a href="{{ route('login') }}" class="auth-link">Sign In</a>
+                <a href="{{ route('register') }}" class="auth-link ml-4" style="color: gray-900;">Sign Up</a>
+            </div>
+        </div>
+    </nav>
 
-    <!-- Main Content -->
-    <div class="min-h-screen flex items-center justify-center pt-20 pb-12">
-    <div class="text-center text-white px-4 ">
-    <h1 x-data="{
-        startingAnimation: { opacity: 0, y: 50, rotation: '25deg' },
-        endingAnimation: { opacity: 1, y: 0, rotation: '0deg', stagger: 0.02, duration: 0.7, ease: 'back' },
-        addCNDScript: true,
-        splitCharactersIntoSpans(element) {
-        text = element.innerHTML;
-        modifiedHTML = [];
-        for (var i = 0; i < text.length; i++) {
-        attributes = '';
-        if(text[i].trim()){ attributes = 'class=\'inline-block\''; }
-        modifiedHTML.push('<span ' + attributes + '>' + text[i] + '</span>');
-        }
-        element.innerHTML = modifiedHTML.join('');
-        },
-        addScriptToHead(url) {
-        script = document.createElement('script');
-        script.src = url;
-        document.head.appendChild(script);
-        },
-        animateText() {
-        $el.classList.remove('invisible');
-        gsap.fromTo($el.children, this.startingAnimation, this.endingAnimation);
-        }
-        }"
-        x-init="
-        splitCharactersIntoSpans($el);
-        if(addCNDScript){
-        addScriptToHead('https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js');
-        }
-        gsapInterval2 = setInterval(function(){
-        if(typeof gsap !== 'undefined'){
-        animateText();
-        clearInterval(gsapInterval2);
-        }
-        }, 5);
-        "
-        class="invisible block pb-0.5 overflow-hidden text-3xl font-bold custom-font"
-        >
-        Welcome to Vendor Management Portal
-        </h1>
+    <div class="flex items-center justify-center pt-32 pb-12 min-h-screen">
+        <div class="text-center text-white px-4">
+            <h1 class="text-3xl font-bold mb-4">Welcome to the Vendor Management Portal</h1>
+            <p>Streamline your interactions and enhance your business operations with us.</p>
+            <div class="center mt-10">
+                <a href="https://www.philcoastal.com/who-we-are/" target="_blank" rel="noopener noreferrer" class="hover:bg-white hover:text-gray-900 hover:-translate-y-1 transition-all duration-500 bg-gray-900 text-white px-4 py-2 font-bold mb-2">About Us</a>
+            </div>
+        </div>
     </div>
-</div>
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white text-center py-4" style="font-family: 'Inter', sans-serif;">
+    
+    <footer class="bg-gray-800 text-white text-center py-4">
         <p>&copy; {{ date('Y') }} Philippine Coastal Storage & Pipeline Corporation Vendor Management Portal. All rights reserved.</p>
     </footer>
-
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <!-- Modal for Registration Success -->
@@ -107,9 +69,36 @@
             document.querySelector('.modal-overlay').classList.add('hidden');
         }
     </script>
+    
 </body>
+<style>
+    .auth-link {
+        background: transparent;
+        color: white;
+        padding: 4px 16px;
+        transition: all 0.3s ease-in-out;
+        position: relative;
+        display: inline-block;
+        text-decoration: none;
+    }
+    .auth-link::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 3px; /* Thickness of the underline */
+        background-color: red; /* Color of the underline */
+        bottom: 0;
+        left: 50%;
+        transition: all 0.3s ease-in-out;
+    }
+    .auth-link:hover::after {
+        width: 100%;
+        left: 0;
+    }
+    .auth-link:hover {
+        background-color: ;
+        color: gray-900;
+    }
+</style>
 </html>
-
-<!-- Google Font -->
-
 

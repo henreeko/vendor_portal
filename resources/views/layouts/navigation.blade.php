@@ -73,11 +73,11 @@
                             {{ __('Profile') }}
                         </x-dropdown-link>
 
-                        {{-- @if(auth()->check() && auth()->user()->usertype === 'admin')
-                        <x-dropdown-link :href="route('admin.users.trashed')">
-                            {{ __('Trashed User') }} 
+                        @if(auth()->check() && auth()->user()->usertype === 'admin')
+                        <x-dropdown-link :href="route('admin.deleted-users')">
+                            {{ __('Deleted Users') }}
                         </x-dropdown-link>
-                        @endif --}}
+                        @endif
 
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">

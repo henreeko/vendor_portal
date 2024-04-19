@@ -69,5 +69,6 @@ class User extends Authenticatable
     {
         return $this->belongsTo(BusinessType::class, 'business_type_id');
     }
+    
 }
 

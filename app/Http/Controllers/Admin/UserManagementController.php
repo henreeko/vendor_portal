@@ -123,22 +123,38 @@ class UserManagementController extends Controller
         return view('admin.users.deleted', compact('deletedUsers'));
     }
 
-    public function trashedUsers()
+    public function restore($id)
     {
-        $trashedUsers = User::onlyTrashed()->paginate(10);
-        return view('admin.users.trashed', compact('trashedUsers'));
+        $user = User::onlyTrashed()->findOrFail($id);
+        $user->restore();
+
+        return redirect()->route('admin.users.deleted')->with('success', 'User restored successfully.');
     }
-    
+
+    public function verifyPassword(Request $request)
+    {
+        $request->validate(['password' => 'required']);
+
+        if (Hash::check($request->password, Auth::user()->password)) {
+            return response()->json(['success' => true]);
+        } else {
+            return response()->json(['success' => false], 422);
+        }
+    }
+
     public function forceDelete(Request $request, $userId)
     {
         $request->validate(['password' => 'required']);
-    
+
         if (!Hash::check($request->password, Auth::user()->password)) {
             return back()->withErrors(['password' => 'The admin password is incorrect.']);
         }
-    
-        User::onlyTrashed()->findOrFail($userId)->forceDelete();
-        return redirect()->route('admin.users.trashed')->with('success', 'User permanently deleted.');
+
+        $user = User::withTrashed()->findOrFail($userId);
+        $user->forceDelete();
+
+        return redirect()->route('admin.users.deleted')->with('success', 'User permanently deleted.');
     }
+    
     
 }

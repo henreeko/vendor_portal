@@ -14,6 +14,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\ThankYouController;
 use App\Http\Livewire\BusinessTypesManager;
+use App\Http\Livewire\Admin\DeletedUsers;
 
 
 Route::get('/', function () {
@@ -123,10 +124,14 @@ Route::middleware(['auth', 'admin.access'])->group(function () {
     Route::get('/admin/users/create', [UserManagementController::class, 'create'])->name('admin.users.create');
     Route::post('/users', [UserManagementController::class, 'store'])->name('admin.users.store');
     Route::delete('/users/{user}', [UserManagementController::class, 'destroy'])->name('admin.users.destroy');
-    Route::get('/users/deleted', [UserManagementController::class, 'deletedUsers'])->name('admin.users.deleted');
     Route::get('/users/{user}', [UserManagementController::class, 'show'])->name('admin.users.show');
     Route::get('/users/{user}/edit', [UserManagementController::class, 'edit'])->name('admin.users.edit');
     Route::put('/users/{user}', [UserManagementController::class, 'update'])->name('admin.users.update');
+    Route::post('/users/{user}/force-delete', [UserManagementController::class, 'forceDelete'])->name('admin.users.forceDelete');
+    Route::post('/users/{id}/restore', [UserManagementController::class, 'restore'])->name('admin.users.restore');
+    Route::post('/password/verify', [UserManagementController::class, 'verifyPassword'])->name('admin.password.verify');
+    Route::get('/admin/deleted-users', DeletedUsers::class)->name('admin.deleted-users');
+
     Route::get('/admin/vendors', function () {
         return view('admin.users.index');
     })->name('admin.users.index');
