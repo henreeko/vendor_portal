@@ -54,8 +54,8 @@
                                                 {{ $vendor->email }}
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                                {{-- {{ $vendor->(business_type_name) }} <br> --}}
-                                                <small>{{ $vendor->products_or_services }}<small>
+                                                {{ $vendor->businessType->name ?? 'N/A' }} <br>
+                                                <small>{{ $vendor->products_or_services }}</small>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm">
                                                 {{ $vendor->created_at->timezone('Asia/Manila')->format('m/d/Y') }}
@@ -70,9 +70,9 @@
                                                     </button>
                                                     
                                                 </form>
-                                                <button class="ml-4 bg-white-600 hover:bg-yellow-200 text-gray-600 border py-2 px-4 rounded">
+                                                {{-- <button class="ml-4 bg-white-600 hover:bg-yellow-200 text-gray-600 border py-2 px-4 rounded">
                                                     For Pending
-                                                </button>
+                                                </button> --}}
                                             </td>
                                         </tr>
                                     @endforeach

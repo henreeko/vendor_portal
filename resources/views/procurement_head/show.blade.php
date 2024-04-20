@@ -33,7 +33,7 @@
                                 </tr>
                                 <tr class="border-b">
                                     <td class="w-1/4 px-4 py-2 border-r font-bold bg-gray-100">Business Type:</td>
-                                    <td class="w-3/4 px-4 py-2">{{ $vendor->business_type_id }}</td>
+                                    <td class="w-3/4 px-4 py-2">{{ $vendor->businessType->name ?? 'N/A' }}</td>
                                 </tr>
                                 <tr class="border-b">
                                     <td class="w-1/4 px-4 py-2 border-r font-bold bg-gray-100">Products/Services:</td>

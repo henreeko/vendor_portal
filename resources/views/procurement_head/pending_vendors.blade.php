@@ -42,7 +42,7 @@
                                             {{ $vendor->supplier_type }}
                                         </td>
                                         <td class="px-5 py-5 border-b border-gray-200 text-sm">
-                                            {{ $vendor->business_type_id }}
+                                            {{ $vendor->businessType->name ?? 'N/A' }}
                                         </td>
                                         <td class="px-5 py-5 border-b border-gray-200 text-sm">
                                             {{ $vendor->products_or_services }}

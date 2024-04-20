@@ -7,6 +7,8 @@ use App\Models\BusinessType;
 
 class BusinessTypesManager extends Component
 {
+
+    
     public $businessTypes;
     public $newTypeName = '';
     public $search = '';

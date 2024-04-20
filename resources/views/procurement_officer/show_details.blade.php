@@ -94,7 +94,7 @@
                             </tr>
                             <tr class="border-b">
                                 <td class="w-1/4 px-4 py-2 border-r font-bold bg-gray-100">Business Type:</td>
-                                <td class="w-3/4 px-4 py-2">{{ $vendor->business_type_id }}</td>
+                                <td class="w-3/4 px-4 py-2">{{ $vendor->businessType->name ?? 'N/A' }}</td>
                             </tr>
                             <tr class="border-b">
                                 <td class="w-1/4 px-4 py-2 border-r font-bold bg-gray-100">Products/Services:</td>
@@ -102,7 +102,7 @@
                             </tr>
                         </tbody>
                     </table>
-<br>
+                <br>
                                                             <!-- Docs table -->
                                                             <h1 class="text-lg font-bold ml-1"> Documents </h1>
                                                             <br>
@@ -193,12 +193,12 @@
                         Approve
                     </form>
 
-                    <button onclick="event.preventDefault();" class="inline-flex items-center px-4 py-2 bg-yellow-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-yellow-700 active:bg-yellow-800 focus:outline-none focus:border-none focus:ring ring-yellow-50 disabled:opacity-25 transition ease-in-out duration-150">
+                    {{-- <button onclick="event.preventDefault();" class="inline-flex items-center px-4 py-2 bg-yellow-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-yellow-700 active:bg-yellow-800 focus:outline-none focus:border-none focus:ring ring-yellow-50 disabled:opacity-25 transition ease-in-out duration-150">
                             <svg class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                             </svg>
                             Reassess
-                        </button>
+                        </button> --}}
                 </div>
                 </div>
             </div>
