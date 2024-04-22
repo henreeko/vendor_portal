@@ -57,77 +57,10 @@
 
                     <!--end of the table-->
                                 
-                                        <!-- Docs table -->
-                                        <h1 class="text-lg font-bold my-2 ml-1"> Documents </h1>
-                                        <hr>
-                                        <div class="container mx-auto p-4">
-                                            <table class="min-w-full table-auto border-collapse border border-gray-300">
-                                                <tbody>
-                                                    <tr class="border-b">
-                                                        <td class="w-1/4 px-4 py-2 border-r font-bold bg-gray-100">BIR 2303</td>
-                                                        <td class="w-3/4 px-4 py-2 hover:underline text-blue-500">test.pdf</td>
-                                                        <td class="w-3/4 px-4 py-2 hover:underline text-gray-900"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                                                    <path d="M10.75 2.75a.75.75 0 0 0-1.5 0v8.614L6.295 8.235a.75.75 0 1 0-1.09 1.03l4.25 4.5a.75.75 0 0 0 1.09 0l4.25-4.5a.75.75 0 0 0-1.09-1.03l-2.955 3.129V2.75Z" />
-                                                    <path d="M3.5 12.75a.75.75 0 0 0-1.5 0v2.5A2.75 2.75 0 0 0 4.75 18h10.5A2.75 2.75 0 0 0 18 15.25v-2.5a.75.75 0 0 0-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5Z" />
-                                                    </svg>
-                                                    </td>
-                                                        <td class="w-3/4 px-4 py-2">
-                                                    </tr>
-                                                    <tr class="border-b">
-                                                        <td class="w-1/4 px-4 py-2 border-r font-bold bg-gray-100">SEC</td>
-                                                        <td class="w-3/4 px-4 py-2 hover:underline text-blue-500">test.docx</td>
-                                                        <td class="w-3/4 px-4 py-2 hover:underline text-gray-900"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                                                    <path d="M10.75 2.75a.75.75 0 0 0-1.5 0v8.614L6.295 8.235a.75.75 0 1 0-1.09 1.03l4.25 4.5a.75.75 0 0 0 1.09 0l4.25-4.5a.75.75 0 0 0-1.09-1.03l-2.955 3.129V2.75Z" />
-                                                    <path d="M3.5 12.75a.75.75 0 0 0-1.5 0v2.5A2.75 2.75 0 0 0 4.75 18h10.5A2.75 2.75 0 0 0 18 15.25v-2.5a.75.75 0 0 0-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5Z" />
-                                                    </svg>
-                                                    </td>
-                                                        <td class="w-3/4 px-4 py-2"></td>
-                                                    </tr>
-                                                    <tr class="border-b">
-                                                        <td class="w-1/4 px-4 py-2 border-r font-bold bg-gray-100">Mayor's Permit</td>
-                                                        <td class="w-3/4 px-4 py-2 hover:underline text-blue-500">test2.pdf</td>
-                                                        <td class="w-3/4 px-4 py-2 hover:underline text-gray-900"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                                                    <path d="M10.75 2.75a.75.75 0 0 0-1.5 0v8.614L6.295 8.235a.75.75 0 1 0-1.09 1.03l4.25 4.5a.75.75 0 0 0 1.09 0l4.25-4.5a.75.75 0 0 0-1.09-1.03l-2.955 3.129V2.75Z" />
-                                                    <path d="M3.5 12.75a.75.75 0 0 0-1.5 0v2.5A2.75 2.75 0 0 0 4.75 18h10.5A2.75 2.75 0 0 0 18 15.25v-2.5a.75.75 0 0 0-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5Z" />
-                                                    </svg>
-                                                    </td>
-                                                        <td class="w-3/4 px-4 py-2"></td>
-                                                    </tr>
-                                                    <tr class="border-b">
-                                                        <td class="w-1/4 px-4 py-2 border-r font-bold bg-gray-100">Sample OR</td>
-                                                        <td class="w-3/4 px-4 py-2 hover:underline text-blue-500">test2.docx</td>
-                                                        <td class="w-3/4 px-4 py-2 hover:underline text-gray-900"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                                                        <path d="M10.75 2.75a.75.75 0 0 0-1.5 0v8.614L6.295 8.235a.75.75 0 1 0-1.09 1.03l4.25 4.5a.75.75 0 0 0 1.09 0l4.25-4.5a.75.75 0 0 0-1.09-1.03l-2.955 3.129V2.75Z" />
-                                                        <path d="M3.5 12.75a.75.75 0 0 0-1.5 0v2.5A2.75 2.75 0 0 0 4.75 18h10.5A2.75 2.75 0 0 0 18 15.25v-2.5a.75.75 0 0 0-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5Z" />
-                                                        </svg>
-                                                        </td>
-                                                        <td class="w-3/4 px-4 py-2"></td>
-                                                    </tr>
-                                                    <tr class="border-b">
-                                                        <td class="w-1/4 px-4 py-2 border-r font-bold bg-gray-100">Sample Invoice</td>
-                                                        <td class="w-3/4 px-4 py-2 hover:underline text-blue-500">test3.pdf</td>
-                                                        <td class="w-3/4 px-4 py-2 hover:underline text-gray-900"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                                                        <path d="M10.75 2.75a.75.75 0 0 0-1.5 0v8.614L6.295 8.235a.75.75 0 1 0-1.09 1.03l4.25 4.5a.75.75 0 0 0 1.09 0l4.25-4.5a.75.75 0 0 0-1.09-1.03l-2.955 3.129V2.75Z" />
-                                                        <path d="M3.5 12.75a.75.75 0 0 0-1.5 0v2.5A2.75 2.75 0 0 0 4.75 18h10.5A2.75 2.75 0 0 0 18 15.25v-2.5a.75.75 0 0 0-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5Z" />
-                                                        </svg>
-                                                        </td>
-                                                        <td class="w-3/4 px-4 py-2"></td>
-                                                    </tr>
-                                                    <tr class="border-b">
-                                                        <td class="w-1/4 px-4 py-2 border-r font-bold bg-gray-100">SBMA Accreditation</td>
-                                                        <td class="w-3/4 px-4 py-2 hover:underline text-blue-500">test3.docx</td>
-                                                        <td class="w-3/4 px-4 py-2 hover:underline text-gray-900"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-                                                        <path d="M10.75 2.75a.75.75 0 0 0-1.5 0v8.614L6.295 8.235a.75.75 0 1 0-1.09 1.03l4.25 4.5a.75.75 0 0 0 1.09 0l4.25-4.5a.75.75 0 0 0-1.09-1.03l-2.955 3.129V2.75Z" />
-                                                        <path d="M3.5 12.75a.75.75 0 0 0-1.5 0v2.5A2.75 2.75 0 0 0 4.75 18h10.5A2.75 2.75 0 0 0 18 15.25v-2.5a.75.75 0 0 0-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5Z" />
-                                                        </svg>
-                                                        </td>
-                                                        <td class="w-3/4 px-4 py-2"></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>                    
-                                        <!--end of docs table-->
-
+                    <div>
+                        @livewire('documents-table', ['userId' => $vendor->id])
+                    </div>
+                    
                     <div class="mt-6 flex justify-between items-center">
                         <!-- Left-aligned Back to Pending Vendors Button -->
                         <a href="{{ route('procurement_head.vendors.pending') }}" class="inline-flex items-center px-4 py-2 bg-white border border-transparent rounded-md font-semibold text-xs text-gray-900 uppercase tracking-widest hover:bg-gray-100 active:bg-gray-100 focus:outline-none focus:border-none focus:ring ring-gray-50 disabled:opacity-25 transition ease-in-out duration-150">

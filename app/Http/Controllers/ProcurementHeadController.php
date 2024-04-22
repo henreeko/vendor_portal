@@ -48,18 +48,14 @@ class ProcurementHeadController extends Controller
 
     public function showPendingVendors()
     {
-        // Fetch only vendors who are:
-        // - of usertype 'vendor'
-        // - approved by a procurement officer
-        // - pending approval from a procurement head
-        $pendingVendors = User::where('usertype', 'vendor')
-                              ->where('procurement_officer_approval', 'approved')
-                              ->where('procurement_head_approval', 'pending')
-                              ->with('approver') 
+        // Example logic to get pending vendors. Adjust the query as needed.
+        $pendingVendors = User::with('businessType') // Eager loading the businessType relationship
+                              ->where('usertype', 'vendor')
+                              ->where('procurement_officer_approval', 'pending')
                               ->get();
-
-        return view('procurement_head.pending_vendors', compact('pendingVendors'));
-    }
+    
+        return view('procurement_officer.pending_vendors', compact('pendingVendors'));
+    }    
     
 
     public function pendingVendorsForProcurementHead() {

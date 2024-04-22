@@ -24,10 +24,9 @@ class VendorsList extends Component
     protected $queryString = ['selectedDate','search'];
     public $businessTypeFilter = '';
     public $selectedDate = null;
-
+    
     public $showModal = false;
     public $selectedVendorId;
-
 
     public function mount()
     {
@@ -197,43 +196,44 @@ class VendorsList extends Component
     }
 
     private function getFilteredVendors()
-{
-    return User::query()
-        ->where('usertype', 'vendor')
-        ->where('procurement_officer_approval', 'approved')
-        ->where('procurement_head_approval', 'approved')
-        ->when($this->businessTypeFilter, function($query) {
-            $query->where('business_type_id', $this->businessTypeFilter);
-        })
-        ->when($this->selectedDate, function ($query) {
-            $query->whereDate('created_at', $this->selectedDate);
-        })
-        ->when($this->supplierType, function ($query) {
-            $query->where('supplier_type', $this->supplierType);
-        })
-        ->where(function ($query) {
-            $query->where('company_name', 'like', '%' . $this->search . '%')
-                  ->orWhere('email', 'like', '%' . $this->search . '%')
-                  ->orWhere('first_name', 'like', '%' . $this->search . '%')
-                  ->orWhere('last_name', 'like', '%' . $this->search . '%');
-
-            if (strpos($this->search, ' ') !== false) {
-                $names = explode(' ', $this->search);
-                if (count($names) === 2) {
-                    $query->orWhere(function ($q) use ($names) {
-                        $q->where('first_name', 'like', '%' . $names[0] . '%')
-                          ->where('last_name', 'like', '%' . $names[1] . '%');
-                    });
+    {
+        return User::with('businessType')  // Eager load the businessType relationship
+            ->where('usertype', 'vendor')
+            ->where('procurement_officer_approval', 'approved')
+            ->where('procurement_head_approval', 'approved')
+            ->when($this->businessTypeFilter, function($query) {
+                $query->where('business_type_id', $this->businessTypeFilter);
+            })
+            ->when($this->selectedDate, function ($query) {
+                $query->whereDate('created_at', $this->selectedDate);
+            })
+            ->when($this->supplierType, function ($query) {
+                $query->where('supplier_type', $this->supplierType);
+            })
+            ->where(function ($query) {
+                $query->where('company_name', 'like', '%' . $this->search . '%')
+                      ->orWhere('email', 'like', '%' . $this->search . '%')
+                      ->orWhere('first_name', 'like', '%' . $this->search . '%')
+                      ->orWhere('last_name', 'like', '%' . $this->search . '%');
+    
+                if (strpos($this->search, ' ') !== false) {
+                    $names = explode(' ', $this->search);
+                    if (count($names) === 2) {
+                        $query->orWhere(function ($q) use ($names) {
+                            $q->where('first_name', 'like', '%' . $names[0] . '%')
+                              ->where('last_name', 'like', '%' . $names[1] . '%');
+                        });
+                    }
                 }
-            }
-
-            $query->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%{$this->search}%"]);
-        })
-        ->orderBy($this->sortField, $this->sortDirection)
-        ->when($this->sortField !== 'created_at', function ($query) {
-            return $query->orderBy('created_at', 'desc');
-        });
-}
+    
+                $query->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%{$this->search}%"]);
+            })
+            ->orderBy($this->sortField, $this->sortDirection)
+            ->when($this->sortField !== 'created_at', function ($query) {
+                return $query->orderBy('created_at', 'desc');
+            });
+    }
+    
 
 public function render()
 {

@@ -7,6 +7,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\VendorDocument;
 
 class User extends Authenticatable
 {
@@ -68,7 +70,11 @@ class User extends Authenticatable
     public function businessType()
     {
         return $this->belongsTo(BusinessType::class, 'business_type_id');
+    }    
+
+    public function documents()
+    {
+        return $this->hasMany(VendorDocument::class);
     }
-    
 }
 

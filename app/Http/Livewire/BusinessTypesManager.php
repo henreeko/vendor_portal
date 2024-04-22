@@ -15,6 +15,7 @@ class BusinessTypesManager extends Component
 
     protected $listeners = ['refreshComponent' => '$refresh'];
 
+
     public function businessType()
     {
         return $this->belongsTo(BusinessType::class, 'business_type_id');

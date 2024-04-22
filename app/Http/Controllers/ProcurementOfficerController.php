@@ -53,10 +53,11 @@ class ProcurementOfficerController extends Controller
     public function showPendingVendors()
     {
         // Example logic to get pending vendors. Adjust the query as needed.
-        $pendingVendors = User::where('usertype', 'vendor')
+        $pendingVendors = User::with('businessType') // Eager loading the businessType relationship
+                              ->where('usertype', 'vendor')
                               ->where('procurement_officer_approval', 'pending')
                               ->get();
-
+    
         return view('procurement_officer.pending_vendors', compact('pendingVendors'));
-    }
+    }    
 }

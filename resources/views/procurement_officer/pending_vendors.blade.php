@@ -53,8 +53,7 @@
                                             <td class="px-6 py-4 whitespace-nowrap text-sm">
                                                 {{ $vendor->email }}
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                                {{ $vendor->businessType->name ?? 'N/A' }} <br>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm">{{ $vendor->businessType->name ?? 'N/A' }}<br>
                                                 <small>{{ $vendor->products_or_services }}</small>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm">

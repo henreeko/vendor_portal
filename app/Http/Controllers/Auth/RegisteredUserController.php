@@ -9,9 +9,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use App\Models\BusinessType;
+use Illuminate\Support\Facades\Storage;
+use App\Models\VendorDocument;
 
 class RegisteredUserController extends Controller
 {
+
     // Show the first step of the registration form
     public function create()
     {
@@ -66,6 +69,12 @@ class RegisteredUserController extends Controller
             'business_type_id' => ['required', 'exists:business_types,id'],
             'products_or_services' => ['nullable', 'string'],
             'telephone_fax_number' => ['nullable', 'numeric'],
+            'bir_2303' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'bir_2303_expiry' => 'required|date',
+            'sec' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'sec_expiry' => 'required|date',
+            'mayors_permit' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'mayors_permit_expiry' => 'required|date',
         ]);
 
         $firstStepData = $request->session()->get('register_first_step');
@@ -100,6 +109,28 @@ class RegisteredUserController extends Controller
             'procurement_head_approval' => 'pending',
         ]);
 
+        if (!$user) {
+            return redirect()->back()->with('error', 'Failed to create user.');
+        }
+
+    // Handle document upload
+    $documents = [
+        'bir_2303' => $request->bir_2303_expiry,
+        'sec' => $request->sec_expiry,
+        'mayors_permit' => $request->mayors_permit_expiry,
+    ];
+
+    foreach ($documents as $type => $expiry) {
+        if ($request->hasFile($type)) {
+            $path = $request->file($type)->store('documents', 'public');
+            $user->documents()->create([
+                'document_type' => $type,
+                'path' => $path,
+                'name' => $request->file($type)->getClientOriginalName(), // Adding the original file name
+                'expiry_date' => $request[$type . '_expiry'],
+            ]);
+        }
+    }
         $request->session()->forget('register_first_step');
 
         // Redirect to a page informing the user their registration is pending approval

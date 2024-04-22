@@ -14,38 +14,39 @@
 
         <!-- First Name -->
         <div>
-            <label for="first_name" class="block text-sm font-medium text-grvay-700">First Name</label>
+            <label for="first_name" class="block text-sm font-medium text-gray-700">First Name <span class="text-red-500">*</span></label>
             <x-text-input id="first_name" class="block w-full mt-1" type="text" name="first_name" :value="old('first_name')" required autofocus autocomplete="given-name" />
             <x-input-error :messages="$errors->get('first_name')" />
         </div>
 
         <!-- Last Name -->
         <div>
-            <label for="last_name" class="block text-sm font-medium text-gray-700">Last Name</label>
+            <label for="last_name" class="block text-sm font-medium text-gray-700">Last Name <span class="text-red-500">*</span></label>
             <x-text-input id="last_name" class="block w-full mt-1" type="text" name="last_name" :value="old('last_name')" required autocomplete="family-name" />
             <x-input-error :messages="$errors->get('last_name')" />
         </div>
 
         <!-- Email Address -->
         <div>
-            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+            <label for="email" class="block text-sm font-medium text-gray-700">Email <span class="text-red-500">*</span></label>
             <x-text-input id="email" class="block w-full mt-1" type="email" name="email" :value="old('email')" required autocomplete="email" />
             <x-input-error :messages="$errors->get('email')" />
         </div>
 
         <!-- Password -->
         <div>
-            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+            <label for="password" class="block text-sm font-medium text-gray-700">Password <span class="text-red-500">*</span></label>
             <x-text-input id="password" class="block w-full mt-1" type="password" name="password" required autocomplete="new-password" />
             <x-input-error :messages="$errors->get('password')" />
         </div>
 
         <!-- Confirm Password -->
         <div>
-            <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+            <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirm Password <span class="text-red-500">*</span></label>
             <x-text-input id="password_confirmation" class="block w-full mt-1" type="password" name="password_confirmation" required autocomplete="new-password" />
             <x-input-error :messages="$errors->get('password_confirmation')" />
         </div>
+
 
         <div class="flex items-center justify-end">
             <a href="{{ route('login') }}" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">{{ __('Already registered?') }}</a>

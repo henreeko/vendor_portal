@@ -1,12 +1,13 @@
 <div class="ml-5 mr-5 relative overflow-x-auto shadow-md sm:rounded-lg">
-    <table class= "w-full text-sm text-left rtl:text-right text-gray-500">
-        <thead class="text-xs text-white uppercase bg-gray-900">
+    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-white uppercase bg-gray-900 dark:bg-gray-700 dark:text-gray-400">
             <tr>
                 <th scope="col" class="px-6 py-3 w-1/12">
                     <input type="checkbox" class="w-4 h-4 text-gray-600 bg-gray-100 border-gray-300 rounded focus:ring-gray-500" wire:model="selectAll">
                 </th>                
                 <th scope="col" class="px-6 py-3 w-1/12">ID</th>
                 <th scope="col" class="px-6 py-3 w-1/12">Vendor</th>
+                <th scope="col" class="px-6 py-3 w-1/12">Representative</th>
                 <th scope="col" class="px-6 py-3 w-1/12">Email</th>
                 <th scope="col" class="px-6 py-3 w-1/12">Location</th>
                 <th scope="col" class="px-6 py-3 w-1/12">Business Type</th>
@@ -31,9 +32,10 @@
                     <div class="font-medium text-gray-900 dark:text-white">{{ $vendor->company_name }}</div>
                     <div class="text-sm text-blue-500">{{ $vendor->supplier_type }}</div>
                 </td>
+                <td class="px-6 py-4">{{ $vendor->first_name }} {{ $vendor->last_name }}</td>
                 <td class="px-6 py-4">{{ $vendor->email }}</td>
                 <td class="px-6 py-4">{{ $vendor->office_city }}</td>
-                <td class="px-6 py-4">{{ $vendor->business_type_id }}</td>
+                <td class="w-3/4 px-4 py-2">{{ $vendor->businessType->name ?? 'N/A' }}</td>
                 <td class="px-6 py-4 text-xs font-bold">{{ $vendor->created_at->timezone('Asia/Manila')->format('m-d-Y') }}</td>
                 <td class="px-6 py-4">
                     <div class="flex items-center">
@@ -92,7 +94,7 @@
                                                         </tr>
                                                         <tr>
                                                             <th class="px-6 py-4 text-left bg-gray-50 dark:bg-gray-100">Business Type</th>
-                                                            <td class="px-6 py-4 text-left">{{ $vendor->business_type_id }} </td>
+                                                            <td class="px-6 py-4">{{ $vendor->businessType->name ?? 'N/A' }}</td>                                                            
                                                         </tr>
                                                         <tr>
                                                             <th class="px-6 py-4 text-left bg-gray-50 dark:bg-gray-100">Product/Services</th>
@@ -163,9 +165,7 @@
                                                     </table>
                                                 </div>
                                                 </div>
-                                                </div>
-                                                @include('livewire.partials.documents-table')
-                                            </div>
+                                                @livewire('documents-table', ['userId' => $vendor->id])
                                         </div>
                                     </div>
                                     <div>
