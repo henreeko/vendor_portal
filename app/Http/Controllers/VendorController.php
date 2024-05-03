@@ -72,17 +72,7 @@ class VendorController extends Controller
             'products_or_services'
         ]));
     }
-
-//     public function pendingVendorsForProcurementHead()
-// {
-//     $pendingVendors = User::where('usertype', 'vendor')
-//         ->where('procurement_officer_approval', 'approved') // Approved by the procurement officer
-//         ->where('procurement_head_approval', 'pending') // But pending for the procurement head
-//         ->get();
-
-//     return view('procurement_head.pending_vendors', compact('pendingVendors'));
-// }
-
+    
 public function getApprovedVendors()
 {
     $approvedVendors = User::where('usertype', 'vendor')
@@ -91,6 +81,11 @@ public function getApprovedVendors()
                            ->get(['id', 'first_name', 'last_name', 'email', 'company_name']);
                            
     return response()->json($approvedVendors);
+}
+
+public function documentUpdates()
+{
+    return view('vendor.document-updates');
 }
 
 }

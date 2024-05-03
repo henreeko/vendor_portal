@@ -71,5 +71,7 @@ class Kernel extends HttpKernel
         'ensure_vendor_is_approved' => \App\Http\Middleware\EnsureVendorIsApproved::class,
         'admin.access' => \App\Http\Middleware\AdminAccess::class,
         'admin.procurement.access' => \App\Http\Middleware\AdminAndProcurementAccess::class,
+        'procurement.officer' => \App\Http\Middleware\ProcurementOfficerMiddleware::class,
+        'procurement.head' => \App\Http\Middleware\ProcurementHeadMiddleware::class,
     ];
 }

@@ -26,29 +26,20 @@ class ProcurementOfficerController extends Controller
     public function approveVendor(Request $request, $vendorId)
     {
         $vendor = User::findOrFail($vendorId);
-        
-        // Check if the vendor is not already approved
+    
+        // Check if the vendor is not already approved by the officer
         if ($vendor->procurement_officer_approval !== 'approved') {
             $vendor->procurement_officer_approval = 'approved';
             $vendor->procurement_officer_approval_date = now(); // Set the current time as the approval date
-            $vendor->approved_by = auth()->id(); // Assuming the approver's ID is set by the logged-in user
+            $vendor->approved_by_procurement_officer = Auth::id(); // Record the ID of the officer approving
             $vendor->save();
-        
+    
             return redirect()->route('procurement_officer.pending_vendors')->with('success', 'Vendor approved successfully!');
         }
     
         return back()->with('error', 'This vendor has already been approved.');
     }
     
-
-    public function rejectVendor(Request $request, $vendorId)
-    {
-        $vendor = User::where('id', $vendorId)->where('usertype', 'vendor')->firstOrFail();
-        $vendor->procurement_officer_approval = 'rejected';
-        $vendor->save();
-
-        return back()->with('message', 'Vendor rejected.');
-    }
 
     public function showPendingVendors()
     {

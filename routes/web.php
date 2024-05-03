@@ -16,11 +16,12 @@ use App\Http\Controllers\ThankYouController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Livewire\BusinessTypesManager;
 use App\Http\Livewire\Admin\DeletedUsers;
-
+use App\Http\Controllers\ProcurementOfficerDashboardController;
 
 Route::get('/', function () {
     return view('welcome');
 })->name('welcome')->middleware('preventBackHistory');
+
 
 // Protected dashboard route with auth middleware
 Route::middleware(['auth', 'verified','preventBackHistory'])->group(function () {
@@ -55,9 +56,6 @@ Route::middleware(['auth'])->group(function () {
     })->name('admin.history_logs.index');
 });
 
-Route::middleware(['auth', 'verified', 'can:admin'])->prefix('admin')->group(function () {
-    Route::resource('users', UserManagementController::class);
-});
 
 // Registration Routes
 Route::get('/register', [\App\Http\Controllers\Auth\RegisteredUserController::class, 'create'])->name('register');
@@ -79,37 +77,6 @@ Route::get('/registration-pending', function () {
     return view('auth.registration_pending');
 })->name('registration.pending');
 
-// For Procurement Head
-    Route::get('/admin/vendors/pending', [VendorController::class, 'pendingVendorsForProcurementHead'])->name('admin.vendors.pending');
-    Route::post('/procurement-head/approve-vendor/{id}', [ProcurementHeadController::class, 'approveVendor']);
-    Route::post('/procurement-head/approve-vendor/{id}', [ProcurementHeadController::class, 'approveVendor'])->name('procurement_head.approve');
-
-    Route::middleware(['auth', 'verified'])->group(function () {
-    // Route::get('/procurement-head/vendors/pending', [ProcurementHeadController::class, 'pendingVendorsForProcurementHead'])
-    //     ->name('procurement_head.vendors.pending');
-    Route::get('/procurement-head/pending-vendors', [ProcurementHeadController::class, 'showPendingVendors'])->name('procurement_head.vendors.pending');
-    Route::get('/procurement_head/vendors/{vendor}', [ProcurementHeadController::class, 'show'])->name('procurement_head.vendors.show');
-});
-
-// For Procurement Officer
-    Route::middleware(['auth', 'preventBackHistory'])->group(function () {
-    Route::get('/procurement-officer/pending-vendors', [ProcurementOfficerController::class, 'showPendingVendors'])
-    ->name('procurement_officer.pending_vendors');
-    Route::get('/vendors/{vendor}/details', [VendorController::class, 'showDetails'])
-     ->name('vendors.show_details');
-
-
-
-// Route to approve a vendor by procurement officer
-    Route::post('/procurement-officer/vendors/approve/{vendorId}', [ProcurementOfficerController::class, 'approveVendor'])
-    ->name('procurement_officer.approve_vendor');
-
-// Not Approved
-Route::get('/vendor/pending-approval', function () {
-    return view('vendor.pending_approval');
-    })->name('vendor.pendingApproval');
-});
-
 Route::middleware(['auth'])->group(function () {
     Route::get('/admin/vendors', function () {
         if (!in_array(auth()->user()->usertype, ['admin', 'procurement_officer'])) {
@@ -120,7 +87,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // SECURED ADMIN ROUTE
-Route::middleware(['auth', 'admin.access'])->group(function () {
+Route::middleware(['auth', 'admin.access', 'preventBackHistory'])->group(function () {
     Route::get('/admin/users', [UserManagementController::class, 'index'])->name('admin.users.index');
     Route::get('/admin/users/create', [UserManagementController::class, 'create'])->name('admin.users.create');
     Route::post('/users', [UserManagementController::class, 'store'])->name('admin.users.store');
@@ -140,13 +107,43 @@ Route::middleware(['auth', 'admin.access'])->group(function () {
 
 // Routes for both Admin and Procurement Officers
 Route::middleware(['auth', 'admin.procurement.access'])->group(function () {
-    Route::get('/admin/vendors', function () {
-        return view('admin.vendors.index');
-
-    })->name('admin.vendors.index');
-
-    // Add your new route here
+    Route::get('/admin/vendors', function () { return view('admin.vendors.index');})->name('admin.vendors.index');
+    Route::get('/archived-vendors', \App\Http\Livewire\ArchivedVendors::class)->name('archived-vendors');
     Route::get('/admin/business-types', BusinessTypesManager::class)->name('admin.business-types.index');
 });
+
+// For Procurement Officer with middleware
+Route::middleware(['auth', 'procurement.officer', 'preventBackHistory'])->group(function () {
+    Route::get('/procurement-officer/pending-vendors', [ProcurementOfficerController::class, 'showPendingVendors'])
+    ->name('procurement_officer.pending_vendors');
+    Route::get('/vendors/{vendor}/details', [VendorController::class, 'showDetails'])
+     ->name('vendors.show_details');
+    Route::post('/procurement-officer/vendors/approve/{vendorId}', [ProcurementOfficerController::class, 'approveVendor'])
+    ->name('procurement_officer.approve_vendor');
+    Route::get('/procurement-officer/dashboard', [ProcurementOfficerDashboardController::class, 'index'])
+    ->name('procurement_officer.dashboard');
+    Route::get('/vendor/pending-approval', function () {
+    return view('vendor.pending_approval');
+    })->name('vendor.pendingApproval');
+});
+
+// For Procurement Head with middleware
+Route::middleware(['auth', 'verified', 'procurement.head'])->group(function () {
+    Route::get('/procurement-head/dashboard', [ProcurementHeadController::class, 'index'])->name('procurement_head.dashboard');
+    Route::get('/procurement-head/pending-vendors', [ProcurementHeadController::class, 'showPendingVendors'])->name('procurement_head.vendors.pending');
+    Route::get('/procurement_head/vendors/{vendor}', [ProcurementHeadController::class, 'show'])->name('procurement_head.vendors.show');
+    Route::post('/procurement-head/approve-vendor/{id}', [ProcurementHeadController::class, 'approveVendor'])->name('procurement_head.approve');
+    Route::get('/admin/vendors/pending', [VendorController::class, 'pendingVendorsForProcurementHead'])->name('admin.vendors.pending');
+    Route::post('/procurement_head/reassess/{id}', [ProcurementHeadController::class, 'reassessVendor'])->name('procurement_head.reassess');
+});
+
+//For vendors
+Route::middleware(['auth'])->group(function () {
+    Route::get('/vendor/document-updates', [VendorController::class, 'documentUpdates'])->name('vendor.document-updates');
+});
+
+Route::get('/terms', function () {
+    return view('terms');
+})->name('terms');
 
 require __DIR__.'/auth.php';

@@ -16,26 +16,7 @@ class DocumentsTable extends Component
     public function mount($userId = null)
     {
         $this->userId = $userId;
-    }
-
-    // public function downloadDocument($documentId)
-    // {
-    //     $document = VendorDocument::findOrFail($documentId);
-    //     $path = $document->path;
-    //     $name = $document->name; // the original file name
-    
-    //     if (Storage::disk('public')->exists($path)) {
-    //         $headers = [
-    //             'Content-Disposition' => 'attachment; filename="' . addslashes($name) . '"',
-    //             'Content-Type' => Storage::disk('public')->mimeType($path)
-    //         ];
-    //         return response()->download(storage_path("app/public/{$path}"), $name, $headers);
-    //     } else {
-    //         return abort(404);
-    //     }
-    // }
-    
-    
+    }    
 
     public function render()
     {

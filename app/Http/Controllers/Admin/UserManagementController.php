@@ -25,24 +25,33 @@ class UserManagementController extends Controller
     public function update(Request $request, User $user)
     {
         // Validate the incoming request data
-        $request->validate([
+        $validatedData = $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'usertype' => ['required', 'string'],
+            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
         ]);
-
-        // Update the user with the validated data
+    
+        // Update user data except password
         $user->update([
-            'first_name' => $request->input('first_name'),
-            'last_name' => $request->input('last_name'),
-            'email' => $request->input('email'),
-            'usertype' => $request->input('usertype'),
+            'first_name' => $validatedData['first_name'],
+            'last_name' => $validatedData['last_name'],
+            'email' => $validatedData['email'],
+            'usertype' => $validatedData['usertype'],
         ]);
-
+    
+        // Update the password if provided
+        if (!empty($validatedData['password'])) {
+            $user->update([
+                'password' => bcrypt($validatedData['password']),
+            ]);
+        }
+    
         // Redirect back to the user list with a success message
         return redirect()->route('admin.users.index')->with('success', 'User updated successfully.');
     }
+    
 
     public function show(User $user)
     {

@@ -55,6 +55,9 @@
                                 <thead class="text-xs text-white uppercase bg-gray-900">
                                     <tr>
                                         <th scope="col" class="py-3 px-6">
+                                            ID
+                                        </th>
+                                        <th scope="col" class="py-3 px-6">
                                             Name
                                         </th>
                                         <th scope="col" class="py-3 px-6">
@@ -88,6 +91,9 @@
                                 <tbody>
                                     @foreach ($users as $user)
                                     <tr class="bg-white border-b hover:bg-gray-50">
+                                        <td class="py-4 px-6">
+                                            {{ $user->id }}
+                                        </td>
                                         <td class="py-4 px-6">
                                             {{ $user->first_name }} {{ $user->last_name }}
                                         </td>

@@ -1,10 +1,35 @@
 {{-- resources/views/auth/register_first.blade.php --}}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <x-guest-layout>
+    <style>
+        .loader {
+            border: 6px solid #f3f3f3; /* Light grey */
+            border-top: 6px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -25px; /* Offset by half of width */
+            margin-top: -25px; /* Offset by half of height */
+            z-index: 100;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        </style>
+        
+        
     <form id="firstStepForm" method="POST" action="{{ route('register.first-store') }}" class="space-y-6">
         @csrf
-        
+        <div id="loader" class="loader" style="display: none;"></div>
+
         <h5 class="text-2xl font-bold dark:text-white text-center">Account Set Up</h5>
+        <p class="text-xs dark:text-white text-center">First Step</p>
 
         {{-- step indicator --}}
         <div class="flex justify-center items-center mt-8 space-x-4">
@@ -57,57 +82,86 @@
     </form>
 
     <script>
-        // Function to handle form submission and navigate to the next step
         function submitFirstStepForm() {
-            // Assuming your form has an ID "firstStepForm"
             var form = document.getElementById('firstStepForm');
-    
-            // Perform form validation (you can add your custom validation logic here)
+            var formData = new FormData(form);
+            var loader = document.getElementById('loader');
+        
             if (form.checkValidity()) {
-                // Serialize form data to send via AJAX or fetch API
-                var formData = new FormData(form);
-    
-                // Check if the password and confirmation match
+                loader.style.display = 'block'; // Show the loader
+        
                 if (formData.get('password') !== formData.get('password_confirmation')) {
-                    // Show SweetAlert2 toast error message
+                    loader.style.display = 'none'; // Hide loader
                     Swal.fire({
                         icon: 'error',
                         title: 'Password Mismatch',
                         text: 'The password and confirmation do not match. Please try again.',
-                        timer: 5000,
                         toast: true,
-                        position: 'top',
+                        position: 'top-end',
                         showConfirmButton: false,
-                        showCloseButton: true,
-                        customClass: {
-                            popup: 'error-toast',
-                        },
-                        background: '#f1f1f1',
+                        timer: 3000,
                     });
                 } else {
-                    // Make an AJAX request to submit the form data
                     fetch(form.action, {
                         method: 'POST',
                         body: formData,
+                        headers: {
+                            'X-CSRF-TOKEN': formData.get('_token'), // Ensure CSRF token is sent
+                        },
                     })
                     .then(response => {
-                        if (response.ok) {
-                            // If form submission is successful, navigate to the second step
-                            window.location.href = "{{ route('register.second') }}";
-                        } else {
-                            // Handle error response if needed
-                            console.error('Error submitting form:', response.statusText);
+                        loader.style.display = 'none'; // Hide loader on response
+                        if (!response.ok) throw response;
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.status === 'success') {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Registration Started!',
+                                text: 'You have completed the first step successfully!',
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                didClose: () => {
+                                    window.location.href = "{{ route('register.second') }}";
+                                }
+                            });
                         }
                     })
-                    .catch(error => {
-                        // Handle network or other errors
-                        console.error('Error submitting form:', error);
+                    .catch(errorResponse => {
+                        errorResponse.json().then(errorData => {
+                            const firstErrorKey = Object.keys(errorData.errors)[0];
+                            const firstErrorMessage = errorData.errors[firstErrorKey][0];
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: firstErrorMessage,
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 5000,
+                            });
+                        }).catch(() => {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'An unexpected error occurred. Please try again.',
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 5000,
+                            });
+                        });
                     });
                 }
             } else {
-                // If form validation fails, display error messages to the user
                 form.reportValidity();
             }
         }
-    </script>
+        </script>
+        
+
+
 </x-guest-layout>

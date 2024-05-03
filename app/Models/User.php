@@ -37,6 +37,8 @@ class User extends Authenticatable
         'procurement_officer_approval',
         'procurement_officer_approval_date',
         'procurement_head_approval',
+        'procurement_head_approval_date',
+        'archived',
     ];
 
     protected $hidden = [
@@ -55,7 +57,7 @@ class User extends Authenticatable
      *
      * @return bool
      */
-    protected $appends = ['is_fully_approved'];
+    protected $appends = ['is_fully_approved', 'has_expired_documents'];
 
     public function getIsFullyApprovedAttribute()
     {
@@ -75,6 +77,36 @@ class User extends Authenticatable
     public function documents()
     {
         return $this->hasMany(VendorDocument::class);
+    }
+
+    public function hasExpiredDocuments()
+    {
+        return $this->documents()->where('expiry_date', '<', now())->exists();
+    }
+
+    public function procurementOfficerApprover()
+    {
+        return $this->belongsTo(User::class, 'approved_by_procurement_officer');
+    }
+
+    public function procurementHeadApprover()
+    {
+        return $this->belongsTo(User::class, 'approved_by_procurement_head');
+    }
+
+    public function notifications()
+    {
+        return $this->hasMany(\Illuminate\Notifications\DatabaseNotification::class, 'notifiable_id')->where('notifiable_type', self::class);
+    }
+
+    public function routeNotificationForDatabase($notification)
+    {
+        return $this->hasMany(\Illuminate\Notifications\DatabaseNotification::class, 'notifiable_id')->where('notifiable_type', self::class);
+    }
+
+    public function getHasExpiredDocumentsAttribute()
+    {
+        return $this->documents()->where('expiry_date', '<', now())->exists();
     }
 }
 

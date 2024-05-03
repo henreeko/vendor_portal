@@ -7,9 +7,9 @@
         </h2>
     </x-slot>
 
-
-        <div class="mt-1 max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="p-6 bg-none border-b border-gray-200">
+    <!-- Responsive container for the table -->
+    <div class="py-5">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <!-- Include Livewire component here -->
                     @livewire('vendors-list')
                 </div>

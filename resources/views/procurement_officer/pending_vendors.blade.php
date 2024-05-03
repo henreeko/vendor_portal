@@ -1,4 +1,5 @@
 {{-- views\procurement_officer_pending_vendors.blade.php --}}
+
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -33,7 +34,7 @@
                                         <th scope="col" class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                                             Registered
                                         </th>
-                                        <th scope="col" class="px-6 py-3 text-center text-xs font-medium uppercase tracking-wider">
+                                        <th scope="col" class="px-6 py-3 w-1 text-center text-xs font-medium uppercase tracking-wider">
                                             Actions
                                         </th>
                                     </tr>
@@ -61,17 +62,20 @@
                                             </td>
 
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                <a href="{{ route('vendors.show_details', $vendor->id) }}" class="ml-4 bg-white-600 hover:bg-blue-300 text-gray-600 border py-2 px-4 rounded">View</a>
+                                                <a href="{{ route('vendors.show_details', $vendor->id) }}" class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium tracking-wide text-blue-500 transition-colors duration-100 rounded-md focus:ring-2 focus:ring-offset-2 focus:ring-blue-100 bg-blue-50 hover:text-blue-600 hover:bg-blue-100"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                                                    <path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
+                                                    <path fill-rule="evenodd" d="M.664 10.59a1.651 1.651 0 0 1 0-1.186A10.004 10.004 0 0 1 10 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0 1 10 17c-4.257 0-7.893-2.66-9.336-6.41ZM14 10a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z" clip-rule="evenodd" />
+                                                  </svg>
+                                                  </a>
                                                 <form action="{{ route('procurement_officer.approve_vendor', $vendor->id) }}" method="POST" class="inline">
                                                     @csrf
-                                                    <button type="button" onclick="confirmApprovalOfficer(this)" data-url="{{ route('procurement_officer.approve_vendor', $vendor->id) }}" class="ml-4 bg-white-600 hover:bg-green-300 text-gray-600 border py-2 px-4 rounded">
-                                                        Approve
+                                                    <button type="button" onclick="confirmApprovalOfficer(this)" data-url="{{ route('procurement_officer.approve_vendor', $vendor->id) }}" class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium tracking-wide text-green-500 transition-colors duration-100 rounded-md focus:ring-2 focus:ring-offset-2 focus:ring-green-100 bg-green-50 hover:text-green-600 hover:bg-green-100">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                                                            <path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z" clip-rule="evenodd" />
+                                                          </svg>
+                                                          
                                                     </button>
-                                                    
                                                 </form>
-                                                {{-- <button class="ml-4 bg-white-600 hover:bg-yellow-200 text-gray-600 border py-2 px-4 rounded">
-                                                    For Pending
-                                                </button> --}}
                                             </td>
                                         </tr>
                                     @endforeach
@@ -83,8 +87,6 @@
             </div>
         </div>        
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <script>
         function confirmApprovalOfficer(button) {
             const url = button.getAttribute('data-url');
@@ -93,7 +95,7 @@
                 title: 'Are you sure?',
                 text: "You are about to approve this vendor for preliminary assessment. Once approved, the vendor will be forwarded to the procurement head for final approval.",
                 showCancelButton: true,
-                confirmButtonColor: '#262121',
+                confirmButtonColor: '#22c55e',
                 cancelButtonColor: '#ef4c40',
                 confirmButtonText: 'Yes, Approve'
             }).then((result) => {
@@ -134,6 +136,3 @@
 @endif
 
 </x-app-layout>
-
-
-

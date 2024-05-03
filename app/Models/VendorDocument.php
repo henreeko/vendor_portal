@@ -9,6 +9,9 @@ class VendorDocument extends Model
 {
     use HasFactory;
     
+    protected $casts = [
+        'expiry_date' => 'date',
+    ];
 
         // Define the table if it's not the default
         protected $table = 'vendor_documents';

@@ -11,6 +11,7 @@ use Illuminate\Validation\Rules;
 use App\Models\BusinessType;
 use Illuminate\Support\Facades\Storage;
 use App\Models\VendorDocument;
+use Illuminate\Support\Facades\Session;
 
 class RegisteredUserController extends Controller
 {
@@ -24,19 +25,26 @@ class RegisteredUserController extends Controller
     // Store the first step data in the session
     public function storeFirstStep(Request $request)
     {
-
+    try {
         $validatedData = $request->validate([
-            'first_name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255'],
+            'first_name' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s\'\-]+$/'],
+            'last_name' => ['required', 'string', 'max:255', 'regex:/^[a-zA-Z\s\'\-]+$/'],    
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            // Add any other user-specific validation rules here
         ]);
 
+        // Logic to handle storing the user or proceeding with registration
         $request->session()->put('register_first_step', $validatedData);
-
-        return redirect()->route('register.second');
+        return response()->json(['status' => 'success']);
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        // If validation fails, return errors in JSON format
+        return response()->json([
+            'status' => 'error',
+            'errors' => $e->validator->getMessageBag()->toArray()
+        ], 422);
     }
+}
+
 
     // Show the second step of the registration form
     public function showSecondStepForm(Request $request)
@@ -90,7 +98,7 @@ class RegisteredUserController extends Controller
             'last_name' => $userData['last_name'],
             'email' => $userData['email'],
             'password' => Hash::make($userData['password']),
-            'usertype' => 'vendor', // Assuming all registrations through this form are vendors
+            'usertype' => 'vendor',
             'supplier_type' => $userData['supplier_type'],
             'company_name' => $userData['company_name'],
             'office_street' => $userData['office_street'],
@@ -136,4 +144,7 @@ class RegisteredUserController extends Controller
         // Redirect to a page informing the user their registration is pending approval
         return redirect()->route('welcome')->with('registration_success', 'Your account has been created and is pending approval.');
     }
+
+
+    
 }

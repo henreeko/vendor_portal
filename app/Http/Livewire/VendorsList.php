@@ -11,6 +11,8 @@ class VendorsList extends Component
 {
     use WithPagination;
 
+    public $showExpired = false;
+    public $firstLetter = '';
     public $businessTypes = [];
     public $selectAll = false; // Declaration of the selectAll property
     public $selectedVendors = [];
@@ -27,6 +29,27 @@ class VendorsList extends Component
     
     public $showModal = false;
     public $selectedVendorId;
+
+    public function archiveSelected()
+    {
+        if (!empty($this->selectedVendors)) {
+            User::whereIn('id', $this->selectedVendors)->update(['archived' => true]);
+            $this->selectedVendors = []; // Clear selection after archiving
+            $this->emit('refreshComponent');
+            $this->dispatchBrowserEvent('notify', ['type' => 'success', 'message' => 'Vendor/s successfully archived']);
+        }
+    }
+
+    public function archiveVendor($vendorId)
+    {
+        $vendor = User::find($vendorId);
+        if ($vendor) {
+            $vendor->archived = true;
+            $vendor->save();
+            $this->dispatchBrowserEvent('notify', ['type' => 'success', 'message' => 'Vendor successfully archived']);
+            $this->emit('updateList'); // If you need to update other components
+        }
+    }
 
     public function mount()
     {
@@ -100,7 +123,7 @@ class VendorsList extends Component
 
     public function resetFilters()
     {
-        $this->reset(['search', 'selectedDate', 'businessTypeFilter', 'supplierType']);
+        $this->reset(['search', 'selectedDate', 'businessTypeFilter', 'supplierType', 'firstLetter']);
 
             // Reset sorting to default
         $this->sortField = 'created_at';
@@ -114,20 +137,6 @@ class VendorsList extends Component
         } else {
             $this->selectedVendors = $this->getFilteredVendors()->pluck('id')->toArray();
         }
-    }
-
-    public function exportSelected()
-    {
-        // Export logic for selected vendors
-        $this->dispatchBrowserEvent('notify', 'Exporting selected vendors.');
-    }
-
-    public function archiveSelected()
-    {
-        // Archive logic for selected vendors
-        User::whereIn('id', $this->selectedVendors)->update(['archived' => true]);
-        $this->selectedVendors = [];
-        $this->dispatchBrowserEvent('notify', 'Selected vendors have been archived.');
     }
     
     public function performBulkAction()
@@ -196,51 +205,65 @@ class VendorsList extends Component
     }
 
     private function getFilteredVendors()
-    {
-        return User::with('businessType')  // Eager load the businessType relationship
-            ->where('usertype', 'vendor')
-            ->where('procurement_officer_approval', 'approved')
-            ->where('procurement_head_approval', 'approved')
-            ->when($this->businessTypeFilter, function($query) {
-                $query->where('business_type_id', $this->businessTypeFilter);
-            })
-            ->when($this->selectedDate, function ($query) {
-                $query->whereDate('created_at', $this->selectedDate);
-            })
-            ->when($this->supplierType, function ($query) {
-                $query->where('supplier_type', $this->supplierType);
-            })
-            ->where(function ($query) {
-                $query->where('company_name', 'like', '%' . $this->search . '%')
-                      ->orWhere('email', 'like', '%' . $this->search . '%')
-                      ->orWhere('first_name', 'like', '%' . $this->search . '%')
-                      ->orWhere('last_name', 'like', '%' . $this->search . '%');
-    
-                if (strpos($this->search, ' ') !== false) {
-                    $names = explode(' ', $this->search);
-                    if (count($names) === 2) {
-                        $query->orWhere(function ($q) use ($names) {
-                            $q->where('first_name', 'like', '%' . $names[0] . '%')
-                              ->where('last_name', 'like', '%' . $names[1] . '%');
-                        });
-                    }
+{
+    return User::with(['businessType', 'procurementOfficerApprover', 'procurementHeadApprover', 'documents'])
+        ->where('usertype', 'vendor')
+        ->where('procurement_officer_approval', 'approved')
+        ->where('procurement_head_approval', 'approved')
+        ->where('archived', false) // Exclude archived vendors
+        ->when($this->businessTypeFilter, function($query) {
+            $query->where('business_type_id', $this->businessTypeFilter);
+        })
+        ->when($this->selectedDate, function ($query) {
+            $query->whereDate('created_at', $this->selectedDate);
+        })
+        ->when($this->supplierType, function ($query) {
+            $query->where('supplier_type', $this->supplierType);
+        })
+        ->when($this->firstLetter, function ($query) {  // Filter by the first letter of the company name
+            $query->where('company_name', 'like', $this->firstLetter . '%');
+        })
+        ->where(function ($query) {
+            $query->where('company_name', 'like', '%' . $this->search . '%')
+                  ->orWhere('email', 'like', '%' . $this->search . '%')
+                  ->orWhere('first_name', 'like', '%' . $this->search . '%')
+                  ->orWhere('last_name', 'like', '%' . $this->search . '%');
+            if (strpos($this->search, ' ') !== false) {
+                $names = explode(' ', $this->search);
+                if (count($names) === 2) {
+                    $query->orWhere(function ($q) use ($names) {
+                        $q->where('first_name', 'like', '%' . $names[0] . '%')
+                          ->where('last_name', 'like', '%' . $names[1] . '%');
+                    });
                 }
-    
-                $query->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%{$this->search}%"]);
-            })
-            ->orderBy($this->sortField, $this->sortDirection)
-            ->when($this->sortField !== 'created_at', function ($query) {
-                return $query->orderBy('created_at', 'desc');
+            }
+            $query->orWhereRaw("CONCAT(first_name, ' ', last_name) LIKE ?", ["%{$this->search}%"]);
+        })
+        ->orderBy($this->sortField, $this->sortDirection)
+        ->when($this->sortField !== 'created_at', function ($query) {
+            return $query->orderBy('created_at', 'desc');
+        });
+}
+
+    private function appendExpiredDocuments($vendors)
+    {
+        $vendors->each(function ($vendor) {
+            $vendor->has_expired_documents = $vendor->documents->contains(function ($document) {
+                return $document->expiry_date && $document->expiry_date->isPast();
             });
+        });
+        return $vendors;
     }
     
 
-public function render()
-{
-    $vendors = $this->getFilteredVendors()->paginate(10);
+    public function render()
+    {
+        $vendors = $this->getFilteredVendors()->paginate(10);
+        $vendors = $this->appendExpiredDocuments($vendors);
 
-    return view('livewire.vendors-list', [
-        'vendors' => $vendors
-    ]);
-}
+
+        return view('livewire.vendors-list', [
+            'vendors' => $vendors
+        ]);
+    }
 }

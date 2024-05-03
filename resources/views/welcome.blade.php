@@ -40,6 +40,8 @@
         </div>
     </div>
     
+
+    
     <footer class="bg-gray-800 text-white text-center py-4">
         <p>&copy; {{ date('Y') }} Philippine Coastal Storage & Pipeline Corporation Vendor Management Portal. All rights reserved.</p>
     </footer>
@@ -56,9 +58,12 @@
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
                   </svg>                  
             </button>
-            <h3 class="text-lg font-semibold mb-4" style="font-family: 'Inter', sans-serif;">Thank You for Registering!</h3>
-            <p style="font-family: 'Inter', sans-serif;"> Your account is currently pending approval. You will receive an email once your account and requirements have been reviewed and approved. This process may take some time, so we appreciate your patience.</p>
-            <button style="font-family: 'Inter', sans-serif;" class="mt-6 bg-gray-700 text-sm text-white px-6 py-3 rounded font-semibold transition duration-300 ease-in-out shadow-md hover:shadow-lg" onclick="closeModal()" style="font-family: 'Inter', sans-serif;">Got It</button>
+            <h3 class="text-2xl font-semibold mb-4" style="font-family: 'Inter', sans-serif;">Thank You for Registering!</h3>
+            <hr class="mb-3">
+            <p style="font-family: 'Inter', sans-serif;"> Your account is currently pending approval. You will receive an email once your account and requirements have been reviewed and approved. </p> <br>
+            <p style="font-family: 'Inter', sans-serif;"> This process may take some time, so we appreciate your patience.</p>
+            <hr class="mt-3">
+            <button style="font-family: 'Inter', sans-serif;" class="mt-6 bg-gray-700 text-sm text-white px-6 py-3 rounded font-semibold transition duration-300 ease-in-out shadow-md hover:shadow-lg hover:bg-gray-800" onclick="closeModal()" style="font-family: 'Inter', sans-serif;">Got It</button>
         </div>
     </div>
     @endif

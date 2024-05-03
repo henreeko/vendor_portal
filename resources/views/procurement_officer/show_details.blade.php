@@ -17,9 +17,9 @@
                                             <!-- Menu Bar with Border -->
                                             <div class="relative">
                                                 <div class="flex space-x-4 border border-gray-300 p-1 rounded-md bg-white">
-                                                    <button class="rounded text-sm cursor-default flex items-center leading-tight justify-center px-3 py-1.5 h-full hover:bg-neutral-100">Archive</button>
-                                                    <button class="rounded text-sm cursor-default flex items-center leading-tight justify-center px-3 py-1.5 h-full hover:bg-neutral-100">Export</button>
-                                                    <button class="rounded text-sm cursor-default flex items-center leading-tight justify-center px-3 py-1.5 h-full hover:bg-neutral-100">Print</button>
+                                                    <button class="rounded text-sm cursor-default flex items-center leading-tight justify-center px-3 py-1.5 h-full hover:bg-neutral-100">Action 1</button>
+                                                    <button class="rounded text-sm cursor-default flex items-center leading-tight justify-center px-3 py-1.5 h-full hover:bg-neutral-100">Action 2</button>
+                                                    <button class="rounded text-sm cursor-default flex items-center leading-tight justify-center px-3 py-1.5 h-full hover:bg-neutral-100">Action 3</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -122,7 +122,7 @@
                 title: 'Are you sure?',
                 text: "You are about to approve this vendor for preliminary assessment. Once approved, the vendor will be forwarded to the procurement head for final approval.",
                 showCancelButton: true,
-                confirmButtonColor: '#262121',
+                confirmButtonColor: '#22c55e',
                 cancelButtonColor: '#ef4c40',
                 confirmButtonText: 'Yes, Approve'
             }).then((result) => {

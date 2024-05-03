@@ -46,14 +46,15 @@
                     </x-nav-link>
                     @endif
 
-                    @if(auth()->check() && in_array(auth()->user()->usertype, ['admin', 'procurement_officer']))
-                    <x-nav-link :href="route('admin.business-types.index')" :active="request()->routeIs('admin.business-types.index')">
-                        {{ __('Business Types') }}
+                    @if(auth()->check() && auth()->user()->usertype === 'vendor')
+                    <x-nav-link :href="route('vendor.document-updates')" :active="request()->routeIs('vendor.document-updates')">
+                        {{ __('Document Updates') }}
                     </x-nav-link>
                     @endif
+                    
                 </div>
             </div>
-
+            
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
             <x-dropdown align="right" width="48">
@@ -67,7 +68,7 @@
                 </div>
             </button>
             </x-slot>
-                    
+
                     <x-slot name="content">
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
@@ -76,6 +77,18 @@
                         @if(auth()->check() && auth()->user()->usertype === 'admin')
                         <x-dropdown-link :href="route('admin.deleted-users')">
                             {{ __('Deleted Users') }}
+                        </x-dropdown-link>
+                        @endif
+
+                        @if(auth()->check() && in_array(auth()->user()->usertype, ['admin', 'procurement_officer']))
+                        <x-dropdown-link :href="route('archived-vendors')">
+                            {{ __('Archived Vendors') }}
+                        </x-dropdown-link>
+                        @endif
+
+                        @if(auth()->check() && in_array(auth()->user()->usertype, ['admin', 'procurement_officer']))
+                        <x-dropdown-link :href="route('admin.business-types.index')">
+                            {{ __('Business Types') }}
                         </x-dropdown-link>
                         @endif
 

@@ -1,4 +1,4 @@
-<div x-data="{ open: false }" class="py-8">
+<div class="py-8">
     <x-slot name="header">
         <h2 class="text-xl font-semibold leading-tight text-gray-800">
             {{ __('Manage Business Types') }}
@@ -8,139 +8,179 @@
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="overflow-hidden bg-white shadow-xl sm:rounded-lg">
             <div class="px-4 py-5 sm:p-6">
-                <!-- Search Bar -->
-                <div class="mb-4">
-                    <div class="relative mt-1 rounded-md shadow-sm">
-                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                            <svg class="w-5 h-5 text-gray-400" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                            </svg>
-                        </div>
-                        <input wire:model.debounce.300ms="search" type="text" placeholder="Search business types..." class="block w-full pl-10 pr-4 py-2 text-sm text-gray-900 bg-white border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
-                    </div>
-                </div>
-                <div>
-                    @include('livewire.partials.bus-modal')
-                </div>
-                <!-- Business Types Table -->
-                <div class="flex flex-col mt-8">
-                    <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                        <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-                            <table class="min-w-full divide-y divide-gray-300">
-                                <thead class="bg-gray-50">
-                                    <tr>
-                                        <th scope="col" class="px-3 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
-                                            ID
-                                        </th>
-                                        <th scope="col" class="px-3 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
-                                            Business Type
-                                        </th>
-                                        <th scope="col" class="px-3 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
-                                            Created At
-                                        </th>
-                                        <th scope="col" class="px-3 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
-                                            Updated At
-                                        </th>
-                                        <th scope="col" class="relative px-3 py-3">
-                                            <span class="sr-only">Edit</span>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
-                                    @foreach($businessTypes as $type)
-                                    <tr class="hover:bg-gray-50">
-                                        <td class="px-3 py-4 text-sm text-gray-500 whitespace-nowrap">
-                                            {{ $type->id }}
-                                        </td>
-                                        <td class="px-3 py-4 text-sm text-gray-900 whitespace-nowrap">
-                                            {{ $type->name }}
-                                        </td>
-                                        <td class="px-3 py-2 text-sm whitespace-nowrap">
-                                            {{ $type->created_at ? $type->created_at->format('M d, Y') : 'Not available' }}
-                                        </td>
-                                        <td class="px-3 py-2 text-sm whitespace-nowrap">
-                                            {{ $type->updated_at ? $type->updated_at->format('M d, Y') : 'Not available' }}
-                                        </td>
-                                        <td class="px-3 py-4 text-sm font-medium text-right whitespace-nowrap">
-                                            <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a>
-                                            <br>
-                                            <a href="#" class="text-indigo-600 hover:text-indigo-900">Archive</a>
-                                            <br>
-                                            <a href="#" class="text-red-600 hover:text-red-900">Delete</a>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <div class="overflow-hidden bg-white shadow-xl sm:rounded-lg">
+                        <div class="px-4 py-5 sm:p-6 flex items-center justify-between">
+                            <!-- Search Bar -->
+                            <div class="flex-grow mr-2">
+                                <input wire:model.debounce.300ms="search" type="text" placeholder="Search business types..." class="h-10 px-3 py-2 text-sm bg-white border rounded-md border-neutral-300 ring-offset-background placeholder:text-neutral-500 focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-400 disabled:cursor-not-allowed disabled:opacity-50">
+                            </div>
+                
+                            <!-- Button to trigger modal -->
+                            <button wire:click="showAddModal" class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium tracking-wide transition-colors duration-200 bg-white border rounded-md text-gray-900 hover:text-neutral-700 border-neutral-200/70 hover:bg-neutral-100 active:bg-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-200/60 focus:shadow-outline">
+                                Add Business Type
+                            </button>
                         </div>
                     </div>
+                </div>
+
+        <!-- Edit Modal -->
+        @if($showEditModal)
+        <div class="fixed inset-0 z-50 overflow-y-auto">
+            <div class="flex items-center justify-center min-h-screen px-4 py-8 backdrop-grayscale-0 bg-white/60">
+                <div class="relative w-full max-w-md p-4 mx-auto bg-white rounded-md shadow-lg">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900">Edit Business Type</h3>
+                        <form wire:submit.prevent="updateBusinessType" class="mt-4">
+                            <input type="hidden" wire:model="editBusinessTypeId">
+                            <input type="text" wire:model.defer="editBusinessTypeName" class="w-full px-3 py-2 border rounded-md bg-white border rounded-md border-neutral-300 ring-offset-background placeholder:text-neutral-500 focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-400 disabled:cursor-not-allowed disabled:opacity-50" placeholder="Business type name">
+                            @error('editBusinessTypeName')
+                                <span class="text-red-500 text-xs">{{ $message }}</span>
+                            @enderror
+                            <div class="mt-4 text-right">
+                                <button type="button" wire:click="toggleEditModal" class="px-4 py-2 mr-2 text-sm text-gray-600 bg-white border rounded-md hover:bg-gray-100">Cancel</button>
+                                <button type="submit" class="px-4 py-2 text-sm text-white bg-gray-900 rounded-md hover:bg-gray-800">Update</button>
+                            </div>
+                        </form>
+                    </div>
+                    <button wire:click="toggleEditModal" class="absolute top-0 right-0 mt-4 mr-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                            <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+@endif
+                <!-- Modal -->
+                @if($showModal)
+                <div class="fixed inset-0 z-50 overflow-y-auto">
+                    <div class="flex items-center justify-center min-h-screen px-4 py-8 backdrop-grayscale-0 bg-white/60">
+                        <div class="relative w-full max-w-md p-4 mx-auto bg-white rounded-md shadow-lg">
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900">Add Business Type</h3>
+                                <form wire:submit.prevent="createBusinessType" class="mt-4">
+                                    <input type="text" wire:model.defer="newTypeName" class="w-full px-3 py-2 border rounded-md bg-white border rounded-md border-neutral-300 ring-offset-background placeholder:text-neutral-500 focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-400 disabled:cursor-not-allowed disabled:opacity-50" placeholder="Business type name">
+                                    @error('newTypeName')
+                                        <span class="text-red-500 text-xs">{{ $message }}</span>
+                                    @enderror
+                                    <div class="mt-4 text-right">
+                                        <button type="button" wire:click="toggleModal" class="px-4 py-2 mr-2 text-sm text-gray-600 bg-white border rounded-md hover:bg-gray-100">Cancel</button>
+                                        <button type="submit" class="px-4 py-2 text-sm text-white bg-gray-900 rounded-md hover:bg-gray-800">Add</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <button wire:click="toggleModal" class="absolute top-0 right-0 mt-4 mr-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                                    <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                @endif
+
+
+                <!-- Table -->
+                <div class="mt-8 overflow-hidden shadow rounded-lg">
+                    <table class="min-w-full divide-y divide-gray-300">
+                        <thead class="bg-gray-900">
+                            <tr>
+                                <th class="w-1/12 px-6 py-3 text-xs font-medium text-white uppercase text-center">ID</th>
+                                <th class="w-3/12 px-6 py-3 text-xs font-medium text-white uppercase text-left">Business Type</th>
+                                <th wire:click="sortBy('created_at')" class="cursor-pointer px-6 py-3 text-xs font-medium text-white uppercase text-center">
+                                    Created At
+                                    @if($sortField === 'created_at')
+                                        @if($sortAsc)
+                                            <span>&#9650;</span>
+                                        @else
+                                            <span>&#9660;</span>
+                                        @endif
+                                    @endif
+                                </th>                                <th class="w-3/12 px-6 py-3 text-xs font-medium text-white uppercase text-center">Updated At</th>
+                                <th class="w-2/12 px-6 py-3 text-xs font-medium text-white uppercase text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            @foreach($businessTypes as $type)
+                            <tr class="hover:bg-gray-50 transition duration-150 ease-in-out">
+                                <td class="px-6 py-4 text-sm text-gray-500 text-center">{{ $type->id }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-900 text-left">{{ $type->name }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-500 text-center">{{ $type->created_at ? $type->created_at->format('M d, Y') : 'Not available' }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-500 text-center">{{ $type->updated_at ? $type->updated_at->format('M d, Y') : 'Not available' }}</td>
+                                <td class="px-6 py-4 text-sm text-center">
+                                    <a href="#" wire:click.prevent="showEditModal({{ $type->id }})" class="text-indigo-600 hover:text-indigo-900 mr-4">Edit</a>
+                                    <button wire:click="confirmDelete({{ $type->id }})" class="text-red-600 hover:text-red-900">Delete</button>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="mt-4">
+                    {{ $businessTypes->links() }}
                 </div>
             </div>
         </div>
     </div>
 </div>
-    <script>
-    window.addEventListener('DOMContentLoaded', () => {
-    window.addEventListener('notify', e => {
-        alert(e.detail); // Replace this with a more sophisticated notification system if needed
-    });
-});
-    </script>
 
+@push('scripts')
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        window.addEventListener('swal:toast', event => {
+    document.addEventListener('livewire:load', function () {
+        window.livewire.on('toast', (type, message) => {
             Swal.fire({
                 toast: true,
-                position: event.detail.position || 'top-end',
-                showConfirmButton: event.detail.showConfirmButton || false,
-                timer: event.detail.timer || 3000,
-                timerProgressBar: event.detail.timerProgressBar || false,
-                icon: event.detail.icon || 'success',
-                title: event.detail.title || 'Operation Successful'
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 2500,
+                timerProgressBar: true,
+                icon: type,
+                title: message,
+            });
+        });
+
+        window.livewire.on('toggleModal', () => {
+            document.getElementById('modal').classList.toggle('hidden');
+        });
+    });
+</script>
+@endpush
+
+
+@push('scripts')
+<script>
+    document.addEventListener('livewire:load', function () {
+        // Listen for the 'confirm-delete' event and show the confirmation dialog
+        window.livewire.on('confirm-delete', () => {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'You will not be able to recover this business type!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Livewire.emit('deleteBusinessType'); // Emit an event to delete the business type
+                }
+            });
+        });
+
+        // Listen for the 'toast' event and show toast notifications
+        window.livewire.on('toast', (type, message) => {
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 2500,
+                timerProgressBar: true,
+                icon: type,
+                title: message,
             });
         });
     });
 </script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        window.addEventListener('swal:modal', event => {
-            Swal.fire({
-                icon: event.detail.icon,
-                title: event.detail.title,
-                text: event.detail.text || '',
-                confirmButtonText: 'OK'
-            });
-        });
-
-        window.addEventListener('swal:toast', event => {
-            Swal.fire({
-                toast: true,
-                position: event.detail.position || 'top-end',
-                showConfirmButton: event.detail.showConfirmButton || false,
-                timer: event.detail.timer || 3000,
-                timerProgressBar: event.detail.timerProgressBar || false,
-                icon: event.detail.icon,
-                title: event.detail.title
-            });
-        });
-    });
-</script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        window.addEventListener('swal:toast', event => {
-            Swal.fire({
-                toast: true,
-                position: event.detail.position || 'top-end',
-                showConfirmButton: event.detail.showConfirmButton || false,
-                timer: event.detail.timer || 3000,
-                timerProgressBar: event.detail.timerProgressBar || false,
-                icon: event.detail.icon,
-                title: event.detail.title
-            });
-        });
-    });
-</script>
-
+@endpush
