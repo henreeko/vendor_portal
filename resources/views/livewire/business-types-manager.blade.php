@@ -4,26 +4,6 @@
             {{ __('Manage Business Types') }}
         </h2>
     </x-slot>
-
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="overflow-hidden bg-white shadow-xl sm:rounded-lg">
-            <div class="px-4 py-5 sm:p-6">
-                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div class="overflow-hidden bg-white shadow-xl sm:rounded-lg">
-                        <div class="px-4 py-5 sm:p-6 flex items-center justify-between">
-                            <!-- Search Bar -->
-                            <div class="flex-grow mr-2">
-                                <input wire:model.debounce.300ms="search" type="text" placeholder="Search business types..." class="h-10 px-3 py-2 text-sm bg-white border rounded-md border-neutral-300 ring-offset-background placeholder:text-neutral-500 focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-400 disabled:cursor-not-allowed disabled:opacity-50">
-                            </div>
-                
-                            <!-- Button to trigger modal -->
-                            <button wire:click="showAddModal" class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium tracking-wide transition-colors duration-200 bg-white border rounded-md text-gray-900 hover:text-neutral-700 border-neutral-200/70 hover:bg-neutral-100 active:bg-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-200/60 focus:shadow-outline">
-                                Add Business Type
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
         <!-- Edit Modal -->
         @if($showEditModal)
         <div class="fixed inset-0 z-50 overflow-y-auto">
@@ -80,11 +60,25 @@
                 </div>
                 @endif
 
+                <div class="flex justify-between">
+                    <!-- Search Bar -->
+                    <input wire:model.debounce.300ms="search" type="text" placeholder="Search business types..." class="h-10 px-3 py-2 text-sm bg-white border rounded-md border-neutral-300 ring-offset-background placeholder:text-neutral-500 focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-400 disabled:cursor-not-allowed disabled:opacity-50 ml-6">
+                    
+                    <!-- Button to trigger modal -->
+                    <button wire:click="showAddModal" class="mr-6 inline-flex items-center justify-center px-4 py-2 text-sm font-medium tracking-wide transition-colors duration-200 bg-white border rounded-md text-gray-900 hover:text-neutral-700 border-neutral-200/70 hover:bg-neutral-100 active:bg-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-neutral-200/60 focus:shadow-outline">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 mr-2">
+                            <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14Zm.75-10.25v2.5h2.5a.75.75 0 0 1 0 1.5h-2.5v2.5a.75.75 0 0 1-1.5 0v-2.5h-2.5a.75.75 0 0 1 0-1.5h2.5v-2.5a.75.75 0 0 1 1.5 0Z" clip-rule="evenodd" />
+                        </svg> 
+                        Add Business Type
+                    </button>
+                </div>
 
+                <div class="py-1">
+                <div class="my-5 ml-5 mr-5 relative overflow-x-auto shadow-md sm:rounded-lg">
                 <!-- Table -->
-                <div class="mt-8 overflow-hidden shadow rounded-lg">
-                    <table class="min-w-full divide-y divide-gray-300">
-                        <thead class="bg-gray-900">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <thead class="text-sm text-white uppercase bg-gray-900 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th class="w-1/12 px-6 py-3 text-xs font-medium text-white uppercase text-center">ID</th>
                                 <th class="w-3/12 px-6 py-3 text-xs font-medium text-white uppercase text-left">Business Type</th>
@@ -97,7 +91,8 @@
                                             <span>&#9660;</span>
                                         @endif
                                     @endif
-                                </th>                                <th class="w-3/12 px-6 py-3 text-xs font-medium text-white uppercase text-center">Updated At</th>
+                                </th>                                
+                                <th class="w-3/12 px-6 py-3 text-xs font-medium text-white uppercase text-center">Updated At</th>
                                 <th class="w-2/12 px-6 py-3 text-xs font-medium text-white uppercase text-center">Actions</th>
                             </tr>
                         </thead>
@@ -116,12 +111,11 @@
                         </tbody>
                     </table>
                 </div>
-
-                <!-- Pagination -->
-                <div class="mt-4">
-                    {{ $businessTypes->links() }}
-                </div>
             </div>
+        <!-- Pagination -->
+        <div class="mt-4 ml-5 mr-5">
+        {{ $businessTypes->links() }}
+        </div>
         </div>
     </div>
 </div>

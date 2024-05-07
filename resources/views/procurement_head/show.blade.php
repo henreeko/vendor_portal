@@ -57,7 +57,10 @@
                     </table>
                 </div>
                 <!--end of the table-->
-
+                <div>
+                    <h1 class="text-lg font-bold my-2 ml-2"> Documents </h1>
+                </div>
+                <hr class="mb-5">
                                 
                     <div>
                         @livewire('documents-table', ['userId' => $vendor->id])
@@ -72,6 +75,7 @@
                             Back to Pending Vendors
                         </a>
                     
+                        
                         <!-- Right-aligned Approve and Reassess Buttons -->
                         <div class="flex space-x-4">
                             <form method="POST" action="{{ route('procurement_head.approve', $vendor->id) }}" class="inline">

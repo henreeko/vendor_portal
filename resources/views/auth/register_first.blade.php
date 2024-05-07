@@ -42,6 +42,7 @@
             <label for="first_name" class="block text-sm font-medium text-gray-700">First Name <span class="text-red-500">*</span></label>
             <x-text-input id="first_name" class="block w-full mt-1" type="text" name="first_name" :value="old('first_name')" required autofocus autocomplete="given-name" />
             <x-input-error :messages="$errors->get('first_name')" />
+                
         </div>
 
         <!-- Last Name -->
@@ -74,7 +75,7 @@
 
 
         <div class="flex items-center justify-end">
-            <a href="{{ route('login') }}" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">{{ __('Already registered?') }}</a>
+            <a href="{{ route('login') }}" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-600">{{ __('Already registered?') }}</a>
             <x-primary-button type="button" onclick="submitFirstStepForm()" class="ml-4">
                 {{ __('Next') }}
             </x-primary-button>

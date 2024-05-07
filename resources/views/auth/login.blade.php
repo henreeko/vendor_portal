@@ -36,23 +36,23 @@
                     <br>
 
                 <!-- Email Input with Floating Label -->
-                <div class="mb-6 relative">
+                <div class="relative h-11 w-full min-w-[200px] mb-5">
                     <input
-                        style="font-family: 'Inter', sans-serif;"
-                        class="peer h-14 w-full border-b-2 border-blue-gray-200 bg-transparent pt-6 pb-2 text-md font-normal text-blue-gray-700 outline-none transition-all placeholder-shown:border-blue-gray-200 focus:border-red-600"
-                        type="email" name="email" required autofocus placeholder=" " />
-                    <label style="font-family: 'Inter', sans-serif;"class="pointer-events-none absolute left-0 -top-1 translate-y-0 flex h-full w-full select-none text-lg font-normal text-gray-500 transition-all peer-placeholder-shown:translate-y-5 peer-placeholder-shown:text-base peer-focus:translate-y-[-5px] peer-focus:text-red-600 peer-focus:text-sm">
+                        class="peer h-full w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-md font-normal text-blue-gray-700 outline-none transition-all placeholder-shown:border-blue-gray-200 focus:border-red-600 focus:outline-none disabled:border-0 disabled:bg-blue-gray-50 placeholder:opacity-0 focus:placeholder:opacity-100"
+                        type="email" name="email" required autofocus />
+                    <label style="font-family: 'Inter', sans-serif;"
+                        class="after:content[''] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none !overflow-visible truncate text-[11px] font-normal leading-tight text-red-600 transition-all after:absolute after:-bottom-1.5 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-gray-500 after:transition-transform after:duration-300 peer-focus:after:scale-x-100 peer-focus:after:border-red-600 peer-focus:text-red-600 peer-focus:text-[11px] peer-focus:leading-tight peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
                         Email
                     </label>
                 </div>
 
                 <!-- Password Input with Floating Label -->
-                <div class="relative">
-                    <input
-                        style="font-family: 'Inter', sans-serif;"
-                        class="peer h-14 w-full border-b-2 border-blue-gray-200 bg-transparent pt-6 pb-2 text-md font-normal text-blue-gray-700 outline-none transition-all placeholder-shown:border-blue-gray-200 focus:border-red-600"
-                        type="password" name="password" required placeholder=" " />
-                    <label style="font-family: 'Inter', sans-serif;" class="pointer-events-none absolute left-0 -top-1 translate-y-0 flex h-full w-full select-none text-lg font-normal text-gray-500 transition-all peer-placeholder-shown:translate-y-5 peer-placeholder-shown:text-base peer-focus:translate-y-[-5px] peer-focus:text-red-600 peer-focus:text-sm">
+                <div class="relative h-11 w-full min-w-[200px]">
+                    <input 
+                        class="peer h-full w-full border-b border-blue-gray-200 bg-transparent pt-4 pb-1.5 font-sans text-sm font-normal text-blue-gray-700 outline-none transition-all placeholder-shown:border-blue-gray-200 focus:border-red-600 focus:outline-none disabled:border-0 disabled:bg-blue-gray-50 placeholder:opacity-0 focus:placeholder:opacity-100"
+                        type="password" name="password" required />
+                    <label style="font-family: 'Inter', sans-serif;"
+                        class="after:content[''] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none !overflow-visible truncate text-[11px] font-normal leading-tight text-red-600 transition-all after:absolute after:-bottom-1.5 after:block after:w-full after:scale-x-0 after:border-b-2 after:border-gray-500 after:transition-transform after:duration-300 peer-focus:after:scale-x-100 peer-focus:after:border-red-600 peer-focus:text-red-600 peer-focus:text-[11px] peer-focus:leading-tight peer-disabled:text-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
                         Password
                     </label>
                 </div>
@@ -68,7 +68,7 @@
 
                     <!-- Forgot Password Link -->
                     <div class="flex justify-center mt-4">
-                    <a href="{{ route('password.request') }}" style="font-family: 'Inter', sans-serif;" class="text-sm text-gray-600 underline ml-2 hover:text-gray-900 cursor-pointer">Forgot Password?</a>
+                    <a href="{{ route('password.request') }}" style="font-family: 'Inter', sans-serif;" class="text-sm text-gray-600 underline ml-2 hover:text-gray-700 cursor-pointer">Forgot Password?</a>
                     </div>
                 </form>
             </div>

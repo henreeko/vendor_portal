@@ -12,7 +12,7 @@ class VendorController extends Controller
     public function show($id)
     {
         $vendor = User::findOrFail($id); // Assuming vendors are stored in the User model
-        return view('vendors.show', compact('vendor')); // Assuming you have a blade file for showing vendor details
+        return view('procurement_officer.view', compact('vendor'));
     }
 
     public function showDetails(User $vendor)
@@ -20,7 +20,7 @@ class VendorController extends Controller
         // Assuming 'vendor' usertype has all necessary fields
         return view('procurement_officer.show_details', compact('vendor'));
     }
-    
+
     public function index()
     {
         // Fetch users with usertype equal to "vendor"

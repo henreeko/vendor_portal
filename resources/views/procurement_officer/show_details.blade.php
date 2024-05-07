@@ -87,7 +87,10 @@
                         </tbody>
                     </table>
                 <br>
-                
+                <div>
+                    <h1 class="text-lg font-bold my-2 ml-2"> Documents </h1>
+                </div>
+                <hr class="mb-5">
                 <div>
                     @livewire('documents-table', ['userId' => $vendor->id])
                 </div>

@@ -33,7 +33,7 @@
     <!-- Supplier Type Filter -->
     <div class="relative z-50" wire:ignore.self>
         <!-- Trigger -->
-        <button wire:click.stop="toggleDropdown"
+        <button name="supplier type" wire:click.stop="toggleDropdown"
             title="Sort By Supplier Type"
             class="inline-flex items-center justify-center gap-2 px-4 py-2 h-10 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-md hover:bg-neutral-100 active:bg-neutral-200 focus:ring-gray-200 focus:border-gray-200">
             {{ $supplierType ?: 'Type' }}
@@ -78,6 +78,19 @@
                     @endforeach
                 </select>
             </div>
+
+        <!-- Sort Direction Toggle Button -->
+        <button wire:click="toggleSortDirection('{{ $sortField }}')" title="Toggle Sort Direction" class="inline-flex items-center justify-center h-10 px-4 py-2 text-sm font-medium transition-colors bg-white border rounded-md hover:bg-neutral-100 active:bg-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-neutral-200/60 focus:ring-offset-2">
+            @if($sortDirection === 'asc')
+            <svg class="w-[18px] h-[18px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                <path fill-rule="evenodd" d="M12.832 3.445a1 1 0 0 0-1.664 0l-4 6A1 1 0 0 0 8 11h8a1 1 0 0 0 .832-1.555l-4-6Zm-1.664 17.11a1 1 0 0 0 1.664 0l4-6A1 1 0 0 0 16 13H8a1 1 0 0 0-.832 1.555l4 6Z" clip-rule="evenodd"/>
+              </svg>                                                
+            @else
+            <svg class="w-[18px] h-[18px] text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                <path fill-rule="evenodd" d="M18.425 10.271C19.499 8.967 18.57 7 16.88 7H7.12c-1.69 0-2.618 1.967-1.544 3.271l4.881 5.927a2 2 0 0 0 3.088 0l4.88-5.927Z" clip-rule="evenodd"/>
+              </svg>                                                           
+            @endif
+        </button>
 
         <!-- Reset Filters Button -->
         <button wire:click.stop="resetFilters" wire:click="$emit('filtersReset')"

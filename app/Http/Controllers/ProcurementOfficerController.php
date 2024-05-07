@@ -41,14 +41,27 @@ class ProcurementOfficerController extends Controller
     }
     
 
-    public function showPendingVendors()
+    public function showPendingVendors(Request $request)
     {
-        // Example logic to get pending vendors. Adjust the query as needed.
-        $pendingVendors = User::with('businessType') // Eager loading the businessType relationship
-                              ->where('usertype', 'vendor')
-                              ->where('procurement_officer_approval', 'pending')
-                              ->get();
-    
-        return view('procurement_officer.pending_vendors', compact('pendingVendors'));
-    }    
+    $searchQuery = $request->input('search', '');
+    $sortBy = $request->input('sortBy', 'id');
+    $sortDirection = $request->input('sortDirection', 'asc');
+
+    $pendingVendors = User::with('businessType')
+                          ->where('usertype', 'vendor')
+                          ->where('procurement_officer_approval', 'pending')
+                          ->when($searchQuery, function ($query, $searchQuery) {
+                              return $query->where(function($query) use ($searchQuery) {
+                                  $query->where('company_name', 'like', '%' . $searchQuery . '%')
+                                        ->orWhere('first_name', 'like', '%' . $searchQuery . '%')
+                                        ->orWhere('last_name', 'like', '%' . $searchQuery . '%')
+                                        ->orWhere('email', 'like', '%' . $searchQuery . '%')
+                                        ->orWhere('products_or_services', 'like', '%' . $searchQuery . '%');
+                              });
+                          })
+                          ->orderBy($sortBy, $sortDirection)
+                          ->paginate(5);
+
+        return view('procurement_officer.pending_vendors', compact('pendingVendors', 'searchQuery', 'sortBy', 'sortDirection'));
+    }
 }

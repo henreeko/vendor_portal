@@ -54,7 +54,8 @@ class RegisteredUserController extends Controller
         }
     
         $data = $request->session()->get('register_first_step');
-        $businessTypes = BusinessType::all(); // Fetch all business types
+        // Fetch only non-custom business types
+        $businessTypes = BusinessType::where('is_custom', false)->get(); // Ensure only non-custom types are fetched
     
         return view('auth.register_second', compact('data', 'businessTypes'));
     }
@@ -67,31 +68,50 @@ class RegisteredUserController extends Controller
             'company_name' => ['nullable', 'string', 'max:255'],
             'office_street' => ['nullable', 'string', 'max:255'],
             'office_barangay' => ['nullable', 'string', 'max:255'],
-            'office_zip' => ['nullable', 'string', 'max:255'],
+            'office_zip' => ['required', 'numeric', 'digits:4'],
             'office_city' => ['nullable', 'string', 'max:255'],
-            'tin_number' => ['required', 'numeric', 'digits:14', 'unique:users'],
+            'tin_number' => ['required', 'numeric', 'digits:12', 'unique:users'],
             'website_url' => ['nullable', 'string', 'max:255'],
             'phone_number' => ['nullable', 'string', 'max:11'],
             'billing_representative_first_name' => ['nullable', 'string', 'max:255'],
             'billing_representative_last_name' => ['nullable', 'string', 'max:255'],
-            'business_type_id' => ['required', 'exists:business_types,id'],
+            'br_email' => ['nullable', 'email', 'max:255'],
+            'br_phone_number' => ['nullable', 'string', 'max:11'],
+            'business_type_id' => [
+                'required', 
+                function($attribute, $value, $fail) use ($request) {
+                    if ($value == 'other' && !$request->input('other_business_type')) {
+                        $fail('The other business type field is required when "Other" is selected.');
+                    }
+                }
+            ],
+            'other_business_type' => 'sometimes|required|string|max:255',
             'products_or_services' => ['nullable', 'string'],
             'telephone_fax_number' => ['nullable', 'numeric'],
             'bir_2303' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
             'bir_2303_expiry' => 'required|date',
             'sec' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
-            'sec_expiry' => 'required|date',
+            'sec_registration_date' => 'required|date',
             'mayors_permit' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
-            'mayors_permit_expiry' => 'required|date',
+            'sample_or' => 'file|mimes:pdf,jpg,jpeg,png|max:2048',
+            'sample_invoice' => 'file|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
 
         $firstStepData = $request->session()->get('register_first_step');
-
         if (!is_array($firstStepData)) {
-        return redirect()->route('register')->with('error', 'An error occurred. Please start the registration process again.');
+            return redirect()->route('register')->with('error', 'An error occurred. Please start the registration process again.');
         }
-
-        $userData = array_merge($firstStepData, $validatedData);
+    
+        $businessTypeId = $validatedData['business_type_id'];
+        if ($businessTypeId === 'other') {
+            $businessType = BusinessType::firstOrCreate(
+                ['name' => $request->input('other_business_type')],
+                ['is_custom' => true]
+            );
+            $businessTypeId = $businessType->id;
+        }
+    
+        $userData = array_merge($firstStepData, $validatedData, ['business_type_id' => $businessTypeId]);
 
         $user = User::create([
             'first_name' => $userData['first_name'],
@@ -110,7 +130,9 @@ class RegisteredUserController extends Controller
             'phone_number' => $userData['phone_number'],
             'billing_representative_first_name' => $userData['billing_representative_first_name'],
             'billing_representative_last_name' => $userData['billing_representative_last_name'],
-            'business_type_id' => $validatedData['business_type_id'],
+            'br_email' => $userData['br_email'],
+            'br_phone_number' => $userData['br_phone_number'],
+            'business_type_id' => $businessTypeId,
             'products_or_services' => $userData['products_or_services'],
             'telephone_fax_number' => $userData['telephone_fax_number'],
             'procurement_officer_approval' => 'pending',
@@ -121,24 +143,43 @@ class RegisteredUserController extends Controller
             return redirect()->back()->with('error', 'Failed to create user.');
         }
 
-    // Handle document upload
-    $documents = [
-        'bir_2303' => $request->bir_2303_expiry,
-        'sec' => $request->sec_expiry,
-        'mayors_permit' => $request->mayors_permit_expiry,
-    ];
+        // Handle document upload
+        $documents = [
+            'bir_2303' => [
+                'expiry' => $request->bir_2303_expiry,  // This is directly submitted by the user.
+                'file' => $request->file('bir_2303')
+            ],
+            'sec' => [
+                'registration_date' => $request->sec_registration_date,  // This replaces the expiry with a registration date.
+                'file' => $request->file('sec')
+            ],
+            'mayors_permit' => [
+                'expiry' => new \DateTime('this year December 31'),  // Automatically set to expire on December 31st of the current year.
+                'file' => $request->file('mayors_permit')
+            ],
+            'sample_or' => [
+                'file' => $request->file('sample_or')
+            ],
+            'sample_invoice' => [
+                'file' => $request->file('sample_invoice')
+            ]
+        ];
 
-    foreach ($documents as $type => $expiry) {
-        if ($request->hasFile($type)) {
-            $path = $request->file($type)->store('documents', 'public');
-            $user->documents()->create([
-                'document_type' => $type,
-                'path' => $path,
-                'name' => $request->file($type)->getClientOriginalName(), // Adding the original file name
-                'expiry_date' => $request[$type . '_expiry'],
-            ]);
-        }
-    }
+        foreach ($documents as $type => $details) {
+            // Check if the 'file' key exists in $details and if it's not empty
+            if (isset($details['file']) && $details['file']->isValid()) {
+                $path = $details['file']->store('documents', 'public');
+                $user->documents()->create([
+                    'document_type' => $type,
+                    'path' => $path,
+                    'name' => $details['file']->getClientOriginalName(),
+                    'expiry_date' => $details['expiry'] ?? null,
+                    'registration_date' => $details['registration_date'] ?? null,
+                ]);
+            }
+        }        
+        //End of doc upload
+
         $request->session()->forget('register_first_step');
 
         // Redirect to a page informing the user their registration is pending approval

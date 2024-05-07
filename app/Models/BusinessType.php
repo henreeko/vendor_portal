@@ -9,6 +9,6 @@ class BusinessType extends Model
 {
     use HasFactory;
     
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'is_custom'];
     public $timestamps = true;
 }

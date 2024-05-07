@@ -11,13 +11,14 @@ class VendorDocument extends Model
     
     protected $casts = [
         'expiry_date' => 'date',
+        'registration_date' => 'date',
     ];
 
         // Define the table if it's not the default
         protected $table = 'vendor_documents';
 
         // Fillable attributes for mass assignment
-        protected $fillable = ['user_id', 'document_type', 'path', 'expiry_date', 'name'];
+        protected $fillable = ['user_id', 'document_type', 'path', 'expiry_date', 'name', 'registration_date'];
     
         // Define the inverse relationship
         public function user()

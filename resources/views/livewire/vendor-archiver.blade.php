@@ -1,6 +1,6 @@
 <x-slot name="header">
-    <h2 class="text-2xl font-semibold leading-tight text-gray-800 mb-4">
-        Archived Vendors
+    <h2 class="text-xl font-semibold leading-tight text-gray-800">
+        {{ __('Archived Vendors') }}
     </h2>
 </x-slot>
 
@@ -38,6 +38,8 @@
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Company Name</th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Business Type</th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Email</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Actions</th>
+
             </tr>
         </thead>
         <tbody class="divide-y divide-gray-200">
@@ -57,9 +59,9 @@
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $vendor->id }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $vendor->company_name }}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $vendor->business_type_id }}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $vendor->businessType->name ?? 'N/A' }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $vendor->email }}</td>
-
+                <td class="px-6 py-4 text-left whitespace-nowrap text-sm text-blue-500 hover:underline"> @include('livewire.partials.slide')</td>
             </tr>
             @empty
             <tr>

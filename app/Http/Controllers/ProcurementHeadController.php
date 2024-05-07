@@ -80,9 +80,10 @@ class ProcurementHeadController extends Controller
                                 ->where('procurement_officer_approval', 'approved')
                                 ->where('procurement_head_approval', 'pending')
                                 ->with(['procurementOfficerApprover', 'businessType'])
-                                ->get();
-    
+                                ->paginate(5);
+        
         return view('procurement_head.pending_vendors', compact('pendingVendors'));
     }
+    
     
 }

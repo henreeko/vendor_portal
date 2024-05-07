@@ -122,6 +122,7 @@ Route::middleware(['auth', 'procurement.officer', 'preventBackHistory'])->group(
     ->name('procurement_officer.approve_vendor');
     Route::get('/procurement-officer/dashboard', [ProcurementOfficerDashboardController::class, 'index'])
     ->name('procurement_officer.dashboard');
+    Route::get('/vendors/{vendor}', [VendorController::class, 'show'])->name('vendors.show');
     Route::get('/vendor/pending-approval', function () {
     return view('vendor.pending_approval');
     })->name('vendor.pendingApproval');

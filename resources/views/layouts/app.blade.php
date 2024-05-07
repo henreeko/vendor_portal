@@ -35,7 +35,7 @@
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
         <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.x/dist/alpine.min.js" defer></script>
-
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
         <!-- Include jQuery -->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -63,13 +63,13 @@
             <!-- Page Heading -->
             @if (isset($header))
                 <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8" style="font-family: 'Inter', sans-serif">
                         {{ $header }}
                     </div>
                 </header>
             @endif
             <!-- Page Content -->
-            <main>
+            <main style="font-family: 'Inter', sans-serif">
                 {{ $slot }}
             </main>
 

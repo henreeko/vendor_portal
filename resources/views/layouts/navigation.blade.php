@@ -1,6 +1,6 @@
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
     <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style="font-family: 'Inter', sans-serif">
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
@@ -29,6 +29,12 @@
                     @endif
 
                     @if(auth()->check() && auth()->user()->usertype === 'procurement_officer' || auth()->user()->usertype === 'admin')
+                    <x-nav-link>
+                        {{ __('Add Vendor') }}
+                    </x-nav-link>
+                    @endif   
+
+                    @if(auth()->check() && auth()->user()->usertype === 'procurement_officer' || auth()->user()->usertype === 'admin')
                     <x-nav-link :href="route('admin.vendors.index')" :active="request()->routeIs('admin.vendors.index')">
                         {{ __('Vendors') }}
                     </x-nav-link>
@@ -37,6 +43,12 @@
                     @if(auth()->check() && auth()->user()->usertype === 'procurement_officer')
                     <x-nav-link :href="route('procurement_officer.pending_vendors')" :active="request()->routeIs('procurement_officer.pending_vendors')">
                         {{ __('Pending Vendors') }}
+                    </x-nav-link>
+                    @endif
+
+                    @if(auth()->check() && auth()->user()->usertype === 'procurement_officer')
+                    <x-nav-link>
+                        {{ __('For Reassesment') }}
                     </x-nav-link>
                     @endif
 

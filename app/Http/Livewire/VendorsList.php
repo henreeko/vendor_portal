@@ -21,7 +21,7 @@ class VendorsList extends Component
     public $sortOption = '';
     public $search = '';
     public $sortField = 'created_at'; // Default sort field
-    public $sortDirection = 'desc'; // Default sort direction
+    public $sortDirection = 'asc'; // Default sort direction
     protected $paginationTheme = 'tailwind';
     protected $queryString = ['selectedDate','search'];
     public $businessTypeFilter = '';
@@ -102,7 +102,7 @@ class VendorsList extends Component
     protected function normalizeSortDirection()
     {
         if (!in_array($this->sortDirection, ['asc', 'desc'])) {
-            $this->sortDirection = 'desc'; // Default to 'desc' if invalid
+            $this->sortDirection = 'asc'; // Default to 'desc' if invalid
         }
     }
 
@@ -115,7 +115,7 @@ class VendorsList extends Component
         } else {
             // Reset to default sort if no option is selected
             $this->sortField = 'created_at';
-            $this->sortDirection = 'desc';
+            $this->sortDirection = 'asc';
         }
 
         $this->resetPage(); // Optionally reset pagination
@@ -127,7 +127,7 @@ class VendorsList extends Component
 
             // Reset sorting to default
         $this->sortField = 'created_at';
-        $this->sortDirection = 'desc';
+        $this->sortDirection = 'asc';
     }
 
     public function toggleSelectAll()

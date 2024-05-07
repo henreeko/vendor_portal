@@ -31,6 +31,8 @@ class User extends Authenticatable
         'phone_number',
         'billing_representative_first_name',
         'billing_representative_last_name',
+        'br_email',
+        'br_phone_number',
         'business_type_id',
         'products_or_services',
         'telephone_fax_number',

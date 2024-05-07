@@ -7,25 +7,39 @@ use App\Models\User;
 
 class ArchivedVendors extends Component
 {
+    public $businessTypes = [];
     public $search = '';
     public $selectedVendors = [];
     public $selectAll = false;
+    public $selectedVendorId;
 
     public function render()
     {
-        $archivedVendors = User::where('archived', true)
-                            ->where(function($query) {
-                                $query->where('company_name', 'like', '%' . $this->search . '%')
-                                      ->orWhere('email', 'like', '%' . $this->search . '%');
-                            })
-                            ->paginate(10);
-
+        $archivedVendors = User::with('businessType') // Eager loading businessType
+            ->where('archived', true)
+            ->where(function ($query) {
+                $query->where('company_name', 'like', '%' . $this->search . '%')
+                      ->orWhere('email', 'like', '%' . $this->search . '%');
+            })
+            ->paginate(6);
+    
         if ($this->selectAll) {
-            $this->selectedVendors = $archivedVendors->pluck('id')->toArray();
+            // Manual iteration to collect IDs
+            $this->selectedVendors = [];
+            foreach ($archivedVendors as $vendor) {
+                $this->selectedVendors[] = $vendor->id;
+            }
         }
-
+    
         return view('livewire.vendor-archiver', ['archivedVendors' => $archivedVendors]);
+    }    
+
+    
+    public function updated($propertyName)
+    {
+        logger("Updated property: $propertyName");
     }
+
 
     public function unarchiveSelected()
     {
