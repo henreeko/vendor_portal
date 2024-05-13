@@ -26,18 +26,18 @@
                     <tbody class="bg-white text-gray-900 divide-y divide-gray-400">
                         @foreach ($pendingVendors as $vendor)  {{-- Start of foreach --}}
                             <tr class="hover:bg-gray-50">
-                                <td class="px-5 py-5 border-b border-gray-200 text-lg">{{ $vendor->id }}</td>
-                                <td class="px-5 py-5 border-b border-gray-200 text-lg">{{ $vendor->company_name }}</td>
-                                <td class="px-5 py-5 border-b border-gray-200 text-lg">{{ $vendor->supplier_type }}</td>
-                                <td class="px-5 py-5 border-b border-gray-200 text-lg">{{ $vendor->businessType->name ?? 'N/A' }}</td>
-                                <td class="px-5 py-5 border-b border-gray-200 text-lg">{{ $vendor->products_or_services }}</td>
-                                <td class="px-5 py-5 border-b border-gray-200 text-lg">
+                                <td class="px-5 py-5 border-b border-gray-200 text-md">{{ $vendor->id }}</td>
+                                <td class="px-5 py-5 border-b border-gray-200 text-md">{{ $vendor->company_name }}</td>
+                                <td class="px-5 py-5 border-b border-gray-200 text-md">{{ $vendor->supplier_type }}</td>
+                                <td class="px-5 py-5 border-b border-gray-200 text-md">{{ $vendor->businessType->name ?? 'N/A' }}</td>
+                                <td class="px-5 py-5 border-b border-gray-200 text-md">{{ $vendor->products_or_services }}</td>
+                                <td class="px-5 py-5 border-b border-gray-200 text-md">
                                     {{ $vendor->procurementOfficerApprover ? $vendor->procurementOfficerApprover->first_name . ' ' . $vendor->procurementOfficerApprover->last_name : 'Not Available' }}
                                 </td>
-                                <td class="px-5 py-5 border-b border-gray-200 text-lg">
+                                <td class="px-5 py-5 border-b border-gray-200 text-md">
                                     {{ $vendor->procurement_officer_approval_date ? \Carbon\Carbon::parse($vendor->procurement_officer_approval_date)->format('M d, Y') : 'Not Set' }}
                                 </td>
-                                <td class="px-5 py-5 border-b border-gray-200 text-lg">
+                                <td class="px-5 py-5 border-b border-gray-200 text-md">
                                     <a href="{{ route('procurement_head.vendors.show', $vendor->id) }}" class="text-blue-500 hover:text-blue-700">View</a>
                                 </td>
                             </tr>

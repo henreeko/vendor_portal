@@ -7,7 +7,7 @@ use App\Models\User;
 
 class ProcurementOfficerStats extends Component
 {
-    public $totalVendors, $archivedVendors, $pendingApprovals, $officialVendors, $finalApproval;
+    public $totalVendors, $archivedVendors, $pendingApprovals, $officialVendors, $finalApproval, $reassessmentVendors;
 
     public function mount()
     {
@@ -23,9 +23,14 @@ class ProcurementOfficerStats extends Component
                                      ->count();
 
         $this->finalApproval = User::where('usertype', 'vendor')
-                                     ->where('procurement_officer_approval', 'approved')
-                                     ->where('procurement_head_approval', 'pending')
-                                     ->count();
+                                   ->where('procurement_officer_approval', 'approved')
+                                   ->where('procurement_head_approval', 'pending')
+                                   ->count();
+
+        // Add this line to count vendors with 'reassessment' status
+        $this->reassessmentVendors = User::where('usertype', 'vendor')
+                                         ->where('status', 'reassessment')
+                                         ->count();
     }
 
     public function render()

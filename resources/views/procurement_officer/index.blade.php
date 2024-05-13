@@ -7,5 +7,5 @@
     </x-slot>
 
     @livewire('procurement-officer-stats')
-
+    
 </x-app-layout>

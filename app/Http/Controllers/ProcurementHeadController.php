@@ -10,16 +10,18 @@ use Illuminate\Support\Facades\Log;
 
 class ProcurementHeadController extends Controller
 {
-    public function reassessVendor($id)
+    public function reassessVendor(Request $request, $id)
     {
         try {
             $vendor = User::findOrFail($id);
             if ($vendor->procurement_officer_approval === 'approved' && $vendor->procurement_head_approval !== 'approved') {
+                $vendor->status = 'reassessment';
                 $vendor->procurement_officer_approval = 'pending';
                 $vendor->procurement_officer_approval_date = null;
                 $vendor->approved_by_procurement_officer = null;
+                $vendor->reassessment_message = $request->input('reassessment_message'); // Save reassessment message
                 $vendor->save();
-    
+        
                 return redirect()->route('procurement_head.vendors.pending')->with('success', 'Vendor reassessment initiated.');
             } else {
                 return redirect()->route('procurement_head.vendors.pending')->with('error', 'Vendor cannot be reassessed at this stage.');
@@ -29,7 +31,7 @@ class ProcurementHeadController extends Controller
             return redirect()->route('procurement_head.vendors.pending')->with('error', 'Error processing your request.');
         }
     }
-    
+
 
 
     public function show($vendorId)

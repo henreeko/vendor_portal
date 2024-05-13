@@ -86,7 +86,7 @@
                     </div>
 
                 <!-- For Reassesment Card -->
-                <a href="#" class="bg-white overflow-hidden shadow rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg">
+                <a href="{{ route('procurement_officer.reassessment') }}" class="bg-white overflow-hidden shadow rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg">
                     <div class="p-6 flex items-center">
                         <div class="flex-shrink-0">
                             <!-- Heroicon: clock -->
@@ -96,7 +96,7 @@
                         </div>
                         <div class="ml-4">
                             <p class="text-sm font-medium text-gray-600">For Reassesment</p>
-                            <p class="text-3xl font-semibold text-gray-900">3</p>
+                            <p class="text-3xl font-semibold text-gray-900"> {{ $reassessmentVendors }}</p>
                         </div>
                     </div>
             </a>

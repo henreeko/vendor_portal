@@ -70,12 +70,13 @@
             @endforelse
         </tbody>
     </table>
-    <div class="mt-2 my-2 mr-2">
-        {{ $archivedVendors->links() }}
-    </div>
 </div>
 
 <script>
+    document.addEventListener('livewire:load', function () {
+    Livewire.rescan();
+});
+
     document.addEventListener('livewire:load', function () {
         window.addEventListener('notify', event => {
             const type = event.detail.type; // 'success' or 'error'

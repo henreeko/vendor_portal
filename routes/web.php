@@ -17,6 +17,7 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Livewire\BusinessTypesManager;
 use App\Http\Livewire\Admin\DeletedUsers;
 use App\Http\Controllers\ProcurementOfficerDashboardController;
+use App\Http\Livewire\ArchivedVendors;
 
 Route::get('/', function () {
     return view('welcome');
@@ -122,6 +123,8 @@ Route::middleware(['auth', 'procurement.officer', 'preventBackHistory'])->group(
     ->name('procurement_officer.approve_vendor');
     Route::get('/procurement-officer/dashboard', [ProcurementOfficerDashboardController::class, 'index'])
     ->name('procurement_officer.dashboard');
+    Route::post('/vendors/reapprove/{vendorId}', [ProcurementOfficerController::class, 'reapproveVendor'])->name('procurement_officer.reapprove_vendor');
+    Route::get('/procurement_officer/reassessment', [ProcurementOfficerController::class, 'showReassessment'])->name('procurement_officer.reassessment');
     Route::get('/vendors/{vendor}', [VendorController::class, 'show'])->name('vendors.show');
     Route::get('/vendor/pending-approval', function () {
     return view('vendor.pending_approval');

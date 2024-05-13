@@ -27,15 +27,22 @@ class BusinessTypesManager extends Component
     // Confirm deletion of a business type
     public function confirmDelete($id)
     {
-        $this->deleteBusinessType($id);
+        $this->deleteBusinessTypeId = $id;
+        $this->emit('toggleDeleteConfirmationModal');
     }
 
-    // Delete the business type
     public function deleteBusinessType($id)
     {
         BusinessType::findOrFail($id)->delete();
         $this->emit('toast', 'success', 'Business type deleted successfully!');
-        $this->resetPage();
+        $this->deleteBusinessTypeId = null; // Reset the deletion ID
+        $this->emit('toggleDeleteConfirmationModal'); // Close the modal
+    }
+
+    public function cancelDelete()
+    {
+        $this->deleteBusinessTypeId = null;
+        $this->emit('toggleDeleteConfirmationModal'); // Close the modal
     }
 
     public function sortBy($field)

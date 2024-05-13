@@ -47,8 +47,13 @@
                     @endif
 
                     @if(auth()->check() && auth()->user()->usertype === 'procurement_officer')
-                    <x-nav-link>
-                        {{ __('For Reassesment') }}
+                    <x-nav-link :href="route('procurement_officer.reassessment')" :active="request()->routeIs('procurement_officer.reassessment')">
+                        {{ __('For Reassessment') }}
+                        @if ($reassessmentCount > 0)
+                            <span class="bg-red-500 text-white rounded-full text-xs px-2 py-1 ml-2">
+                                {{ $reassessmentCount }}
+                            </span>
+                        @endif
                     </x-nav-link>
                     @endif
 

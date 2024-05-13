@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('vendor_documents', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('document_type'); // e.g., 'BIR 2303', 'SEC', 'Mayor's Permit'
+            $table->string('document_type'); // e.g., 'BIR 2303', 'SEC', 'Mayor's Permit', 'Sample_OR', 'Sample_Invoice'
             $table->string('path');
             $table->date('expiry_date')->nullable();
             $table->timestamps();

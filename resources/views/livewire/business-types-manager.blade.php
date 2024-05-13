@@ -73,6 +73,22 @@
                     </button>
                 </div>
 
+                @if($deleteBusinessTypeId)
+                <div class="fixed inset-0 z-50 overflow-y-auto">
+                    <div class="flex items-center justify-center min-h-screen px-4 py-8 backdrop-grayscale-0 bg-white/60">
+                        <div class="relative w-full max-w-md p-4 mx-auto bg-white rounded-md shadow-lg">
+                            <h3 class="text-lg font-semibold text-gray-900">Confirm Deletion</h3>
+                            <p>Are you sure you want to delete this business type? This action cannot be undone.</p>
+                            <div class="mt-4 text-right">
+                                <button wire:click="cancelDelete" class="px-4 py-2 mr-2 text-sm text-gray-600 bg-white border rounded-md hover:bg-gray-100">Cancel</button>
+                                <button wire:click="deleteBusinessType({{ $deleteBusinessTypeId }})" class="px-4 py-2 text-sm text-white bg-red-600 rounded-md hover:bg-red-700">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endif
+                
+                
                 <div class="py-1">
                 <div class="my-5 ml-5 mr-5 relative overflow-x-auto shadow-md sm:rounded-lg">
                 <!-- Table -->
@@ -97,29 +113,31 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            @foreach($businessTypes as $type)
+                            @forelse($businessTypes as $type)
                             <tr class="hover:bg-gray-50 transition duration-150 ease-in-out">
-                                <td class="px-6 py-4 text-sm text-gray-500 text-center">{{ $type->id }}</td>
-                                <td class="px-6 py-4 text-sm text-gray-900 text-left">{{ $type->name }}</td>
-                                <td class="px-6 py-4 text-sm text-gray-500 text-center">{{ $type->created_at ? $type->created_at->format('M d, Y') : 'Not available' }}</td>
-                                <td class="px-6 py-4 text-sm text-gray-500 text-center">{{ $type->updated_at ? $type->updated_at->format('M d, Y') : 'Not available' }}</td>
+                                <td class="px-6 py-4 text-sm text-center">{{ $type->id }}</td>
+                                <td class="px-6 py-4 text-sm text-left">{{ $type->name }}</td>
+                                <td class="px-6 py-4 text-sm text-center">{{ $type->created_at ? $type->created_at->format('M d, Y') : 'N/A' }}</td>
+                                <td class="px-6 py-4 text-sm text-center">{{ $type->updated_at ? $type->updated_at->format('M d, Y') : 'N/A' }}</td>
                                 <td class="px-6 py-4 text-sm text-center">
                                     <a href="#" wire:click.prevent="showEditModal({{ $type->id }})" class="text-indigo-600 hover:text-indigo-900 mr-4">Edit</a>
                                     <button wire:click="confirmDelete({{ $type->id }})" class="text-red-600 hover:text-red-900">Delete</button>
-                                </tr>
-                            @endforeach
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="5" class="px-6 py-4 text-center text-sm text-red-600">No business types found.</td>
+                            </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
             </div>
-        <!-- Pagination -->
-        <div class="mt-4 ml-5 mr-5">
-        {{ $businessTypes->links() }}
-        </div>
-        </div>
-    </div>
-</div>
-
+            @if($businessTypes->isNotEmpty())
+            <div class="mt-4 ml-5 mr-5 mb-5">
+                {{ $businessTypes->links() }}
+            </div>
+            @endif
 @push('scripts')
 <script>
     document.addEventListener('livewire:load', function () {
@@ -178,3 +196,10 @@
     });
 </script>
 @endpush
+
+<script>
+    window.livewire.on('toggleDeleteConfirmationModal', () => {
+        const modal = document.getElementById('deleteConfirmationModal');
+        modal.classList.toggle('hidden');
+    });
+</script>
